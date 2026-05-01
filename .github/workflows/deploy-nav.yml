@@ -1,0 +1,49 @@
+name: 部署導航官網到 GitHub Pages
+
+on:
+  push:
+    branches: [main, copilot/create-navigational-website]
+    paths:
+      - '.vuepress/public/nav.html'
+      - '.github/workflows/deploy-nav.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: 檢出代碼
+        uses: actions/checkout@v4
+
+      - name: 準備導航頁面
+        run: |
+          mkdir -p _site
+          cp .vuepress/public/nav.html _site/index.html
+          cp .vuepress/public/nav.html _site/nav.html
+          # copy favicon if exists
+          [ -f .vuepress/public/favicon.ico ] && cp .vuepress/public/favicon.ico _site/favicon.ico || true
+          [ -f .vuepress/public/logo.png ] && cp .vuepress/public/logo.png _site/logo.png || true
+
+      - name: 配置 GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: 上傳頁面
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '_site'
+
+      - name: 部署到 GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
