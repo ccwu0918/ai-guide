@@ -2,7 +2,7 @@ name: 部署導航官網到 GitHub Pages
 
 on:
   push:
-    branches: [main, copilot/create-navigational-website]
+    branches: [main]
     paths:
       - '.vuepress/public/nav.html'
       - '.github/workflows/deploy-nav.yml'
