@@ -1,352 +1,352 @@
-# 更多企业级 AI 编程实战项目
+# 更多企業級 AI 程式設計實戰專案
 
 
-你好，我是鱼皮。
+你好，我是魚皮。
 
-在前面的文章中，我们学习了 Vibe Coding 的项目开发流程，也实战了很多个人项目。这些项目可以帮你入门 AI 编程，掌握基本的开发技能。
+在前面的文章中，我們學習了 Vibe Coding 的專案開發流程，也實戰了很多個人專案。這些專案可以幫你入門 AI 程式設計，掌握基本的開發技能。
 
-但如果你想进一步提升编程能力，做出更有竞争力的项目，来帮助自己找编程相关的工作、拿 Offer，那么我推荐你学习更多企业级的 AI 编程实战项目。
+但如果你想進一步提升程式設計能力，做出更有競爭力的專案，來幫助自己找程式設計相關的工作、拿 Offer，那麼我推薦你學習更多企業級的 AI 程式設計實戰專案。
 
-作为国内顶级的 [编程学习网站 - 编程导航](https://codefather.cn/) 的创始人，我已经坚持带大家做了好几年的项目，很多同学通过学习这些项目，成功拿到了大厂 Offer！
+作為國內頂級的 [程式設計學習網站 - 程式設計導航](https://codefather.cn/) 的創始人，我已經堅持帶大家做了好幾年的專案，很多同學透過學習這些專案，成功拿到了大廠 Offer！
 
 ![](https://pic.yupi.icu/1/de62f4cc-32cb-4814-aca7-03c232d0e2d2.png)
 
-这篇文章，我会介绍我在 [编程导航平台](https://codefather.cn/) 上的企业级 AI 项目教程。这些项目都是我精心设计的，对标真实的企业业务场景，涵盖了 AI 应用开发的各个方面。项目资料包括完整的视频教程 / 文字教程、可运行的完整源码、简历写法、面试题解、答疑解惑，真正做到一条龙服务。
+這篇文章，我會介紹我在 [程式設計導航平臺](https://codefather.cn/) 上的企業級 AI 專案教程。這些專案都是我精心設計的，對標真實的企業業務場景，涵蓋了 AI 應用開發的各個方面。專案資料包括完整的影片教程 / 文字教程、可執行的完整原始碼、簡歷寫法、面試題解、答疑解惑，真正做到一條龍服務。
 
-👉🏻 建议在做项目前，先完整阅读 [鱼皮的项目学习建议](https://www.codefather.cn/post/1797431216467001345)，选择适合你的项目、并学习高效做项目的方法。
-
-
-
-## 一、为什么要学企业级项目？
-
-你可能会问：我已经会用 Vibe Coding 做项目了，为什么还要学企业级项目？
-
-原因很简单：个人项目和企业级项目的差距是巨大的。
-
-个人项目注重快速实现功能，而企业级项目注重：
-
-- 完整的开发流程（需求分析、架构设计、开发、测试、上线）
-- 规范的代码质量（代码规范、设计模式、单元测试）
-- 真实的业务场景（用户认证、权限控制、数据安全）
-- 系统的架构设计（微服务、分布式、高并发）
-- 持续的运维监控（日志、监控、性能优化）
-
-学习企业级项目，不仅能提升你的技术能力，更能让你理解真实的商业项目是如何开发的。这对于求职和工作都有巨大的帮助。
-
-而且，这些项目都融入了最新的 AI 技术，让你在掌握传统开发技能的同时，也能紧跟 AI 时代的潮流。
+👉🏻 建議在做專案前，先完整閱讀 [魚皮的專案學習建議](https://www.codefather.cn/post/1797431216467001345)，選擇適合你的專案、並學習高效做專案的方法。
 
 
 
-## 二、鱼皮的 AI 项目系列
+## 一、為什麼要學企業級專案？
 
-下面介绍我在编程导航平台上的企业级 AI 项目教程。这些项目都是我亲自设计和讲解的，每个项目都有完整的教程和配套资料。
+你可能會問：我已經會用 Vibe Coding 做專案了，為什麼還要學企業級專案？
 
-👉🏻 你也可以直接访问 [编程导航 AI 项目学习专区](https://www.codefather.cn/course?sortField=priority&tags%5B%5D=AI%E9%A1%B9%E7%9B%AE)，查看所有的 AI 项目。
+原因很簡單：個人專案和企業級專案的差距是巨大的。
 
+個人專案注重快速實現功能，而企業級專案注重：
 
+- 完整的開發流程（需求分析、架構設計、開發、測試、上線）
+- 規範的程式碼質量（程式碼規範、設計模式、單元測試）
+- 真實的業務場景（使用者認證、許可權控制、資料安全）
+- 系統的架構設計（微服務、分散式、高併發）
+- 持續的運維監控（日誌、監控、效能最佳化）
 
-### AI 万能视频下载总结器
+學習企業級專案，不僅能提升你的技術能力，更能讓你理解真實的商業專案是如何開發的。這對於求職和工作都有巨大的幫助。
 
-基于 Vue 3 + FastAPI + yt-dlp + DeepSeek + Stripe 开发的 AI 万能视频下载总结器，以 Vibe Coding 为核心，全程使用 Cursor 进行 AI 编程。支持从 B 站、YouTube、抖音等 1800+ 平台下载视频，AI 自动提取字幕并生成总结摘要、交互式思维导图和视频问答，还集成了 JWT 用户认证和 Stripe 国际支付，是一个真正能上线变现的 SaaS 产品。
-
-适合人群：想学 AI 编程做工具类产品并实现商业变现、掌握 Python 后端开发和国际支付的同学。
-
-[👉🏻 点击开始学习](https://www.codefather.cn/course/2027618983506640897)
-
-技术亮点：
-
-- Cursor AI 编程 + MCP 插件 + Agent Skills
-- SubAgents 子代理并行开发
-- yt-dlp 多平台视频下载引擎
-- DeepSeek 大模型 AI 总结和问答
-- SSE 流式数据传输
-- Stripe 国际支付 + Webhook
-- JWT 用户认证和权限控制
-- SEO 和 GEO 搜索优化
+而且，這些專案都融入了最新的 AI 技術，讓你在掌握傳統開發技能的同時，也能緊跟 AI 時代的潮流。
 
 
 
-![鱼皮 AI 万能视频下载总结器项目](https://pic.yupi.icu/1/AI%E4%B8%87%E8%83%BD%E8%A7%86%E9%A2%91%E4%B8%8B%E8%BD%BD%E5%99%A8%E4%B8%BB%E9%A1%B5.png)
+## 二、魚皮的 AI 專案系列
+
+下面介紹我在程式設計導航平臺上的企業級 AI 專案教程。這些專案都是我親自設計和講解的，每個專案都有完整的教程和配套資料。
+
+👉🏻 你也可以直接訪問 [程式設計導航 AI 專案學習專區](https://www.codefather.cn/course?sortField=priority&tags%5B%5D=AI%E9%A1%B9%E7%9B%AE)，檢視所有的 AI 專案。
 
 
 
-### AI 热点监控工具
+### AI 萬能影片下載總結器
 
-基于 Express 5 + React 19 + OpenRouter + Socket.io 开发的 AI 热点监控工具，以 Vibe Coding 为核心，全程使用 VSCode + GitHub Copilot 进行 AI 编程。系统自动从 Twitter、Bing、B 站等 8+ 信息源聚合抓取内容，利用 AI 进行真假识别和相关性分析，通过 WebSocket 实时推送和邮件通知。还将热点监控能力封装为 Agent Skills 技能包。
+基於 Vue 3 + FastAPI + yt-dlp + DeepSeek + Stripe 開發的 AI 萬能影片下載總結器，以 Vibe Coding 為核心，全程使用 Cursor 進行 AI 程式設計。支援從 B 站、YouTube、抖音等 1800+ 平臺下載影片，AI 自動提取字幕並生成總結摘要、互動式思維導圖和影片問答，還整合了 JWT 使用者認證和 Stripe 國際支付，是一個真正能上線變現的 SaaS 產品。
 
-适合人群：想快速体验 Vibe Coding 全流程、学习工具类产品开发的同学，零基础也能跟着做。
+適合人群：想學 AI 程式設計做工具類產品並實現商業變現、掌握 Python 後端開發和國際支付的同學。
 
-[👉🏻 点击开始学习](https://www.codefather.cn/course/2026625439052627970)
+[👉🏻 點選開始學習](https://www.codefather.cn/course/2027618983506640897)
 
-技术亮点：
+技術亮點：
 
-- VSCode + GitHub Copilot AI 编程
-- MCP 插件（Firecrawl + Context7）
-- Agent Skills 开发
-- OpenRouter 统一接入多种大模型
-- 多数据源聚合爬虫
-- WebSocket 实时推送
-- Query Expansion 查询扩展
+- Cursor AI 程式設計 + MCP 外掛 + Agent Skills
+- SubAgents 子代理並行開發
+- yt-dlp 多平臺影片下載引擎
+- DeepSeek 大模型 AI 總結和問答
+- SSE 流式資料傳輸
+- Stripe 國際支付 + Webhook
+- JWT 使用者認證和許可權控制
+- SEO 和 GEO 搜尋最佳化
+
+
+
+![魚皮 AI 萬能影片下載總結器專案](https://pic.yupi.icu/1/AI%E4%B8%87%E8%83%BD%E8%A7%86%E9%A2%91%E4%B8%8B%E8%BD%BD%E5%99%A8%E4%B8%BB%E9%A1%B5.png)
+
+
+
+### AI 熱點監控工具
+
+基於 Express 5 + React 19 + OpenRouter + Socket.io 開發的 AI 熱點監控工具，以 Vibe Coding 為核心，全程使用 VSCode + GitHub Copilot 進行 AI 程式設計。系統自動從 Twitter、Bing、B 站等 8+ 資訊源聚合抓取內容，利用 AI 進行真假識別和相關性分析，透過 WebSocket 實時推送和郵件通知。還將熱點監控能力封裝為 Agent Skills 技能包。
+
+適合人群：想快速體驗 Vibe Coding 全流程、學習工具類產品開發的同學，零基礎也能跟著做。
+
+[👉🏻 點選開始學習](https://www.codefather.cn/course/2026625439052627970)
+
+技術亮點：
+
+- VSCode + GitHub Copilot AI 程式設計
+- MCP 外掛（Firecrawl + Context7）
+- Agent Skills 開發
+- OpenRouter 統一接入多種大模型
+- 多資料來源聚合爬蟲
+- WebSocket 實時推送
+- Query Expansion 查詢擴充套件
 - Aceternity UI 科技感前端
 
 
 
-![鱼皮 AI 热点监控工具项目](https://pic.yupi.icu/1/image-20260304102630302.png)
+![魚皮 AI 熱點監控工具專案](https://pic.yupi.icu/1/image-20260304102630302.png)
 
 
 
-### GitHub 文档翻译工具
+### GitHub 文件翻譯工具
 
-基于 Next.js + GitHub App + OpenRouter 开发的 GitHub 仓库 AI 文档翻译 SaaS 平台，以 Vibe Coding 为核心，全程使用 Cursor 进行 AI 编程。输入任意 GitHub 仓库地址，AI 自动将文档翻译成 20 种语言并创建 PR，还支持 Webhook 自动增量翻译。
+基於 Next.js + GitHub App + OpenRouter 開發的 GitHub 倉庫 AI 文件翻譯 SaaS 平臺，以 Vibe Coding 為核心，全程使用 Cursor 進行 AI 程式設計。輸入任意 GitHub 倉庫地址，AI 自動將文件翻譯成 20 種語言並建立 PR，還支援 Webhook 自動增量翻譯。
 
-适合人群：想学 AI 编程做出海工具、SaaS 产品，掌握 GitHub App 开发的同学。
+適合人群：想學 AI 程式設計做出海工具、SaaS 產品，掌握 GitHub App 開發的同學。
 
-[👉🏻 点击开始学习](https://www.codefather.cn/course/2014303010343092226)
+[👉🏻 點選開始學習](https://www.codefather.cn/course/2014303010343092226)
 
-技术亮点：
+技術亮點：
 
-- Cursor AI 编程 + MCP 插件
-- Next.js 全栈一体化架构
-- GitHub App 安全授权
-- GitHub Webhook 增量翻译
-- OpenRouter 统一接入多种大模型
-- Prisma ORM 类型安全数据库
-- Ngrok 内网穿透调试
-- Vercel 一键部署上线
-
-
-
-![鱼皮 GitHub 文档翻译工具项目](https://pic.yupi.icu/1/1769079926879-90640105-2d23-418c-b4b5-e962eab31299-20260225144931498.png)
+- Cursor AI 程式設計 + MCP 外掛
+- Next.js 全棧一體化架構
+- GitHub App 安全授權
+- GitHub Webhook 增量翻譯
+- OpenRouter 統一接入多種大模型
+- Prisma ORM 型別安全資料庫
+- Ngrok 內網穿透除錯
+- Vercel 一鍵部署上線
 
 
 
-### AI 零代码应用生成平台
+![魚皮 GitHub 文件翻譯工具專案](https://pic.yupi.icu/1/1769079926879-90640105-2d23-418c-b4b5-e962eab31299-20260225144931498.png)
 
-基于 Spring Boot + LangChain4j + LangGraph4j + Vue 3 开发的企业级 AI 代码生成平台，对标大厂。这是一个以 AI 开发 + 后端架构为核心的微服务全栈项目，实战 AI 智能体、AI 工作流、多种设计模式、Spring Cloud + Dubbo 微服务架构、多维度系统优化等。
 
-适合人群：有一定项目经验，想要学习微服务架构和 AI 智能体开发的同学。
 
-[👉🏻 点击开始学习](https://www.codefather.cn/course/1948291549923344386)
+### AI 零程式碼應用生成平臺
 
-技术亮点：
+基於 Spring Boot + LangChain4j + LangGraph4j + Vue 3 開發的企業級 AI 程式碼生成平臺，對標大廠。這是一個以 AI 開發 + 後端架構為核心的微服務全棧專案，實戰 AI 智慧體、AI 工作流、多種設計模式、Spring Cloud + Dubbo 微服務架構、多維度系統最佳化等。
+
+適合人群：有一定專案經驗，想要學習微服務架構和 AI 智慧體開發的同學。
+
+[👉🏻 點選開始學習](https://www.codefather.cn/course/1948291549923344386)
+
+技術亮點：
 
 - LangChain4j + LangGraph4j AI 框架
-- AI 智能体和工作流
-- Spring Cloud + Dubbo 微服务
-- 多种设计模式实战
-- COS 对象存储
-- Selenium 自动化
-- 响应式编程
-- 企业级监控体系
+- AI 智慧體和工作流
+- Spring Cloud + Dubbo 微服務
+- 多種設計模式實戰
+- COS 物件儲存
+- Selenium 自動化
+- 響應式程式設計
+- 企業級監控體系
 
 
 
-![鱼皮 AI 零代码应用生成平台项目](https://pic.yupi.icu/1/1753332293578-0ccc2a53-6d98-41a7-b714-16fa6a7f095f-20250814154720271.png)
+![魚皮 AI 零程式碼應用生成平臺專案](https://pic.yupi.icu/1/1753332293578-0ccc2a53-6d98-41a7-b714-16fa6a7f095f-20250814154720271.png)
 
 
 
-### 智能协同云图库
+### 智慧協同雲相簿
 
-基于 Vue 3 + Spring Boot + COS + WebSocket 的企业级智能协同云图库平台。涉及文件存管、内容检索、权限控制、实时协同等企业主流业务场景，技术栈包括 MySQL 分库分表、Redis + Caffeine 多级缓存、COS 对象存储、Sa-Token 权限控制、DDD 领域驱动设计、WebSocket 实时通讯、AI 绘图大模型等。
+基於 Vue 3 + Spring Boot + COS + WebSocket 的企業級智慧協同雲相簿平臺。涉及檔案存管、內容檢索、許可權控制、實時協同等企業主流業務場景，技術棧包括 MySQL 分庫分表、Redis + Caffeine 多級快取、COS 物件儲存、Sa-Token 許可權控制、DDD 領域驅動設計、WebSocket 實時通訊、AI 繪圖大模型等。
 
-适合人群：想要学习企业级架构设计和实时协同功能的同学。
+適合人群：想要學習企業級架構設計和實時協同功能的同學。
 
-[👉🏻 点击开始学习](https://www.codefather.cn/course/1864210260732116994)
+[👉🏻 點選開始學習](https://www.codefather.cn/course/1864210260732116994)
 
-技术亮点：
+技術亮點：
 
-- Vue 3 + Spring Boot 全栈
-- MySQL 分库分表
-- Redis + Caffeine 多级缓存
-- COS 对象存储
-- WebSocket 实时协同
-- AI 绘图大模型集成
-- DDD 领域驱动设计
-
-
-
-![鱼皮智能协同云图库项目](https://pic.yupi.icu/1/image-yupic.png)
+- Vue 3 + Spring Boot 全棧
+- MySQL 分庫分表
+- Redis + Caffeine 多級快取
+- COS 物件儲存
+- WebSocket 實時協同
+- AI 繪圖大模型整合
+- DDD 領域驅動設計
 
 
 
-
-### AI 答题应用平台
-
-基于 React + Spring Boot 的 AI 答题应用平台，深入业务场景，学习实战 React 跨端小程序开发、Vue3 AI 应用网站开发，后端分库分表、分布式锁、缓存、幂等设计、设计模式、RxJava 响应式编程、SSE 实时推送、线程池隔离等，大幅提升开发经验和架构设计能力。
-
-适合人群：想要学习跨端开发和响应式编程的同学。
-
-[👉🏻 点击开始学习](https://www.codefather.cn/course/1790274408835506178)
-
-技术亮点：
-
-- React 跨端小程序开发
-- Vue 3 + Spring Boot 全栈
-- MySQL 分库分表
-- 分布式锁和缓存
-- RxJava 响应式编程
-- SSE 实时推送
-- AI 题目生成
-
-
-
-![鱼皮 AI 答题应用平台项目](https://pic.yupi.icu/1/20240604145229177.png)
+![魚皮智慧協同雲相簿專案](https://pic.yupi.icu/1/image-yupic.png)
 
 
 
 
+### AI 答題應用平臺
+
+基於 React + Spring Boot 的 AI 答題應用平臺，深入業務場景，學習實戰 React 跨端小程式開發、Vue3 AI 應用網站開發，後端分庫分表、分散式鎖、快取、冪等設計、設計模式、RxJava 響應式程式設計、SSE 實時推送、執行緒池隔離等，大幅提升開發經驗和架構設計能力。
+
+適合人群：想要學習跨端開發和響應式程式設計的同學。
+
+[👉🏻 點選開始學習](https://www.codefather.cn/course/1790274408835506178)
+
+技術亮點：
+
+- React 跨端小程式開發
+- Vue 3 + Spring Boot 全棧
+- MySQL 分庫分表
+- 分散式鎖和快取
+- RxJava 響應式程式設計
+- SSE 實時推送
+- AI 題目生成
 
 
-### 智能面试刷题平台
 
-基于 React + Next.js + Spring Boot 的智能面试刷题平台，真实企业级项目。学习实战 React + Next.js 服务端渲染网站开发，后端 Redis 多级缓存、Elasticsearch 搜索、Redisson 高级数据结构、Druid 并发、HotKey 探测、Sa-Token 权限控制、Nacos 动态配置、Sentinel 流控、反爬虫设计等，提升技术运用能力。
+![魚皮 AI 答題應用平臺專案](https://pic.yupi.icu/1/20240604145229177.png)
 
-适合人群：想要学习服务端渲染和高级缓存技术的同学。
 
-[👉🏻 点击开始学习](https://www.codefather.cn/course/1826803928691945473)
 
-技术亮点：
 
-- Next.js 服务端渲染
-- Redis 多级缓存
-- Elasticsearch 搜索
-- Redisson 高级数据结构
-- HotKey 探测
+
+
+### 智慧面試刷題平臺
+
+基於 React + Next.js + Spring Boot 的智慧面試刷題平臺，真實企業級專案。學習實戰 React + Next.js 服務端渲染網站開發，後端 Redis 多級快取、Elasticsearch 搜尋、Redisson 高階資料結構、Druid 併發、HotKey 探測、Sa-Token 許可權控制、Nacos 動態配置、Sentinel 流控、反爬蟲設計等，提升技術運用能力。
+
+適合人群：想要學習服務端渲染和高階快取技術的同學。
+
+[👉🏻 點選開始學習](https://www.codefather.cn/course/1826803928691945473)
+
+技術亮點：
+
+- Next.js 服務端渲染
+- Redis 多級快取
+- Elasticsearch 搜尋
+- Redisson 高階資料結構
+- HotKey 探測
 - Sentinel 流控
-- 反爬虫设计
+- 反爬蟲設計
 
 
 
-![鱼皮智能面试刷题平台项目](https://pic.yupi.icu/1/image-20240928131639783.png)
+![魚皮智慧面試刷題平臺專案](https://pic.yupi.icu/1/image-20240928131639783.png)
 
 
 
 
-### 多公众号智能管理系统
+### 多公眾號智慧管理系統
 
-基于 Spring Boot + WxJava + Spring AI 的公众号智能管理系统，实战公众号业务，包括多公众号管理、服务器认证、素材管理、回复管理、菜单管理、AI 自动回复等场景，涉及内网穿透、虚拟线程等实践。
+基於 Spring Boot + WxJava + Spring AI 的公眾號智慧管理系統，實戰公眾號業務，包括多公眾號管理、伺服器認證、素材管理、回覆管理、選單管理、AI 自動回覆等場景，涉及內網穿透、虛擬執行緒等實踐。
 
-适合人群：想要学习公众号开发和 AI 自动回复的同学。
+適合人群：想要學習公眾號開發和 AI 自動回覆的同學。
 
-[👉🏻 点击开始学习](https://www.codefather.cn/course/1932410836060119041)
+[👉🏻 點選開始學習](https://www.codefather.cn/course/1932410836060119041)
 
-技术亮点：
+技術亮點：
 
-- WxJava 公众号开发
+- WxJava 公眾號開發
 - Spring AI 框架
-- 多公众号管理
-- AI 自动回复
-- 内网穿透
-- 虚拟线程
+- 多公眾號管理
+- AI 自動回覆
+- 內網穿透
+- 虛擬執行緒
 
 
 
-![鱼皮多公众号智能管理系统项目](https://pic.yupi.icu/1/1743665084072-ce18bc93-e711-40d3-9111-14e5cae8587e.png)
-
-
-
-
-### AI 编程助手
-
-基于 Spring Boot + LangChain4j 开发的 AI 编程助手，适合新手入门 AI 应用开发。通过这个项目，你可以实战 LangChain4j 框架的主流用法和特性，包括对话记忆、结构化输出、AI Service、RAG、工具调用、MCP、SSE 等。
-
-适合人群：刚学完 Spring Boot，想要入门 AI 应用开发的同学。
-
-[👉🏻 点击开始学习](https://www.codefather.cn/course/1943267371799080961)
-
-技术亮点：
-
-- LangChain4j 框架全面实战
-- 对话记忆和上下文管理
-- 结构化输出和数据解析
-- RAG 知识库问答
-- 工具调用和 MCP 集成
-- SSE 流式输出
-
-![鱼皮 AI 编程助手项目](https://pic.yupi.icu/1/1752027043776-cd6d17ed-175f-4c7e-8b25-aee81a5296b2-20250710114302208.png)
+![魚皮多公眾號智慧管理系統專案](https://pic.yupi.icu/1/1743665084072-ce18bc93-e711-40d3-9111-14e5cae8587e.png)
 
 
 
 
-### AI 程序员技术练兵场
+### AI 程式設計助手
 
-基于 Java + Vue + LangChain4j 开发的全栈 AI 应用，帮助程序员通过挑战提升技术水平。这是一个以 AI 编程为主的项目，实战 LangChain4j AI 框架、结构化输出、提示词工程，掌握企业级 AI 应用开发流程和技巧。
+基於 Spring Boot + LangChain4j 開發的 AI 程式設計助手，適合新手入門 AI 應用開發。透過這個專案，你可以實戰 LangChain4j 框架的主流用法和特性，包括對話記憶、結構化輸出、AI Service、RAG、工具呼叫、MCP、SSE 等。
 
-适合人群：有 Java 和 Vue 基础，想要提升 AI 应用开发能力的同学。
+適合人群：剛學完 Spring Boot，想要入門 AI 應用開發的同學。
 
-[👉🏻 点击开始学习](https://www.codefather.cn/course/1965699176489484289)
+[👉🏻 點選開始學習](https://www.codefather.cn/course/1943267371799080961)
 
-技术亮点：
+技術亮點：
 
-- LangChain4j 框架实战
-- 结构化输出和数据解析
-- 提示词工程和优化
-- Vue 3 全栈开发
-- 游戏化学习设计
+- LangChain4j 框架全面實戰
+- 對話記憶和上下文管理
+- 結構化輸出和資料解析
+- RAG 知識庫問答
+- 工具呼叫和 MCP 整合
+- SSE 流式輸出
 
-
-
-![鱼皮 AI 程序员技术练兵场项目](https://pic.yupi.icu/1/1760438722374-4e8edebc-d975-4873-8f06-9e9856733694.png)
-
-
-
-### 智能 BI 平台
-
-基于 Spring Boot + React 的智能 BI 数据分析平台，学习实践异步化、线程池、RabbitMQ 消息队列、AI 应用开发、AIGC Prompt 优化等技术。用户可以上传数据，AI 自动生成分析报告和图表。
-
-适合人群：想要学习消息队列和 AI 数据分析的同学。
-
-[👉🏻 点击开始学习](https://www.codefather.cn/course/1790980531403927553)
-
-技术亮点：
-
-- 异步化和线程池
-- RabbitMQ 消息队列
-- AI 数据分析
-- AIGC Prompt 优化
-- 图表生成
+![魚皮 AI 程式設計助手專案](https://pic.yupi.icu/1/1752027043776-cd6d17ed-175f-4c7e-8b25-aee81a5296b2-20250710114302208.png)
 
 
 
-![鱼皮智能 BI 平台项目](https://pic.yupi.icu/1/bi-20231026151929666.png)
+
+### AI 程式設計師技術練兵場
+
+基於 Java + Vue + LangChain4j 開發的全棧 AI 應用，幫助程式設計師透過挑戰提升技術水平。這是一個以 AI 程式設計為主的專案，實戰 LangChain4j AI 框架、結構化輸出、提示詞工程，掌握企業級 AI 應用開發流程和技巧。
+
+適合人群：有 Java 和 Vue 基礎，想要提升 AI 應用開發能力的同學。
+
+[👉🏻 點選開始學習](https://www.codefather.cn/course/1965699176489484289)
+
+技術亮點：
+
+- LangChain4j 框架實戰
+- 結構化輸出和資料解析
+- 提示詞工程和最佳化
+- Vue 3 全棧開發
+- 遊戲化學習設計
 
 
 
-### AI 自动回复工具
+![魚皮 AI 程式設計師技術練兵場專案](https://pic.yupi.icu/1/1760438722374-4e8edebc-d975-4873-8f06-9e9856733694.png)
 
-基于 Spring Boot 的智能监控和 AI 自动回复工具，实战中介者模式 + OpenAI 集成，掌握定时任务调度、第三方平台对接、Docker 容器化部署，培养企业级架构设计思维。
 
-适合人群：想要学习设计模式和自动化工具开发的同学。
 
-[👉🏻 点击开始学习](https://www.codefather.cn/course/1966420016440999938)
+### 智慧 BI 平臺
 
-技术亮点：
+基於 Spring Boot + React 的智慧 BI 資料分析平臺，學習實踐非同步化、執行緒池、RabbitMQ 訊息佇列、AI 應用開發、AIGC Prompt 最佳化等技術。使用者可以上傳資料，AI 自動生成分析報告和圖表。
+
+適合人群：想要學習訊息佇列和 AI 資料分析的同學。
+
+[👉🏻 點選開始學習](https://www.codefather.cn/course/1790980531403927553)
+
+技術亮點：
+
+- 非同步化和執行緒池
+- RabbitMQ 訊息佇列
+- AI 資料分析
+- AIGC Prompt 最佳化
+- 圖表生成
+
+
+
+![魚皮智慧 BI 平臺專案](https://pic.yupi.icu/1/bi-20231026151929666.png)
+
+
+
+### AI 自動回覆工具
+
+基於 Spring Boot 的智慧監控和 AI 自動回覆工具，實戰中介者模式 + OpenAI 整合，掌握定時任務排程、第三方平臺對接、Docker 容器化部署，培養企業級架構設計思維。
+
+適合人群：想要學習設計模式和自動化工具開發的同學。
+
+[👉🏻 點選開始學習](https://www.codefather.cn/course/1966420016440999938)
+
+技術亮點：
 
 - 中介者模式
-- OpenAI 集成
-- 定时任务调度
-- 第三方平台对接
+- OpenAI 整合
+- 定時任務排程
+- 第三方平臺對接
 - Docker 容器化部署
 
 
 
-![鱼皮 AI 自动回复工具项目](https://pic.yupi.icu/1/1756260059900-8be2cc5d-0cfc-4b7f-b99d-47c82af1925c.png)
+![魚皮 AI 自動回覆工具專案](https://pic.yupi.icu/1/1756260059900-8be2cc5d-0cfc-4b7f-b99d-47c82af1925c.png)
 
 
 
-加油，未来的 AI 工程师！💪
+加油，未來的 AI 工程師！💪
 
 
 
 
-## 推荐资源
+## 推薦資源
 
-1）鱼皮 AI 导航网站：[AI 资源大全、最新 AI 资讯、免费 AI 教程](https://ai.codefather.cn)
+1）魚皮 AI 導航網站：[AI 資源大全、最新 AI 資訊、免費 AI 教程](https://ai.codefather.cn)
 
-2）编程导航学习圈：[学习路线、编程教程、实战项目、求职宝典、交流答疑](https://www.codefather.cn)
+2）程式設計導航學習圈：[學習路線、程式設計教程、實戰專案、求職寶典、交流答疑](https://www.codefather.cn)
 
-3）程序员面试八股文：[实习/校招/社招高频考点、企业真题解析](https://www.mianshiya.com)
+3）程式設計師面試八股文：[實習/校招/社招高頻考點、企業真題解析](https://www.mianshiya.com)
 
-4）程序员写简历神器：[专业模板、丰富例句、直通面试](https://www.laoyujianli.com)
+4）程式設計師寫簡歷神器：[專業模板、豐富例句、直通面試](https://www.laoyujianli.com)
 
-5）1 对 1 模拟面试：[实习/校招/社招面试拿 Offer 必备](https://ai.mianshiya.com)
+5）1 對 1 模擬面試：[實習/校招/社招面試拿 Offer 必備](https://ai.mianshiya.com)

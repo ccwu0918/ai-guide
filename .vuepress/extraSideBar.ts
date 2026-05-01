@@ -1,43 +1,43 @@
 /**
- * 额外右侧边栏
+ * 額外右側邊欄
  */
 export default [
   {
-    title: "编程导航",
+    title: "程式設計導航",
     icon: "/icon/xingqiu.png",
-    popoverTitle: "微信扫一扫",
+    popoverTitle: "微信掃一掃",
     popoverUrl: "/qrcode-codefather.png",
-    popoverDesc: "编程导航：编程导航",
+    popoverDesc: "程式設計導航：程式設計導航",
   },
   // {
-  //   title: "编程导航",
+  //   title: "程式設計導航",
   //   icon: "/icon/xingqiu.png",
   //   popoverTitle:
-  //     '<span style="font-size:0.8rem;font-weight:bold;"><span style="color:red;">保姆级实战项目教程</span>、编程学习指南、学习资源、求职指南、技术分享、编程交流</span>',
+  //     '<span style="font-size:0.8rem;font-weight:bold;"><span style="color:red;">保姆級實戰專案教程</span>、程式設計學習指南、學習資源、求職指南、技術分享、程式設計交流</span>',
   //   popoverUrl:
   //     "/qrcode-codenav.png",
-  //   popoverDesc: "编程导航：编程导航",
+  //   popoverDesc: "程式設計導航：程式設計導航",
   // },
   {
     title: "交流群",
     icon: "/icon/weixin.png",
     popoverTitle:
-      '<span style="font-size:0.8rem;font-weight:bold;">扫码添加 <span style="color:red;">编程导航小助手微信</span>，拉你进专属编程学习交流群</span>',
+      '<span style="font-size:0.8rem;font-weight:bold;">掃碼新增 <span style="color:red;">程式設計導航小助手微信</span>，拉你進專屬程式設計學習交流群</span>',
     popoverUrl: "/qrcode-codenavhelper.png",
   },
   {
-    title: "下资料",
+    title: "下資料",
     icon: "/icon/xiazai.png",
     popoverTitle:
-      '<span style="font-size:0.8rem;font-weight:bold;">扫码关注公众号，回复 <span style="color:red;">ai</span> 获取清华大学 DeepSeek 从入门到精通 PDF</span>',
+      '<span style="font-size:0.8rem;font-weight:bold;">掃碼關注公眾號，回覆 <span style="color:red;">ai</span> 獲取清華大學 DeepSeek 從入門到精通 PDF</span>',
     popoverUrl: "/qrcode-mpcoder_yupi.jpg",
-    popoverDesc: "公众号: 程序员鱼皮",
+    popoverDesc: "公眾號: 程式設計師魚皮",
   },
   {
-    title: "支持我",
+    title: "支援我",
     icon: "/icon/dianzan.png",
-    popoverTitle: ' <span style="font-size:0.8rem;font-weight:bold;">鼓励和赞赏我</span>',
+    popoverTitle: ' <span style="font-size:0.8rem;font-weight:bold;">鼓勵和讚賞我</span>',
     popoverUrl: "/qrcode-thumb.jpg",
-    popoverDesc: "感谢您的支持，作者头发++",
+    popoverDesc: "感謝您的支援，作者頭髮++",
   },
 ];

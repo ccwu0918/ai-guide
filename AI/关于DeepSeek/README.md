@@ -1,11 +1,11 @@
-# 关于DeepSeek
+# 關於DeepSeek
 
->  你全面的 AI 知识库，一网打尽最新 AI 资讯，都在 [https://ai.codefather.cn](https://ai.codefather.cn)
+>  你全面的 AI 知識庫，一網打盡最新 AI 資訊，都在 [https://ai.codefather.cn](https://ai.codefather.cn)
 
-[什么是 DeepSeek？有什么核心功能？](什么是%20DeepSeek？有什么核心功能？.md)
+[什麼是 DeepSeek？有什麼核心功能？](什麼是%20DeepSeek？有什麼核心功能？.md)
 
-[DeepSeek 发展历程](DeepSeek%20发展历程.md)
+[DeepSeek 發展歷程](DeepSeek%20發展歷程.md)
 
-[DeepSeek 创始团队介绍](DeepSeek%20创始团队介绍.md)
+[DeepSeek 創始團隊介紹](DeepSeek%20創始團隊介紹.md)
 
 

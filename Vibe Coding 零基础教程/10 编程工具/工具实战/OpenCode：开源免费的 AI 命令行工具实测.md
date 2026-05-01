@@ -1,58 +1,58 @@
-# OpenCode：开源免费的 AI 命令行工具实测
+# OpenCode：開源免費的 AI 命令列工具實測
 
-你好，我是程序员鱼皮。
+你好，我是程式設計師魚皮。
 
-Claude Code 一直是大家公认的 AI 编程命令行工具 Top 1，在 AI 和程序员圈子里几乎是神一般的存在。
+Claude Code 一直是大家公認的 AI 程式設計命令列工具 Top 1，在 AI 和程式設計師圈子裡幾乎是神一般的存在。
 
 ![](https://pic.yupi.icu/1/happy-new-year-claude-coders-v0-o2quvbl99lag1.png)
 
-但是，这狗玩意儿对中国用户可不太友好……
+但是，這狗玩意兒對中國使用者可不太友好……
 
-首先，如果你想要使用 Claude Code，就必须要有特殊的网络 + 官方账号，否则就会看到一片红。
+首先，如果你想要使用 Claude Code，就必須要有特殊的網路 + 官方賬號，否則就會看到一片紅。
 
 ![](https://pic.yupi.icu/1/cannotuseclaude.png)
 
-此外，2025 年 9 月，Anthropic 公司不知道抽什么风，突然宣布 **全面禁止中国控股企业使用 Claude 服务**，不仅包括中国大陆企业，连海外中资控股超过 50% 的公司都在封禁范围内！
+此外，2025 年 9 月，Anthropic 公司不知道抽什麼風，突然宣佈 **全面禁止中國控股企業使用 Claude 服務**，不僅包括中國大陸企業，連海外中資控股超過 50% 的公司都在封禁範圍內！
 
-甚至 Anthropic 还特别点名了中国，把咱们称为 **敌对国家**！
+甚至 Anthropic 還特別點名了中國，把咱們稱為 **敵對國家**！
 
 ![](https://pic.yupi.icu/1/image-20250905164631315.png)
 
 天下苦 Claude Code 久矣！
 
-但是最近我身边很多程序员朋友开始从 Claude Code 转向了另一个工具，正是突然大火的开源项目 OpenCode。
+但是最近我身邊很多程式設計師朋友開始從 Claude Code 轉向了另一個工具，正是突然大火的開源專案 OpenCode。
 
 ![](https://pic.yupi.icu/1/image-20260107174223010.png)
 
-这玩意只用了半年的时间，就在 GitHub 上涨到了 5.2w Star！
+這玩意只用了半年的時間，就在 GitHub 上漲到了 5.2w Star！
 
-这是个什么概念？比我在 GitHub 上开源的几十个项目的总和加起来都多！慕了慕了……
+這是個什麼概念？比我在 GitHub 上開源的幾十個專案的總和加起來都多！慕了慕了……
 
 ![](https://pic.yupi.icu/1/opencodestarhistory.png)
 
-OpenCode 到底是什么？凭什么这么火？
+OpenCode 到底是什麼？憑什麼這麼火？
 
 
 
 ## 啥是 OpenCode？
 
-[OpenCode](https://opencode.ai/) 是一款 100% 开源的 AI 编程命令行工具，可以在 **终端、IDE、甚至桌面应用** 中使用。
+[OpenCode](https://opencode.ai/) 是一款 100% 開源的 AI 程式設計命令列工具，可以在 **終端、IDE、甚至桌面應用** 中使用。
 
 ![](https://pic.yupi.icu/1/screenshot.png)
 
-你可能会问：这玩意儿跟 Claude Code 有啥区别？
+你可能會問：這玩意兒跟 Claude Code 有啥區別？
 
-试试不就知道了？
+試試不就知道了？
 
-接下来我带大家实操一下，从零开始安装、配置、到实际写代码，一条龙服务~
+接下來我帶大家實操一下，從零開始安裝、配置、到實際寫程式碼，一條龍服務~
 
 
 
-## 从 0 开始上手 OpenCode
+## 從 0 開始上手 OpenCode
 
-### 1、安装运行 OpenCode
+### 1、安裝執行 OpenCode
 
-直接进入 OpenCode 官网，复制一行命令：
+直接進入 OpenCode 官網，複製一行命令：
 
 ![](https://pic.yupi.icu/1/image-20260107174407894.png)
 
@@ -62,49 +62,49 @@ OpenCode 到底是什么？凭什么这么火？
 curl -fsSL https://opencode.ai/install | bash
 ```
 
-然后在终端中执行，就可以完成安装了。
+然後在終端中執行，就可以完成安裝了。
 
-安装完成之后，输入 `opencode` 进入程序，接下来你就可以愉快地使用了~
+安裝完成之後，輸入 `opencode` 進入程式，接下來你就可以愉快地使用了~
 
 ![](https://pic.yupi.icu/1/image-20260107174646918.png)
 
-先来个经典的 Hello World，AI 成功给出了回复。
+先來個經典的 Hello World，AI 成功給出了回覆。
 
 ![](https://pic.yupi.icu/1/image-20260107174755331.png)
 
-恭喜，到这里你已经掌握了 OpenCode 的 70% 了。
+恭喜，到這裡你已經掌握了 OpenCode 的 70% 了。
 
 
 
-### 2、选择模式和模型
+### 2、選擇模式和模型
 
-OpenCode 支持 2 种模式，默认是 Build 模式，用来构建应用、生成代码。
+OpenCode 支援 2 種模式，預設是 Build 模式，用來構建應用、生成程式碼。
 
-按一下 Tab 键，就可以切换到 Plan 模式，用于生成执行计划。
+按一下 Tab 鍵，就可以切換到 Plan 模式，用於生成執行計劃。
 
 ![](https://pic.yupi.icu/1/image-20260107174952823.png)
 
-按一下 `Ctrl + p` 键，可以打开命令面板，里面有几十个内置命令。我们先来试着切换一下大模型：
+按一下 `Ctrl + p` 鍵，可以開啟命令面板，裡面有幾十個內建命令。我們先來試著切換一下大模型：
 
 ![](https://pic.yupi.icu/1/image-20260107175255527.png)
 
-默认提供了 4 个免费模型：
+預設提供了 4 個免費模型：
 
 ![](https://pic.yupi.icu/1/image-20260107175409282.png)
 
-好家伙，连智谱最新的 GLM-4.7 竟然也免费？那我的 Coding Plan 套餐不是白开了？
+好傢伙，連智譜最新的 GLM-4.7 竟然也免費？那我的 Coding Plan 套餐不是白開了？
 
 ![](https://pic.yupi.icu/1/image-20260107175513490.png)
 
-除了免费的模型外，OpenCode 支持超多的 AI 模型，你可以自由选择：
+除了免費的模型外，OpenCode 支援超多的 AI 模型，你可以自由選擇：
 
 ![](https://pic.yupi.icu/1/image-20260107175614359.png)
 
-选中模型后，配置自己的 API Key 就好了：
+選中模型後，配置自己的 API Key 就好了：
 
 ![](https://pic.yupi.icu/1/image-20260107175657296.png)
 
-如果你之前有 **Claude Pro/Max 订阅账号**，可以直接登录使用，无缝从 Claude Code 迁移过来。
+如果你之前有 **Claude Pro/Max 訂閱賬號**，可以直接登入使用，無縫從 Claude Code 遷移過來。
 
 ![](https://pic.yupi.icu/1/image-20260107175745963.png)
 
@@ -112,61 +112,61 @@ OpenCode 支持 2 种模式，默认是 Build 模式，用来构建应用、生�
 
 ### 3、快捷指令
 
-OpenCode 支持斜杠命令，输入 `/`，能看到很多操作，比如查看模型列表、查看 Agents、管理 MCP、切换主题等等：
+OpenCode 支援斜槓命令，輸入 `/`，能看到很多操作，比如檢視模型列表、檢視 Agents、管理 MCP、切換主題等等：
 
 ![](https://pic.yupi.icu/1/image-20260107175926346.png)
 
-支持几十个不同的主题，颜值都挺高的，从这点也能看出来 OpenCode 很注重用户的体验：
+支援幾十個不同的主題，顏值都挺高的，從這點也能看出來 OpenCode 很注重使用者的體驗：
 
 ![](https://pic.yupi.icu/1/image-20260107180108430.png)
 
-输入 `@` 可以快速关联目录文件，给 AI 添加上下文： 
+輸入 `@` 可以快速關聯目錄檔案，給 AI 新增上下文： 
 
 ![](https://pic.yupi.icu/1/image-20260107182710150.png)
 
 
 
-### 4、交互体验
+### 4、互動體驗
 
-相比于 Claude Code，OpenCode 真是把命令行的交互体验拉满了，甚至我觉得它是一个伪装成命令行的桌面应用。
+相比於 Claude Code，OpenCode 真是把命令列的互動體驗拉滿了，甚至我覺得它是一個偽裝成命令列的桌面應用。
 
-你可以点击某条消息，然后会弹出一个消息动作框，你可以撤回消息和 AI 的回复，也可以复制、或者基于当前对话新开一个对话框。
+你可以點選某條訊息，然後會彈出一個訊息動作框，你可以撤回訊息和 AI 的回覆，也可以複製、或者基於當前對話新開一個對話方塊。
 
 ![](https://pic.yupi.icu/1/image-20260107180609525.png)
 
-你可以通过鼠标上下滚动来切换选单，并且可以直接通过鼠标点击进入下一步。
+你可以透過滑鼠上下滾動來切換選單，並且可以直接透過滑鼠點選進入下一步。
 
-你可以按 `Ctrl + p` 键打开命令面板，然后开启侧边栏：
+你可以按 `Ctrl + p` 鍵開啟命令面板，然後開啟側邊欄：
 
 ![](https://pic.yupi.icu/1/image-20260107181100523.png)
 
-然后界面就变成了这样，你管这叫命令行？
+然後介面就變成了這樣，你管這叫命令列？
 
 ![](https://pic.yupi.icu/1/image-20260107181218259.png)
 
 
 
-### 5、LSP 支持
+### 5、LSP 支援
 
-细心的你一定看到了，右边的侧边栏有个 `LSP`，这是什么鬼东西？老色批？
+細心的你一定看到了，右邊的側邊欄有個 `LSP`，這是什麼鬼東西？老色批？
 
-LSP（Language Server Protocol 语言服务器协议）是微软开发的一种通信协议，用于让代码编辑器和语言服务器之间进行通信。
+LSP（Language Server Protocol 語言伺服器協議）是微軟開發的一種通訊協議，用於讓程式碼編輯器和語言伺服器之間進行通訊。
 
-简单来说，**LSP 就是让编辑器看懂代码的技术。**
+簡單來說，**LSP 就是讓編輯器看懂程式碼的技術。**
 
-比如你在 VS Code 里写代码，输入 `console.` 它会自动提示 `log`、点击函数名能跳转到代码定义、写错代码会画红线提醒。这些代码编辑器的功能，背后都是 LSP 在干活。
+比如你在 VS Code 裡寫程式碼，輸入 `console.` 它會自動提示 `log`、點選函式名能跳轉到程式碼定義、寫錯程式碼會畫紅線提醒。這些程式碼編輯器的功能，背後都是 LSP 在幹活。
 
-OpenCode 支持 LSP，意味着 AI 能真正理解你的代码结构，而不是把代码当普通文字瞎猜，改起来更精准。
+OpenCode 支援 LSP，意味著 AI 能真正理解你的程式碼結構，而不是把程式碼當普通文字瞎猜，改起來更精準。
 
-比如我让 AI 介绍我的 AI 答题平台项目中最有价值的代码，LSP 就派上用场了。它能帮 AI 快速定位某段代码在哪里被调用、引用了哪些变量，而不是让 AI 傻傻地全局搜索文本。
+比如我讓 AI 介紹我的 AI 答題平臺專案中最有價值的程式碼，LSP 就派上用場了。它能幫 AI 快速定位某段程式碼在哪裡被呼叫、引用了哪些變數，而不是讓 AI 傻傻地全域性搜尋文字。
 
 ![](https://pic.yupi.icu/1/image-20260107181807464.png)
 
 
 
-### 6、回到之前的会话
+### 6、回到之前的會話
 
-如果你不小心关闭了 OpenCode，不用担心，可以打开命令面板，选中 “Switch session” 切换会话：
+如果你不小心關閉了 OpenCode，不用擔心，可以開啟命令面板，選中 “Switch session” 切換會話：
 
 ![](https://pic.yupi.icu/1/image-20260107183241477.png)
 
@@ -178,269 +178,269 @@ OpenCode 支持 LSP，意味着 AI 能真正理解你的代码结构，而不是
 
 ## 桌面版 OpenCode
 
-即使 OpenCode 支持了这么多改进用户体验的交互，但我估计大多数同学还是不喜欢小黑框的。
+即使 OpenCode 支援了這麼多改進使用者體驗的互動，但我估計大多數同學還是不喜歡小黑框的。
 
-没关系，OpenCode 还提供了桌面应用版本！macOS、Windows、Linux 全端支持，这是真的要卷死 Claude Code 的节奏啊……
+沒關係，OpenCode 還提供了桌面應用版本！macOS、Windows、Linux 全端支援，這是真的要卷死 Claude Code 的節奏啊……
 
 > 指路：https://opencode.ai/download
 
 ![](https://pic.yupi.icu/1/image-20260107182151987.png)
 
-不过当我怀着满腔热血安装并打开它时，竟然报错了！
+不過當我懷著滿腔熱血安裝並開啟它時，竟然報錯了！
 
 ![](https://pic.yupi.icu/1/image-20260107183123854.png)
 
-经过一番排查，发现原来是我开了代理，关闭之后就正常运行了。
+經過一番排查，發現原來是我開了代理，關閉之後就正常執行了。
 
 ![](https://pic.yupi.icu/1/image-20260107183605119.png)
 
-但是用惯了 Cursor，这个交互体验真的有点敷衍了，不推荐大家使用。
+但是用慣了 Cursor，這個互動體驗真的有點敷衍了，不推薦大家使用。
 
 
 
-## OpenCode 扩展能力
+## OpenCode 擴充套件能力
 
-到目前为止，我觉得 OpenCode 在前端用户体验上全方面碾压 Claude Code，而且 OpenCode 完全兼容 Claude Code 的 Skills 系统！
+到目前為止，我覺得 OpenCode 在前端使用者體驗上全方面碾壓 Claude Code，而且 OpenCode 完全相容 Claude Code 的 Skills 系統！
 
-Skills 是一种给 AI 准备的能力扩展包。你可以把它理解成给新同事准备的工作交接文档，里面包含任务执行方法、工具使用说明、模板素材等。
+Skills 是一種給 AI 準備的能力擴充套件包。你可以把它理解成給新同事準備的工作交接文件，裡面包含任務執行方法、工具使用說明、模板素材等。
 
-比如你可以创建一个 `公司代码规范 Skill`，把代码风格、命名规则、注释要求等写进去。之后 Claude Code 生成的代码就会自动遵循这些规范，不用每次都重复说明。
+比如你可以建立一個 `公司程式碼規範 Skill`，把程式碼風格、命名規則、註釋要求等寫進去。之後 Claude Code 生成的程式碼就會自動遵循這些規範，不用每次都重複說明。
 
-根据官方文档，OpenCode 会自动搜索这些位置的 Skills：
+根據官方文件，OpenCode 會自動搜尋這些位置的 Skills：
 
-- `.opencode/skill/<name>/SKILL.md`（项目目录）
-- `~/.config/opencode/skill/<name>/SKILL.md`（用户目录）
-- `.claude/skills/<name>/SKILL.md`（Claude Code 兼容）
-- `~/.claude/skills/<name>/SKILL.md`（Claude Code 兼容）
+- `.opencode/skill/<name>/SKILL.md`（專案目錄）
+- `~/.config/opencode/skill/<name>/SKILL.md`（使用者目錄）
+- `.claude/skills/<name>/SKILL.md`（Claude Code 相容）
+- `~/.claude/skills/<name>/SKILL.md`（Claude Code 相容）
 
-也就是说，如果你之前给 Claude Code 创建过自定义 Skills，直接拿过来就能用！又是无缝迁移。
+也就是說，如果你之前給 Claude Code 建立過自定義 Skills，直接拿過來就能用！又是無縫遷移。
 
 
 
-## Oh My OpenCode 开挂插件
+## Oh My OpenCode 開掛外掛
 
-如果你觉得 OpenCode 还不够强，可以试试 `Oh My OpenCode` 这个开源的 OpenCode 增强插件，已经 1w Star 了。
+如果你覺得 OpenCode 還不夠強，可以試試 `Oh My OpenCode` 這個開源的 OpenCode 增強外掛，已經 1w Star 了。
 
-> 项目地址：https://github.com/code-yeongyu/oh-my-opencode
+> 專案地址：https://github.com/code-yeongyu/oh-my-opencode
 
 ![](https://pic.yupi.icu/1/image-20260107184457429.png)
 
-这个插件有多牛？看看用户评价：
+這個外掛有多牛？看看使用者評價：
 
-> "It made me cancel my Cursor subscription."（它让我取消了 Cursor 订阅）
+> "It made me cancel my Cursor subscription."（它讓我取消了 Cursor 訂閱）
 > 
-> "Knocked out 8000 eslint warnings with Oh My Opencode, just in a day"（一天内用它解决了 8000 个 eslint 警告）
+> "Knocked out 8000 eslint warnings with Oh My Opencode, just in a day"（一天內用它解決了 8000 個 eslint 警告）
 
 
 
-Oh My OpenCode 的核心功能是引入了一个叫 **Sisyphus** 的智能体编排系统。
+Oh My OpenCode 的核心功能是引入了一個叫 **Sisyphus** 的智慧體編排系統。
 
 我特地去搜了一下：
 
-> 西西弗斯（Sisyphus）是古希腊神话中一位因欺骗众神、挑战权威而被诸神惩罚的国王，他的惩罚是永无止境地将一块巨石推上山顶，而石头一到山顶便会滚落，如此周而复始，象征着徒劳无功、永无休止的任务，也代表着一种对荒诞命运的抗争精神。
+> 西西弗斯（Sisyphus）是古希臘神話中一位因欺騙眾神、挑戰權威而被諸神懲罰的國王，他的懲罰是永無止境地將一塊巨石推上山頂，而石頭一到山頂便會滾落，如此週而復始，象徵著徒勞無功、永無休止的任務，也代表著一種對荒誕命運的抗爭精神。
 
-这个系统可以：
+這個系統可以：
 
-1. 并行调度多个 AI 模型：比如让 GPT debug 的同时让 Gemini 写前端
-2. 自动任务管理：不完成任务不让停，像西西弗斯推石头一样锲而不舍
-3. 智能代码审查：自动检测并清理 AI 生成的冗余注释
-4. LSP 深度集成：提供重命名、跳转定义等 IDE 级功能
+1. 並行排程多個 AI 模型：比如讓 GPT debug 的同時讓 Gemini 寫前端
+2. 自動任務管理：不完成任務不讓停，像西西弗斯推石頭一樣鍥而不捨
+3. 智慧程式碼審查：自動檢測並清理 AI 生成的冗餘註釋
+4. LSP 深度整合：提供重新命名、跳轉定義等 IDE 級功能
 
-简单来说，Sisyphus 就是一个 AI 监工，它能同时指挥多个 AI 模型干活，还会盯着它们把任务做完。
+簡單來說，Sisyphus 就是一個 AI 監工，它能同時指揮多個 AI 模型幹活，還會盯著它們把任務做完。
 
 ![](https://pic.yupi.icu/1/omo.png)
 
-虽然官方说用一行命令就能完成安装，但我建议你先安装 bun，再执行 npx 来安装，否则可能会报错。
+雖然官方說用一行命令就能完成安裝，但我建議你先安裝 bun，再執行 npx 來安裝，否則可能會報錯。
 
 ```bash
 npm install bun -g
 npx oh-my-opencode install
 ```
 
-安装过程中，可能会问你有没有某些模型的订阅，我反正啥都没有，一直选 "No" 就行了：
+安裝過程中，可能會問你有沒有某些模型的訂閱，我反正啥都沒有，一直選 "No" 就行了：
 
 ![](https://pic.yupi.icu/1/image-20260107185251337.png)
 
-安装完成后，再次进入 OpenCode，之后只需要在你的提示词里加上 `ultrawork`（或 `ulw`）这个开挂咒语，就能激活全部增强功能。自动调度多个 AI 模型同时工作、深度探索代码库、锲而不舍地执行。
+安裝完成後，再次進入 OpenCode，之後只需要在你的提示詞里加上 `ultrawork`（或 `ulw`）這個開掛咒語，就能啟用全部增強功能。自動排程多個 AI 模型同時工作、深度探索程式碼庫、鍥而不捨地執行。
 
-下面我们试试看，正好来验证一下 OpenCode 做项目的能力如何？能不能把 Claude Code 一脚踹飞？
+下面我們試試看，正好來驗證一下 OpenCode 做專案的能力如何？能不能把 Claude Code 一腳踹飛？
 
 
 
-## 实战项目 - 用 OpenCode 做个 AI 健康助手
+## 實戰專案 - 用 OpenCode 做個 AI 健康助手
 
-最近蚂蚁集团的 `蚂蚁阿福` AI 健康助手火了，地铁口、公司楼下的电视广告中随处可见何炅老师的身影。
+最近螞蟻集團的 `螞蟻阿福` AI 健康助手火了，地鐵口、公司樓下的電視廣告中隨處可見何炅老師的身影。
 
 ![](https://pic.yupi.icu/1/mayiafuad.jpeg)
 
-虽然我还没有用过它，但是听说它可以通过拍皮肤、拍报告提供 AI 初诊，还能智能回答医学科普和治疗建议。
+雖然我還沒有用過它，但是聽說它可以透過拍皮膚、拍報告提供 AI 初診，還能智慧回答醫學科普和治療建議。
 
-那我们也来做个类似的健康小助手网站吧！
+那我們也來做個類似的健康小助手網站吧！
 
-前有蚂蚁阿福，今有鱼皮阿坤。
+前有螞蟻阿福，今有魚皮阿坤。
 
 ![](https://pic.yupi.icu/1/image-20260107194117758.png)
 
-先分析一下，我们要做的是包含前端 + 后端的全栈项目，而且后端还需要调用 AI 大模型来生成内容。
+先分析一下，我們要做的是包含前端 + 後端的全棧專案，而且後端還需要呼叫 AI 大模型來生成內容。
 
-这里我选择用 **Vercel AI Gateway** 来实现 AI 能力，这是一款简单易用的 AI 网关。
+這裡我選擇用 **Vercel AI Gateway** 來實現 AI 能力，這是一款簡單易用的 AI 閘道器。
 
 ![](https://pic.yupi.icu/1/1760687990497-90720fbb-0df6-4ede-87b8-64b8702994e9-20251028181254840.png)
 
-什么是 AI 网关？
+什麼是 AI 閘道器？
 
-简单来说，它就像是火车站的检票口，你的应用发来的请求先经过网关，网关帮你处理认证、限流、监控等一系列复杂的操作，然后把请求转发给 AI 大模型。
+簡單來說，它就像是火車站的檢票口，你的應用發來的請求先經過閘道器，閘道器幫你處理認證、限流、監控等一系列複雜的操作，然後把請求轉發給 AI 大模型。
 
 ![](https://pic.yupi.icu/1/1761645642401-683e786e-3e06-420a-abce-cd43f7bfa901.png)
 
-而且 Vercel AI Gateway 支持对接 500 多个大模型，还有免费额度，非常适合学习和小项目。
+而且 Vercel AI Gateway 支援對接 500 多個大模型，還有免費額度，非常適合學習和小專案。
 
 > 指路：https://vercel.com/ai-gateway
 
 
 
-1）首先你需要注册登录 Vercel，然后在控制台创建 API Key，注意不要泄露哦：
+1）首先你需要註冊登入 Vercel，然後在控制檯建立 API Key，注意不要洩露哦：
 
 ![](https://pic.yupi.icu/1/1760688078133-7b91b6f3-2fc4-4bb4-b2c1-d517699f0968-20251028181254879.png)
 
 
 
-2）启动 OpenCode，切换模型到编程能力很强、并且免费的 GLM-4.7，然后输入这段提示词：
+2）啟動 OpenCode，切換模型到程式設計能力很強、並且免費的 GLM-4.7，然後輸入這段提示詞：
 
 ```markdown
-你是一位专业的程序员，请帮我开发《每日健康小助手》网站，用户可以通过和 AI 聊天来记录和管理每日健康状态。
+你是一位專業的程式設計師，請幫我開發《每日健康小助手》網站，使用者可以透過和 AI 聊天來記錄和管理每日健康狀態。
 
-## 开发要求
+## 開發要求
 
-1. 需要包含完整的前端和后端，后端使用 Node.js
-2. 使用 Vercel 的 AI Gateway 实现 AI 能力，需要先通过官方文档来获取用法：https://vercel.com/docs/ai-gateway/getting-started
-3. 以完成核心功能为目标，确保项目可以正常运行
-4. 整体网站界面采用清新的绿色健康风格，响应式适配各种尺寸的设备
-5. AI 需要主动询问用户的健康状况，比如睡眠、运动、饮食等
+1. 需要包含完整的前端和後端，後端使用 Node.js
+2. 使用 Vercel 的 AI Gateway 實現 AI 能力，需要先透過官方文件來獲取用法：https://vercel.com/docs/ai-gateway/getting-started
+3. 以完成核心功能為目標，確保專案可以正常執行
+4. 整體網站介面採用清新的綠色健康風格，響應式適配各種尺寸的裝置
+5. AI 需要主動詢問使用者的健康狀況，比如睡眠、運動、飲食等
 ```
 
-点击发送后，OpenCode 会自动使用网页抓取工具读取 Vercel AI Gateway 的官方文档，学习最新的用法：
+點選傳送後，OpenCode 會自動使用網頁抓取工具讀取 Vercel AI Gateway 的官方文件，學習最新的用法：
 
 ![](https://pic.yupi.icu/1/image-20260107190151933.png)
 
-大概 5 分钟左右，AI 就完成了全部代码的生成，并且自动安装了依赖。
+大概 5 分鐘左右，AI 就完成了全部程式碼的生成，並且自動安裝了依賴。
 
 ![](https://pic.yupi.icu/1/image-20260107190629349.png)
 
 
 
-3）我直接把之前拿到的 Vercel 的 API Key 提供给 AI，让它帮我启动项目：
+3）我直接把之前拿到的 Vercel 的 API Key 提供給 AI，讓它幫我啟動專案：
 
 ![](https://pic.yupi.icu/1/image-20260107190751628.png)
 
 
 
-4）启动项目成功后，打开浏览器访问 `localhost:3000`，测试一下效果。
+4）啟動專案成功後，開啟瀏覽器訪問 `localhost:3000`，測試一下效果。
 
-结果报错了！无法调用 AI。
+結果報錯了！無法呼叫 AI。
 
 ![](https://pic.yupi.icu/1/image-20260107191838608.png)
 
 
 
-可能是 AI 对 Vercel AI Gateway 文档的理解不到位，导致写错了调用 AI 的代码。于是我再次把文档输入给 AI，让它再战一次：
+可能是 AI 對 Vercel AI Gateway 文件的理解不到位，導致寫錯了呼叫 AI 的程式碼。於是我再次把文件輸入給 AI，讓它再戰一次：
 
 ![](https://pic.yupi.icu/1/image-20260107191719979.png)
 
-结果又报错了，明明我已经给 AI 提供了 API Key，系统还是报错 “缺少 API Key”。
+結果又報錯了，明明我已經給 AI 提供了 API Key，系統還是報錯 “缺少 API Key”。
 
-于是我又调了一次 AI，告诉它 “这个 key 我之前已经提供给你了”。
+於是我又調了一次 AI，告訴它 “這個 key 我之前已經提供給你了”。
 
 ![](https://pic.yupi.icu/1/image-20260107192718301.png)
 
-经过大概 5 次左右的报错和修复，仍然不能正常使用！我麻了啊……
+經過大概 5 次左右的報錯和修復，仍然不能正常使用！我麻了啊……
 
 ![](https://pic.yupi.icu/1/image-20260107193542108.png)
 
-于是，我有一个鬼点子：既然要跟 Claude Code 比较，那我不妨尝试用 Claude Code 修复这个 OpenCode 解决不了的问题？
+於是，我有一個鬼點子：既然要跟 Claude Code 比較，那我不妨嘗試用 Claude Code 修復這個 OpenCode 解決不了的問題？
 
 ![](https://pic.yupi.icu/1/image-20260107193829543.png)
 
-试试看！输入提示词：
+試試看！輸入提示詞：
 
 ```markdown
-现在项目后端 AI 功能不可用
-请参考 https://vercel.com/docs/ai-gateway/getting-started 文档
-帮我修复后端，确保项目能正常运行
+現在專案後端 AI 功能不可用
+請參考 https://vercel.com/docs/ai-gateway/getting-started 文件
+幫我修復後端，確保專案能正常執行
 ```
 
 ![](https://pic.yupi.icu/1/image-20260107193701784.png)
 
-Claude Code 成功修复了问题，终于能够正常使用了：
+Claude Code 成功修復了問題，終於能夠正常使用了：
 
 ![](https://pic.yupi.icu/1/image-20260107194915666.png)
 
-💡 注意，如果你遇到了调用 AI 网络超时的问题，可以让 AI 把调用的 baseURL 改为 https://ai-gateway.vercel.sh/v1
+💡 注意，如果你遇到了呼叫 AI 網路超時的問題，可以讓 AI 把呼叫的 baseURL 改為 https://ai-gateway.vercel.sh/v1
 
-之前类似的任务我用 Claude Code / Cursor + GLM，不到 10 分钟就搞定了。这次竟然花了 20 分钟左右，还要经过来回拉扯，才能正常使用。
+之前類似的任務我用 Claude Code / Cursor + GLM，不到 10 分鐘就搞定了。這次竟然花了 20 分鐘左右，還要經過來回拉扯，才能正常使用。
 
-这让我不得不怀疑 OpenCode 的能力了。而且感觉 GLM 大模型在 OpenCode 中好像变笨了，不知道是不是我的错觉…… 
+這讓我不得不懷疑 OpenCode 的能力了。而且感覺 GLM 大模型在 OpenCode 中好像變笨了，不知道是不是我的錯覺…… 
 
-不行，大家把 OpenCode 吹得这么牛批，我得再试试，一定是我用法的问题！
+不行，大家把 OpenCode 吹得這麼牛批，我得再試試，一定是我用法的問題！
 
 ![](https://pic.yupi.icu/1/image-20260107195050357.png)
 
 ### Ultrawork 模式
 
-还记得前面提到的 `ultrawork`（或 `ulw`）开挂咒语么？搞起！
+還記得前面提到的 `ultrawork`（或 `ulw`）開掛咒語麼？搞起！
 
 ![](https://pic.yupi.icu/1/image-20260107195327425.png)
 
-进入战斗状态了：
+進入戰鬥狀態了：
 
 ![](https://pic.yupi.icu/1/image-20260107195346575.png)
 
-可以查看子代理运行详情，先按 `Ctrl + x` 键，再按方向键来查看不同的代理。
+可以檢視子代理執行詳情，先按 `Ctrl + x` 鍵，再按方向鍵來檢視不同的代理。
 
-而且当后台任务完成时，会有一个提示。可以看到 “研究 Vercel AI SDK 对话模式” 的任务已经完成。
+而且當後臺任務完成時，會有一個提示。可以看到 “研究 Vercel AI SDK 對話模式” 的任務已經完成。
 
 ![](https://pic.yupi.icu/1/image-20260107195605772.png)
 
-不过你猜怎么着？我等了将近 10 分钟，任务还没结束……
+不過你猜怎麼著？我等了將近 10 分鐘，任務還沒結束……
 
-看看这个任务列表，需要这么复杂吗？连数据库都给我干出来了？
+看看這個任務列表，需要這麼複雜嗎？連資料庫都給我幹出來了？
 
 ![=](https://pic.yupi.icu/1/image-20260107200237753.png)
 
-我已经没耐心等下去了，毁灭吧！
+我已經沒耐心等下去了，毀滅吧！
 
-看来这种不算太复杂的工作并不能发挥出多代理的优势。就像你只是要打印一张纸，没必要发动全公司的人，有的研究打印的纸张类型、有的研究打印机的状态、有的研究怎么打印姿势更优雅。
+看來這種不算太複雜的工作並不能發揮出多代理的優勢。就像你只是要列印一張紙，沒必要發動全公司的人，有的研究列印的紙張型別、有的研究印表機的狀態、有的研究怎麼列印姿勢更優雅。
 
 
 
-## 最后
+## 最後
 
-经过上述简单的测试，我暂时对 OpenCode 保持观望状态。
+經過上述簡單的測試，我暫時對 OpenCode 保持觀望狀態。
 
-前端做的确实很不错，但后端的能力感觉跟 Claude Code 还有差距。
+前端做的確實很不錯，但後端的能力感覺跟 Claude Code 還有差距。
 
-如果只是追求前端使用方便，那我为什么不用 Cursor？
+如果只是追求前端使用方便，那我為什麼不用 Cursor？
 
 ![](https://pic.yupi.icu/1/image-20260107200720088.png)
 
-不过 OpenCode 的成功说明了一个道理：**谁离用户近、谁能发现痛点，谁就有超越巨头的机会。**
+不過 OpenCode 的成功說明了一個道理：**誰離使用者近、誰能發現痛點，誰就有超越巨頭的機會。**
 
-Claude Code 确实很强，但它对中国用户的封禁，给了开源社区一个绝佳的机会。OpenCode 抓住了这个痛点，用更开放的方式赢得了用户的心。
+Claude Code 確實很強，但它對中國使用者的封禁，給了開源社群一個絕佳的機會。OpenCode 抓住了這個痛點，用更開放的方式贏得了使用者的心。
 
-虽然效果有待提高，但毕竟 OpenCode 完全开源免费，对于喜欢折腾的程序员来说，可定制性更强。你甚至可以 fork 一份自己魔改，想怎么玩就怎么玩。
+雖然效果有待提高，但畢竟 OpenCode 完全開源免費，對於喜歡折騰的程式設計師來說，可定製性更強。你甚至可以 fork 一份自己魔改，想怎麼玩就怎麼玩。
 
-OK，就聊到这里。你用过 OpenCode 吗？欢迎评论区聊聊你的体验~
+OK，就聊到這裡。你用過 OpenCode 嗎？歡迎評論區聊聊你的體驗~
 
 
 
-## 推荐资源
+## 推薦資源
 
-1）鱼皮 AI 导航网站：[AI 资源大全、最新 AI 资讯、免费 AI 教程](https://ai.codefather.cn)
+1）魚皮 AI 導航網站：[AI 資源大全、最新 AI 資訊、免費 AI 教程](https://ai.codefather.cn)
 
-2）编程导航学习圈：[学习路线、编程教程、实战项目、求职宝典、交流答疑](https://www.codefather.cn)
+2）程式設計導航學習圈：[學習路線、程式設計教程、實戰專案、求職寶典、交流答疑](https://www.codefather.cn)
 
-3）程序员面试八股文：[实习/校招/社招高频考点、企业真题解析](https://www.mianshiya.com)
+3）程式設計師面試八股文：[實習/校招/社招高頻考點、企業真題解析](https://www.mianshiya.com)
 
-4）程序员写简历神器：[专业模板、丰富例句、直通面试](https://www.laoyujianli.com)
+4）程式設計師寫簡歷神器：[專業模板、豐富例句、直通面試](https://www.laoyujianli.com)
 
-5）1 对 1 模拟面试：[实习/校招/社招面试拿 Offer 必备](https://ai.mianshiya.com)
+5）1 對 1 模擬面試：[實習/校招/社招面試拿 Offer 必備](https://ai.mianshiya.com)

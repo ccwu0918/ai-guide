@@ -1,4 +1,4 @@
-## 利用deepseek建立专属销售知识库
+## 利用deepseek建立專屬銷售知識庫
 
 
 ![img](https://pic.yupi.icu/yuyi/1739508363465-dcb20197-0511-48bd-a073-de9d86a8e9a9.png)
@@ -13,4 +13,4 @@
 
 ![img](https://pic.yupi.icu/yuyi/1739508434069-9452e8ef-33c9-46b7-8f30-d5f340fc0e25.png)
 
-> 来源：小红书 @搞钱女孩erilliant
+> 來源：小紅書 @搞錢女孩erilliant

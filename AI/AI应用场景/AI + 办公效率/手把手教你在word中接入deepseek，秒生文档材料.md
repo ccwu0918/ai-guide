@@ -1,59 +1,59 @@
-## 手把手教你在word中接入deepseek，秒生文档材料
+## 手把手教你在word中接入deepseek，秒生文件材料
 
 
-将DeepSeek接入Word，实现无需切换即可进行材料续写的功能，具有显著的价值和广泛的应用前景。以下是其核心价值的详细描述：
+將DeepSeek接入Word，實現無需切換即可進行材料續寫的功能，具有顯著的價值和廣泛的應用前景。以下是其核心價值的詳細描述：
 
 ### 1. 提升工作效率
 
-在文档编辑过程中，用户无需频繁切换应用或界面，直接在Word中调用DeepSeek进行内容续写，极大减少了操作步骤和时间成本。无论是撰写报告、论文，还是创作文案，用户都可以专注于内容创作，而无需中断思路去处理技术细节。
+在文件編輯過程中，使用者無需頻繁切換應用或介面，直接在Word中呼叫DeepSeek進行內容續寫，極大減少了操作步驟和時間成本。無論是撰寫報告、論文，還是創作文案，使用者都可以專注於內容創作，而無需中斷思路去處理技術細節。
 
-### 2. 无缝衔接创作流程
+### 2. 無縫銜接創作流程
 
-DeepSeek接入Word后，用户可以在同一界面中完成从构思到成稿的全过程。AI能够根据上下文自动生成连贯的内容，帮助用户快速填补空白段落或扩展思路。这种无缝衔接的创作体验，尤其适合需要高效输出的场景，如新闻写作、商业计划书撰写等。
+DeepSeek接入Word後，使用者可以在同一介面中完成從構思到成稿的全過程。AI能夠根據上下文自動生成連貫的內容，幫助使用者快速填補空白段落或擴充套件思路。這種無縫銜接的創作體驗，尤其適合需要高效輸出的場景，如新聞寫作、商業計劃書撰寫等。
 
-### 3. 智能辅助与内容优化
+### 3. 智慧輔助與內容最佳化
 
-DeepSeek不仅能续写材料，还能提供语法修正、风格优化、逻辑完善等智能辅助功能。用户可以在Word中实时获得AI的建议，提升文档质量。这种智能化的辅助工具，特别适合非母语写作者或需要高精度表达的专业人士。
+DeepSeek不僅能續寫材料，還能提供語法修正、風格最佳化、邏輯完善等智慧輔助功能。使用者可以在Word中實時獲得AI的建議，提升文件質量。這種智慧化的輔助工具，特別適合非母語寫作者或需要高精度表達的專業人士。
 
-### 4. 降低创作门槛
+### 4. 降低創作門檻
 
-对于不擅长写作或缺乏灵感的用户，DeepSeek的接入可以显著降低创作门槛。AI能够根据用户输入的关键词或主题，自动生成高质量的内容草稿，帮助用户快速启动创作。这种功能在教育、营销等领域尤其有价值。
+對於不擅長寫作或缺乏靈感的使用者，DeepSeek的接入可以顯著降低創作門檻。AI能夠根據使用者輸入的關鍵詞或主題，自動生成高質量的內容草稿，幫助使用者快速啟動創作。這種功能在教育、營銷等領域尤其有價值。
 
-### 5. 个性化定制与学习能力
+### 5. 個性化定製與學習能力
 
-DeepSeek可以根据用户的使用习惯和写作风格进行个性化定制，逐渐学习并适应用户的偏好。在Word中，这种能力可以体现为更精准的内容续写和更符合用户需求的建议，进一步提升用户体验。
+DeepSeek可以根據使用者的使用習慣和寫作風格進行個性化定製，逐漸學習並適應使用者的偏好。在Word中，這種能力可以體現為更精準的內容續寫和更符合使用者需求的建議，進一步提升使用者體驗。
 
-### 6. 多场景适用性
+### 6. 多場景適用性
 
-无论是学术研究、商业写作，还是日常办公，DeepSeek接入Word都能满足多样化的需求。例如，研究人员可以利用AI快速生成文献综述，企业员工可以高效完成合同或提案撰写，学生则可以借助AI优化论文结构。
+無論是學術研究、商業寫作，還是日常辦公，DeepSeek接入Word都能滿足多樣化的需求。例如，研究人員可以利用AI快速生成文獻綜述，企業員工可以高效完成合同或提案撰寫，學生則可以藉助AI最佳化論文結構。
 
-### 7. 数据安全与隐私保护
+### 7. 資料安全與隱私保護
 
-在Word中直接调用DeepSeek，避免了将敏感文档上传至第三方平台的风险，确保了数据的安全性和隐私性。这对于处理机密文件的企业或个人用户尤为重要。
+在Word中直接呼叫DeepSeek，避免了將敏感文件上傳至第三方平臺的風險，確保了資料的安全性和隱私性。這對於處理機密檔案的企業或個人使用者尤為重要。
 
-### 8. 未来扩展潜力
+### 8. 未來擴充套件潛力
 
-随着AI技术的不断发展，DeepSeek在Word中的应用还可以进一步扩展。例如，支持多语言翻译、自动生成图表、智能排版等功能，为用户提供更全面的文档处理解决方案。
+隨著AI技術的不斷發展，DeepSeek在Word中的應用還可以進一步擴充套件。例如，支援多語言翻譯、自動生成圖表、智慧排版等功能，為使用者提供更全面的文件處理解決方案。
 
-总之，将DeepSeek接入Word，不仅提升了文档编辑的效率和体验，还为用户提供了智能化、个性化的创作支持。这种创新整合，将在未来的办公和学习场景中发挥越来越重要的作用。
+總之，將DeepSeek接入Word，不僅提升了文件編輯的效率和體驗，還為使用者提供了智慧化、個性化的創作支援。這種創新整合，將在未來的辦公和學習場景中發揮越來越重要的作用。
 
 
 
 01
 
-注册deepseek获取API_KEY
+註冊deepseek獲取API_KEY
 
-1.登录www.deepseek.com，注册登录后点击左上角"API开放平台"
+1.登入www.deepseek.com，註冊登入後點選左上角"API開放平臺"
 
 
 
 ![img](https://pic.yupi.icu/yuyi/1739501422379-4fac0028-94c7-4845-8dc4-beda4b58e8fa.webp)
 
-2.充值后点击左侧"API keys"
+2.充值後點選左側"API keys"
 
 ![img](https://pic.yupi.icu/yuyi/1739501422357-7a5a3cce-ecb5-4322-9c14-043175ff5129.webp)
 
-3.点击创建API key，填写名称，自动生成key，复制Key备用
+3.點選建立API key，填寫名稱，自動生成key，複製Key備用
 
 ![img](https://pic.yupi.icu/yuyi/1739501422360-1ee09b18-eb94-43d2-acff-1db5a2e4f354.webp)
 
@@ -63,17 +63,17 @@ DeepSeek可以根据用户的使用习惯和写作风格进行个性化定制，
 
 02
 
-在word中添加deepseek的VBA脚本
+在word中新增deepseek的VBA指令碼
 
-1.在开发工具中天街vb脚本，如果没有开发工具，可在文件-选项-自定义功能区中设置
+1.在開發工具中天街vb指令碼，如果沒有開發工具，可在檔案-選項-自定義功能區中設定
 
 ![img](https://pic.yupi.icu/yuyi/1739501422415-baf0b991-78f8-4cc6-8d92-00533bea483d.webp)
 
-2.在Normal的模块下右键新增模块，输入代码后保存
+2.在Normal的模組下右鍵新增模組，輸入程式碼後儲存
 
 ![img](https://pic.yupi.icu/yuyi/1739501422854-02e2e8bb-0aa1-4fe0-8567-952930186f20.webp)
 
-输入代码如下，将前面保存的Key替换代码中的"你的APIKEY"
+輸入程式碼如下，將前面儲存的Key替換程式碼中的"你的APIKEY"
 
 ```vbnet
 Function CallDeepSeekAPI(api_key As String, inputText As String)
@@ -138,10 +138,10 @@ Sub DeepSeekV3()
        MsgBox "Please enter the API key."
       Exit Sub
     ElseIf Selection.Type <> wdSelectionNormal Then
-       MsgBox "请选择文本."
+       MsgBox "請選擇文字."
      Exit Sub
   End If
-   ' 保存原始选中的文本
+   ' 儲存原始選中的文字
   Set originalSelection = Selection.Range.Duplicate
    inputText = Replace(Replace(Replace(Replace(Replace(Selection.Text, "\", "\\"), vbCrLf, ""), vbCr, ""), vbLf, ""), Chr(34), "\""")
    response = CallDeepSeekAPI(api_key, inputText)
@@ -161,12 +161,12 @@ Sub DeepSeekV3()
                response = Replace(response, "\n", vbCrLf)
         response = Replace(response, "*", "")
         response = Replace(response, "#", "")
-    ' 取消选中原始文本
+    ' 取消選中原始文字
        Selection.Collapse Direction:=wdCollapseEnd
-     ' 将内容插入到选中文字的下一行
+     ' 將內容插入到選中文字的下一行
       Selection.TypeParagraph ' 插入新行
       Selection.TypeText Text:=response
-    ' 将光标移回原来选中文本的末尾
+    ' 將游標移回原來選中文字的末尾
      originalSelection.Select
      Else
       MsgBox "Failed to parse API response.", vbExclamation
@@ -187,10 +187,10 @@ Sub DeepSeekR()
        MsgBox "Please enter the API key."
       Exit Sub
     ElseIf Selection.Type <> wdSelectionNormal Then
-       MsgBox "请选择文本."
+       MsgBox "請選擇文字."
      Exit Sub
   End If
-   ' 保存原始选中的文本
+   ' 儲存原始選中的文字
   Set originalSelection = Selection.Range.Duplicate
    inputText = Replace(Replace(Replace(Replace(Replace(Selection.Text, "\", "\\"), vbCrLf, ""), vbCr, ""), vbLf, ""), Chr(34), "\""")
    response = CallDeepSeekRAPI(api_key, inputText)
@@ -209,12 +209,12 @@ Sub DeepSeekR()
        response = Replace(response, "\n", vbCrLf)
         response = Replace(response, "*", "")
         response = Replace(response, "#", "")
-    ' 取消选中原始文本
+    ' 取消選中原始文字
        Selection.Collapse Direction:=wdCollapseEnd
-     ' 将内容插入到选中文字的下一行
+     ' 將內容插入到選中文字的下一行
       Selection.TypeParagraph ' 插入新行
       Selection.TypeText Text:=response
-    ' 将光标移回原来选中文本的末尾
+    ' 將游標移回原來選中文字的末尾
      originalSelection.Select
      Else
       MsgBox "Failed to parse API response.", vbExclamation
@@ -229,9 +229,9 @@ End Sub
 
 生成功能配置
 
-1.打开菜单文件-选项-自定义功能区，如下图进行设置
+1.開啟選單檔案-選項-自定義功能區，如下圖進行設定
 
-![img](https://pic.yupi.icu/yuyi/1739501427865-71593a69-efd8-471d-b16d-bbf4c06aebec.webp)设置完成后，菜单如图所示
+![img](https://pic.yupi.icu/yuyi/1739501427865-71593a69-efd8-471d-b16d-bbf4c06aebec.webp)設定完成後，選單如圖所示
 
 ![img](https://pic.yupi.icu/yuyi/1739501422864-b0f9fe76-4754-40de-bbb5-d8a64d6c0574.webp)
 
@@ -239,16 +239,16 @@ End Sub
 
 04
 
-生成功能测试
+生成功能測試
 
-1.新建一个文档，输入如下内容，选择文字后，点击"对话"
+1.新建一個文件，輸入如下內容，選擇文字後，點選"對話"
 
 ![img](https://pic.yupi.icu/yuyi/1739501424837-8ef6c3da-d01a-4d03-b489-55f8a9500e68.webp)
 
-2.效果如图
+2.效果如圖
 
 ![img](https://pic.yupi.icu/yuyi/1739501424819-347916b3-06e2-4d83-8b6f-85dab3cfe339.gif)
 
 
 
-> 来源：https://mp.weixin.qq.com/s/g6E-gNHZABMl6JUEWQtViQ
+> 來源：https://mp.weixin.qq.com/s/g6E-gNHZABMl6JUEWQtViQ

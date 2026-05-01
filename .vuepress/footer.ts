@@ -1,32 +1,32 @@
 /**
- * 底部版权信息
+ * 底部版權資訊
  */
 export default {
   friendLinks: [
     {
-      label: "站长 - 程序员鱼皮",
+      label: "站長 - 程式設計師魚皮",
       // icon: "/icon/user.svg",
       href: "https://yuyuanweb.feishu.cn/wiki/Abldw5WkjidySxkKxU2cQdAtnah",
     },
     {
-      label: "鱼鸢网络",
+      label: "魚鳶網路",
       href: "https://yuyuanweb.com/",
     },
     {
-      label: "老鱼简历",
+      label: "老魚簡歷",
       href: "https://www.laoyujianli.com/",
     },
     {
-      label: "面试鸭",
+      label: "面試鴨",
       href: "https://www.mianshiya.com/",
     },
     {
-      label: "编程学习圈",
+      label: "程式設計學習圈",
       href: "https://www.codefather.cn/",
     },
   ],
   copyright: {
     href: "https://beian.miit.gov.cn/",
-    name: "沪ICP备19026706号-6",
+    name: "滬ICP備19026706號-6",
   },
 };

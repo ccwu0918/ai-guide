@@ -1,21 +1,21 @@
-# 昆仑万维发布Skywork Deep Research Agent v2
+# 崑崙萬維釋出Skywork Deep Research Agent v2
 
-本文转载自： [昆仑万维发布Skywork Deep Research Agent v2](https://news.aibase.com/zh/news/20505)
+本文轉載自： [崑崙萬維釋出Skywork Deep Research Agent v2](https://news.aibase.com/zh/news/20505)
 
-在SkyWork AI技术发布周的第四天，昆仑万维集团宣布了一项重大升级:Skywork Deep Research Agent v2。这一升级标志着天工超级智能体（Skywork Super Agents）的核心引擎得到了显著增强，为用户带来了更多模态、更高质量和更高效的体验。
+在SkyWork AI技術釋出周的第四天，崑崙萬維集團宣佈了一項重大升級:Skywork Deep Research Agent v2。這一升級標誌著天工超級智慧體（Skywork Super Agents）的核心引擎得到了顯著增強，為使用者帶來了更多模態、更高質量和更高效的體驗。
 
-Skywork Deep Research Agent自5月2日上线以来，已经在AI Office领域大幅改变了大模型的角色，通过skywork.ai平台为用户产出了大量信息密度极高的优质文档、PPT、表格以及其他交付物。新版本的Skywork Deep Research Agent v2引入了“多模态深度调研”Agent，首次整合了多模态检索、理解和生成，解决了传统Deep Research Agent产品依赖纯文本检索分析的局限。
+Skywork Deep Research Agent自5月2日上線以來，已經在AI Office領域大幅改變了大模型的角色，透過skywork.ai平臺為使用者產出了大量資訊密度極高的優質文件、PPT、表格以及其他交付物。新版本的Skywork Deep Research Agent v2引入了“多模態深度調研”Agent，首次整合了多模態檢索、理解和生成，解決了傳統Deep Research Agent產品依賴純文字檢索分析的侷限。
 
-![微信截图_20250814135746.png](https://pic.code-nav.cn/post_picture/1610518142000300034/1G7GJWKLyp4EN9zX.webp "微信截图_20250814135746.png")
+![微信截圖_20250814135746.png](https://pic.code-nav.cn/post_picture/1610518142000300034/1G7GJWKLyp4EN9zX.webp "微信截圖_20250814135746.png")
 
-昆仑万维Skywork团队推出的“多模态深度调研”Agent，通过技术创新，实现了多模态信息检索能力的提升，包括多模态爬取技术MM-Crawler、长距离多模态信息收集、异步并行Multi-Agent多模态理解架构和多模态结果呈现能力。这些技术突破使得研究人员等用户能够一次性获得信息完整、节奏顺畅、视觉友好的深度报告。
+崑崙萬維Skywork團隊推出的“多模態深度調研”Agent，透過技術創新，實現了多模態資訊檢索能力的提升，包括多模態爬取技術MM-Crawler、長距離多模態資訊收集、非同步並行Multi-Agent多模態理解架構和多模態結果呈現能力。這些技術突破使得研究人員等使用者能夠一次性獲得資訊完整、節奏順暢、視覺友好的深度報告。
 
-此外，昆仑万维还推出了“多模态深度浏览器”智能体，重塑了社交媒体内容分析与数据洞察。这一智能体通过多项关键自研技术优化，包括升级DOM+视觉推理方案、主流平台专项适配、并行搜索、多动作规划机制、智能筛选、人机无缝接管与隐私保护和安全承诺等，能够模拟人类浏览与交互方式，革新传统数据采集与分析模式。
+此外，崑崙萬維還推出了“多模態深度瀏覽器”智慧體，重塑了社交媒體內容分析與資料洞察。這一智慧體透過多項關鍵自研技術最佳化，包括升級DOM+視覺推理方案、主流平臺專項適配、並行搜尋、多動作規劃機制、智慧篩選、人機無縫接管與隱私保護和安全承諾等，能夠模擬人類瀏覽與互動方式，革新傳統資料採集與分析模式。
 
-Skywork Deep Research Agent v2在多项Agent任务评测上超越现有模型，达到行业SOTA水平。在权威的搜索评测榜单BrowseComp上，其性能尤为突出，正确率达到27.8%，开启并行思考模式后，正确率跃升至38.7%，刷新了行业SOTA纪录。
+Skywork Deep Research Agent v2在多項Agent任務評測上超越現有模型，達到行業SOTA水平。在權威的搜尋評測榜單BrowseComp上，其效能尤為突出，正確率達到27.8%，開啟並行思考模式後，正確率躍升至38.7%，重新整理了行業SOTA紀錄。
 
-昆仑万维集团在统一模型领域的持续深耕，不断推动开源社区的发展。Skywork Deep Research Agent v2的发布，预计将在多模态内容生成、编辑和理解等领域产生深远影响，为全球用户带来更优质的智能体体验。
+崑崙萬維集團在統一模型領域的持續深耕，不斷推動開源社群的發展。Skywork Deep Research Agent v2的釋出，預計將在多模態內容生成、編輯和理解等領域產生深遠影響，為全球使用者帶來更優質的智慧體體驗。
 
--**全球官网:**https://skywork.ai 
+-**全球官網:**https://skywork.ai 
 
--**中国官网:**https://tiangong.cn
+-**中國官網:**https://tiangong.cn
