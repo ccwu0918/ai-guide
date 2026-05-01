@@ -1,154 +1,154 @@
-# Cursor - GitHub 文档翻译工具项目实战
+# Cursor - GitHub 文件翻譯工具專案實戰
 
-这是一套以 AI 编程实战为核心的项目教程，基于 Next.js + GitHub App + OpenRouter，用 AI 编程的方式从 0 到 1 开发一个《GitHub 仓库 AI 文档翻译 SaaS 平台》，带你亲身体验 Vibe Coding 的完整工作流，学会用 AI 做出真正能用、能部署、能赚钱的产品！
+這是一套以 AI 程式設計實戰為核心的專案教程，基於 Next.js + GitHub App + OpenRouter，用 AI 程式設計的方式從 0 到 1 開發一個《GitHub 倉庫 AI 文件翻譯 SaaS 平臺》，帶你親身體驗 Vibe Coding 的完整工作流，學會用 AI 做出真正能用、能部署、能賺錢的產品！
 
-项目代码免费开源：https://github.com/liyupi/github-global
+專案程式碼免費開源：https://github.com/liyupi/github-global
 
-完整视频教程 + 文字教程（预计 3 ~ 5 天学完）：https://www.codefather.cn/course/2014303010343092226
+完整影片教程 + 文字教程（預計 3 ~ 5 天學完）：https://www.codefather.cn/course/2014303010343092226
 
-项目介绍视频：https://bilibili.com/video/BV1mAAmzqEfP
+專案介紹影片：https://bilibili.com/video/BV1mAAmzqEfP
 
 ![](https://pic.yupi.icu/1/1769079083162-aa879560-6044-4ef7-a3a2-718b03070978-20260225143424199.png)
 
 
 
-## 项目介绍
+## 專案介紹
 
-鱼皮开源了一套 AI 编程教程仓库 [ai-guide](https://github.com/liyupi/ai-guide)，包含了上百个中文教程文档。为了让海外用户也能看到，想把仓库翻译成多语言版本，但人工翻译成本太高，GitHub Actions 又要自己折腾配置……
+魚皮開源了一套 AI 程式設計教程倉庫 [ai-guide](https://github.com/liyupi/ai-guide)，包含了上百個中文教程文件。為了讓海外使用者也能看到，想把倉庫翻譯成多語言版本，但人工翻譯成本太高，GitHub Actions 又要自己折騰配置……
 
-既然如此，**不如做一个更通用的工具**。
+既然如此，**不如做一個更通用的工具**。
 
-这就是 GitHub Global 项目的起点：输入任意一个 GitHub 仓库地址，AI 自动将文档翻译成多种语言，并在基准语言内容发生变更时自动增量同步翻译，生成 PR 等待仓库负责人合并，全程无需人工干预。
+這就是 GitHub Global 專案的起點：輸入任意一個 GitHub 倉庫地址，AI 自動將文件翻譯成多種語言，並在基準語言內容發生變更時自動增量同步翻譯，生成 PR 等待倉庫負責人合併，全程無需人工干預。
 
-不需要人工翻译、不需要配环境、不需要折腾什么 GitHub Actions 工作流，直接在平台上操作，轻松帮你的开源项目出海。
+不需要人工翻譯、不需要配環境、不需要折騰什麼 GitHub Actions 工作流，直接在平臺上操作，輕鬆幫你的開源專案出海。
 
-**零配置，一键翻译，让你的 GitHub 项目走向全球！**
+**零配置，一鍵翻譯，讓你的 GitHub 專案走向全球！**
 
 ![](https://pic.yupi.icu/1/GitHub%20Global%20%E4%B8%BB%E9%A1%B5.png)
 
 
 
 
-## 项目功能演示
+## 專案功能演示
 
-1）用 GitHub 账号一键登录
+1）用 GitHub 賬號一鍵登入
 
-基于 GitHub App 实现安全登录与授权，比传统 OAuth App 权限更细粒度，Token 1 小时自动过期，更安全。
+基於 GitHub App 實現安全登入與授權，比傳統 OAuth App 許可權更細粒度，Token 1 小時自動過期，更安全。
 
 ![](https://pic.yupi.icu/1/image-20260225142930323.png)
 
 
 
-2）导入 GitHub 仓库
+2）匯入 GitHub 倉庫
 
-输入 GitHub 仓库地址，点击导入，平台就会自动拉取你的仓库信息，方便后续配置翻译。
+輸入 GitHub 倉庫地址，點選匯入，平臺就會自動拉取你的倉庫資訊，方便後續配置翻譯。
 
 ![](https://pic.yupi.icu/1/1769079897565-92698844-bfcc-4f6d-b226-d18352ea2244-20260225144921746-20260225144924730.png)
 
 
 
-3）配置翻译，灵活选择翻译范围
+3）配置翻譯，靈活選擇翻譯範圍
 
-可以自由选择要翻译成哪些语言（支持英语、法语等 20 种主流语言），还能通过可视化的文件树勾选要翻译哪些文档。
+可以自由選擇要翻譯成哪些語言（支援英語、法語等 20 種主流語言），還能透過視覺化的檔案樹勾選要翻譯哪些文件。
 
 ![](https://pic.yupi.icu/1/1769079083162-aa879560-6044-4ef7-a3a2-718b03070978-20260225143424199-20260225152611505.png)
 
 
 
-4）一键执行翻译，自动提交 PR
+4）一鍵執行翻譯，自動提交 PR
 
-点击翻译，AI 调用 OpenRouter 大模型执行翻译任务，前端实时展示进度状态：
+點選翻譯，AI 呼叫 OpenRouter 大模型執行翻譯任務，前端實時展示進度狀態：
 
 ![](https://pic.yupi.icu/1/1769079926879-90640105-2d23-418c-b4b5-e962eab31299-20260225144931498.png)
 
-翻译完成后自动创建 GitHub 代码合并请求，仓库负责人可以选择是否合并，既方便又安全：
+翻譯完成後自動建立 GitHub 程式碼合併請求，倉庫負責人可以選擇是否合併，既方便又安全：
 
 ![](https://pic.yupi.icu/1/1769080074375-806fa172-c440-47e3-93fd-07ad33c271ea-20260225144935674.png)
 
 
 
-5）自动触发增量翻译
+5）自動觸發增量翻譯
 
-开启「自动翻译」开关后，每当往仓库推送了新的文档变更，GitHub Webhook 会自动通知平台，系统只翻译「在翻译范围内且发生了变更」的文件，省时省钱：
+開啟「自動翻譯」開關後，每當往倉庫推送了新的文件變更，GitHub Webhook 會自動通知平臺，系統只翻譯「在翻譯範圍內且發生了變更」的檔案，省時省錢：
 
 ![](https://pic.yupi.icu/1/1770201178863-f4e450bd-b92f-4f56-9b43-82aed36a73b0-20260225142203617.png)
 
 
 
-6）自定义大模型和 API Key
+6）自定義大模型和 API Key
 
-平台默认提供了免费的 AI 翻译额度，也可以在设置页面配置自己的 OpenRouter API Key，从排行榜前 20 的主流大模型中自由选择翻译模型（支持 GPT、Claude、Gemini、DeepSeek 等）：
+平臺預設提供了免費的 AI 翻譯額度，也可以在設定頁面配置自己的 OpenRouter API Key，從排行榜前 20 的主流大模型中自由選擇翻譯模型（支援 GPT、Claude、Gemini、DeepSeek 等）：
 
 ![](https://pic.yupi.icu/1/1770194573295-9e7552ca-b0c1-4612-a590-6060b5717d79-20260225144945946.png)
 
 
 
-## 项目收获
+## 專案收穫
 
-本项目选题新颖，紧跟 AI 编程时代，以真实 SaaS 产品开发为导向，区别于增删改查的烂大街项目。你不是在写代码，而是在用 AI 做一个真正有价值的产品。
+本專案選題新穎，緊跟 AI 程式設計時代，以真實 SaaS 產品開發為導向，區別於增刪改查的爛大街專案。你不是在寫程式碼，而是在用 AI 做一個真正有價值的產品。
 
-项目以 Vibe Coding 为核心，99% 以上的代码都是 AI 写的，主要用的是 Cursor 这款 AI 编程工具，搭配了 firecrawl-mcp 联网搜索、context7 获取最新技术文档这两个 MCP 扩展，前端页面还用了 ui-ux-pro-max 这个 Agent Skills 来生成更精美的 UI。
+專案以 Vibe Coding 為核心，99% 以上的程式碼都是 AI 寫的，主要用的是 Cursor 這款 AI 程式設計工具，搭配了 firecrawl-mcp 聯網搜尋、context7 獲取最新技術文件這兩個 MCP 擴充套件，前端頁面還用了 ui-ux-pro-max 這個 Agent Skills 來生成更精美的 UI。
 
-整个项目累积不到 1 天就做完并且上线让大家都能访问了！
+整個專案累積不到 1 天就做完並且上線讓大家都能訪問了！
 
-从这个项目中你可以学到：
+從這個專案中你可以學到：
 
-- 如何用 AI 进行需求调研，生成专业的《需求规格文档》？
-- 如何用多 AI 并行的方式，同时开发前端和后端？
-- 如何与 GitHub App 对接，实现安全的 OAuth 授权和仓库操作？
-- 如何接入 OpenRouter，统一对接数百种 AI 大模型？
-- 如何使用 GitHub API 获取仓库文件树、提交文件、创建 PR？
-- 如何通过 GitHub Webhook 实现事件驱动的自动化翻译？
-- 如何使用内网穿透工具，在本地调试 Webhook 回调？
-- 如何用 Vercel 部署 Next.js 全栈项目，快速上线？
-- 如何在 AI 开发流程中进行代码审查、版本控制和问题修复？
-- 如何识别竞品差异化机会，设计真正有竞争力的产品？
+- 如何用 AI 進行需求調研，生成專業的《需求規格文件》？
+- 如何用多 AI 並行的方式，同時開發前端和後端？
+- 如何與 GitHub App 對接，實現安全的 OAuth 授權和倉庫操作？
+- 如何接入 OpenRouter，統一對接數百種 AI 大模型？
+- 如何使用 GitHub API 獲取倉庫檔案樹、提交檔案、建立 PR？
+- 如何透過 GitHub Webhook 實現事件驅動的自動化翻譯？
+- 如何使用內網穿透工具，在本地除錯 Webhook 回撥？
+- 如何用 Vercel 部署 Next.js 全棧專案，快速上線？
+- 如何在 AI 開發流程中進行程式碼審查、版本控制和問題修復？
+- 如何識別競品差異化機會，設計真正有競爭力的產品？
 
 
 
 ## 功能梳理
 
-该项目功能丰富，涵盖用户认证、仓库管理、翻译配置、翻译执行、变更同步 5 大模块，20+ 功能点，覆盖了真实 SaaS 产品的核心业务场景。
+該專案功能豐富，涵蓋使用者認證、倉庫管理、翻譯配置、翻譯執行、變更同步 5 大模組，20+ 功能點，覆蓋了真實 SaaS 產品的核心業務場景。
 
 ![](https://pic.yupi.icu/1/image-20260225140201706.png)
 
 
 
-## AI 编程开发流程
+## AI 程式設計開發流程
 
-这个项目遵循最主流的 AI 应用开发流程：
+這個專案遵循最主流的 AI 應用開發流程：
 
-第一步，给 AI 写一段需求调研的提示词，让它联网搜索竞品、分析差异化机会，最后生成需求规格文档。
+第一步，給 AI 寫一段需求調研的提示詞，讓它聯網搜尋競品、分析差異化機會，最後生成需求規格文件。
 
-第二步，让 AI 设计技术方案，确定用 Next.js 全栈加 TypeScript、数据库用 MySQL 加 Prisma、AI 接入走 OpenRouter。
+第二步，讓 AI 設計技術方案，確定用 Next.js 全棧加 TypeScript、資料庫用 MySQL 加 Prisma、AI 接入走 OpenRouter。
 
-第三步最关键，开了两个 AI 窗口，一个写后端、一个写前端，后端先出接口文档给前端，两边并行开发。写完了再开一个窗口专门做测试验收和修 Bug。
+第三步最關鍵，開了兩個 AI 視窗，一個寫後端、一個寫前端，後端先出介面文件給前端，兩邊並行開發。寫完了再開一個視窗專門做測試驗收和修 Bug。
 
-跑通核心业务流程之后，就开始做各种扩展功能。建议每做完一个阶段都用 Git 提交代码，防止 AI 后面乱改把项目搞崩。为了防止上下文过多导致 AI 断片儿和浪费 Tokens，做扩展功能的时候按需开新的 AI 对话窗口，把需求文档、方案文档丢给 AI，再让它分析一下已有的项目源码，AI 就能快速找回记忆，接着干活。
+跑通核心業務流程之後，就開始做各種擴充套件功能。建議每做完一個階段都用 Git 提交程式碼，防止 AI 後面亂改把專案搞崩。為了防止上下文過多導致 AI 斷片兒和浪費 Tokens，做擴充套件功能的時候按需開新的 AI 對話視窗，把需求文件、方案文件丟給 AI，再讓它分析一下已有的專案原始碼，AI 就能快速找回記憶，接著幹活。
 
-最后通过 Vercel 一键部署上线，整个项目累积不到 1 天就做完并且上线了！
+最後透過 Vercel 一鍵部署上線，整個專案累積不到 1 天就做完並且上線了！
 
 ![](https://pic.yupi.icu/1/image-20260225141454620.png)
 
 
 
-## 核心业务流程
+## 核心業務流程
 
-用户使用流程非常简单：登录 GitHub 账号 → 导入仓库 → 配置翻译范围和语言 → 一键翻译 → 审核合并 PR，几分钟搞定。
+使用者使用流程非常簡單：登入 GitHub 賬號 → 匯入倉庫 → 配置翻譯範圍和語言 → 一鍵翻譯 → 稽核合併 PR，幾分鐘搞定。
 
 ```mermaid
 graph TD
-    A[GitHub 账号登录] --> B[安装 GitHub App 授权]
-    B --> C[输入仓库地址导入]
-    C --> D[可视化选择翻译文件]
-    D --> E[选择目标语言 + AI 模型]
-    E --> F[点击开始翻译]
-    F --> G[AI 调用 OpenRouter 翻译]
-    G --> H[实时展示翻译进度]
-    H --> I[自动创建 PR]
-    I --> J{仓库负责人审核}
-    J -->|合并| K[多语言文档上线]
-    J -->|拒绝| L[不合并，保留原文]
+    A[GitHub 賬號登入] --> B[安裝 GitHub App 授權]
+    B --> C[輸入倉庫地址匯入]
+    C --> D[視覺化選擇翻譯檔案]
+    D --> E[選擇目標語言 + AI 模型]
+    E --> F[點選開始翻譯]
+    F --> G[AI 呼叫 OpenRouter 翻譯]
+    G --> H[實時展示翻譯進度]
+    H --> I[自動建立 PR]
+    I --> J{倉庫負責人稽核}
+    J -->|合併| K[多語言文件上線]
+    J -->|拒絕| L[不合並，保留原文]
 
     style A fill:#e3f2fd,stroke:#1976d2
     style G fill:#f3e5f5,stroke:#7b1fa2
@@ -158,45 +158,45 @@ graph TD
 
 
 
-## 技术选型
+## 技術選型
 
-本项目以 Next.js 全栈 + TypeScript 为核心，前后端一体，综合运用了多种主流 SaaS 开发技术。
+本專案以 Next.js 全棧 + TypeScript 為核心，前後端一體，綜合運用了多種主流 SaaS 開發技術。
 
 ![](https://pic.yupi.icu/1/image-20260225140224582.png)
 
-前后端：Next.js 15（App Router）、TypeScript、shadcn/ui + Tailwind CSS、Prisma ORM、MySQL、NextAuth.js
+前後端：Next.js 15（App Router）、TypeScript、shadcn/ui + Tailwind CSS、Prisma ORM、MySQL、NextAuth.js
 
-AI 相关：OpenRouter API 统一接入 100+ 大模型、AI 智能翻译、AI 分析 README 结构
+AI 相關：OpenRouter API 統一接入 100+ 大模型、AI 智慧翻譯、AI 分析 README 結構
 
-GitHub 对接：GitHub App 细粒度权限控制、GitHub REST API、GitHub Webhook、Octokit
+GitHub 對接：GitHub App 細粒度許可權控制、GitHub REST API、GitHub Webhook、Octokit
 
-工具和部署：Ngrok 内网穿透、Vercel 一键部署、Docker 容器化、Git 版本控制
+工具和部署：Ngrok 內網穿透、Vercel 一鍵部署、Docker 容器化、Git 版本控制
 
-AI 编程工具：Cursor、MCP 插件（firecrawl-mcp + context7）、Agent Skills（ui-ux-pro-max）
+AI 程式設計工具：Cursor、MCP 外掛（firecrawl-mcp + context7）、Agent Skills（ui-ux-pro-max）
 
 
 
-## 架构设计
+## 架構設計
 
-本项目采用 Next.js 全栈一体化架构，前后端合并在一套代码中，通过 API Routes 提供服务端接口，结合本地任务队列处理耗时的翻译任务，并对接 GitHub API 和 OpenRouter 完成核心业务。
+本專案採用 Next.js 全棧一體化架構，前後端合併在一套程式碼中，透過 API Routes 提供服務端介面，結合本地任務佇列處理耗時的翻譯任務，並對接 GitHub API 和 OpenRouter 完成核心業務。
 
 ![](https://pic.yupi.icu/1/image-20260225141302579.png)
 
 
 
-完整视频教程 + 文字教程（预计 3 ~ 5 天学完）：https://www.codefather.cn/course/2014303010343092226
+完整影片教程 + 文字教程（預計 3 ~ 5 天學完）：https://www.codefather.cn/course/2014303010343092226
 
 
 
-## 推荐资源
+## 推薦資源
 
-1）鱼皮 AI 导航网站：[AI 资源大全、最新 AI 资讯、免费 AI 教程](https://ai.codefather.cn)
+1）魚皮 AI 導航網站：[AI 資源大全、最新 AI 資訊、免費 AI 教程](https://ai.codefather.cn)
 
-2）编程导航学习圈：[学习路线、编程教程、实战项目、求职宝典、交流答疑](https://www.codefather.cn)
+2）程式設計導航學習圈：[學習路線、程式設計教程、實戰專案、求職寶典、交流答疑](https://www.codefather.cn)
 
-3）程序员面试八股文：[实习/校招/社招高频考点、企业真题解析](https://www.mianshiya.com)
+3）程式設計師面試八股文：[實習/校招/社招高頻考點、企業真題解析](https://www.mianshiya.com)
 
-4）程序员写简历神器：[专业模板、丰富例句、直通面试](https://www.laoyujianli.com)
+4）程式設計師寫簡歷神器：[專業模板、豐富例句、直通面試](https://www.laoyujianli.com)
 
-5）1 对 1 模拟面试：[实习/校招/社招面试拿 Offer 必备](https://ai.mianshiya.com)
+5）1 對 1 模擬面試：[實習/校招/社招面試拿 Offer 必備](https://ai.mianshiya.com)
 

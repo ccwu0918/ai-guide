@@ -1,138 +1,138 @@
-# Model Context Protocol，看这一篇就够了
+# Model Context Protocol，看這一篇就夠了
 
-![MCP (Model Context Protocol)，一篇就够了。](https://picx.zhimg.com/v2-aa37ae29a25e9d39fc019de2fa8c6e75_1440w.jpg?source=172ae18b)
+![MCP (Model Context Protocol)，一篇就夠了。](https://picx.zhimg.com/v2-aa37ae29a25e9d39fc019de2fa8c6e75_1440w.jpg?source=172ae18b)
 
-最近 MCP 这个关键词逐渐活跃在我所浏览的一些文章及评论区中。突然发现我对它仅有粗糙的理解，我决定深入学习并记录一下。
+最近 MCP 這個關鍵詞逐漸活躍在我所瀏覽的一些文章及評論區中。突然發現我對它僅有粗糙的理解，我決定深入學習並記錄一下。
 
-在阅读这篇文章前，我也简单地浏览了现有介绍 MCP 的文章。我发现大部分文章停留在“翻译” [https://modelcontextprotocol.io/](https://link.zhihu.com/?target=https%3A//modelcontextprotocol.io/) 网站中的内容，或者花时间在绝大部分用户不关心的技术细节上（还有一些纯 AI 文）。
+在閱讀這篇文章前，我也簡單地瀏覽了現有介紹 MCP 的文章。我發現大部分文章停留在“翻譯” [https://modelcontextprotocol.io/](https://link.zhihu.com/?target=https%3A//modelcontextprotocol.io/) 網站中的內容，或者花時間在絕大部分使用者不關心的技術細節上（還有一些純 AI 文）。
 
-因此，我将从使用者的角度出发，分享实用内容，并以一个示例展示 MCP 的开发过程与实际应用作为结尾。本篇旨在回答以下三个问题：
+因此，我將從使用者的角度出發，分享實用內容，並以一個示例展示 MCP 的開發過程與實際應用作為結尾。本篇旨在回答以下三個問題：
 
-- 什么是 MCP？
-- 为什么需要 MCP？
-- 作为用户，我们如何 **使用**/开发 MCP？
+- 什麼是 MCP？
+- 為什麼需要 MCP？
+- 作為使用者，我們如何 **使用**/開發 MCP？
 
-当然，一篇文章远远不足以讲透 MCP 的所有概念，只能尽力萃取最重要的内容供大家阅读，欢迎讨论。
+當然，一篇文章遠遠不足以講透 MCP 的所有概念，只能盡力萃取最重要的內容供大家閱讀，歡迎討論。
 
-Update 2025/03/15 进一步补充了关于第五节原理的解释。
+Update 2025/03/15 進一步補充了關於第五節原理的解釋。
 
 ## 1\. What is MCP?
 
-MCP 起源于 2024 年 11 月 25 日 [Anthropic](https://zhida.zhihu.com/search?content_id=254822599&content_type=Article&match_order=1&q=Anthropic&zd_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ6aGlkYV9zZXJ2ZXIiLCJleHAiOjE3NDM4MzQwMDIsInEiOiJBbnRocm9waWMiLCJ6aGlkYV9zb3VyY2UiOiJlbnRpdHkiLCJjb250ZW50X2lkIjoyNTQ4MjI1OTksImNvbnRlbnRfdHlwZSI6IkFydGljbGUiLCJtYXRjaF9vcmRlciI6MSwiemRfdG9rZW4iOm51bGx9.4EBFlFdfKyjVmM6AYwpAoEesLEZB2f3RIT-e-QtOfUs&zhida_source=entity) 发布的文章： [Introducing the Model Context Protocol](https://link.zhihu.com/?target=https%3A//www.anthropic.com/news/model-context-protocol)。
+MCP 起源於 2024 年 11 月 25 日 [Anthropic](https://zhida.zhihu.com/search?content_id=254822599&content_type=Article&match_order=1&q=Anthropic&zd_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ6aGlkYV9zZXJ2ZXIiLCJleHAiOjE3NDM4MzQwMDIsInEiOiJBbnRocm9waWMiLCJ6aGlkYV9zb3VyY2UiOiJlbnRpdHkiLCJjb250ZW50X2lkIjoyNTQ4MjI1OTksImNvbnRlbnRfdHlwZSI6IkFydGljbGUiLCJtYXRjaF9vcmRlciI6MSwiemRfdG9rZW4iOm51bGx9.4EBFlFdfKyjVmM6AYwpAoEesLEZB2f3RIT-e-QtOfUs&zhida_source=entity) 釋出的文章： [Introducing the Model Context Protocol](https://link.zhihu.com/?target=https%3A//www.anthropic.com/news/model-context-protocol)。
 
-MCP（Model Context Protocol，模型上下文协议）定义了应用程序和 AI 模型之间交换上下文信息的方式。这使得开发者能够 **以一致的方式将各种数据源、工具和功能连接到 AI 模型**（一个中间协议层），就像 USB-C 让不同设备能够通过相同的接口连接一样。MCP 的目标是创建一个通用标准，使 AI 应用程序的开发和集成变得更加简单和统一。
+MCP（Model Context Protocol，模型上下文協議）定義了應用程式和 AI 模型之間交換上下文資訊的方式。這使得開發者能夠 **以一致的方式將各種資料來源、工具和功能連線到 AI 模型**（一箇中間協議層），就像 USB-C 讓不同裝置能夠透過相同的介面連線一樣。MCP 的目標是建立一個通用標準，使 AI 應用程式的開發和整合變得更加簡單和統一。
 
-所谓一图胜千言，我这里引用一些制作的非常精良的图片来帮助理解：
+所謂一圖勝千言，我這裡引用一些製作的非常精良的圖片來幫助理解：
 
 ![](https://pic4.zhimg.com/v2-3a242914e1f4958e631dd158e043b7c3_1440w.jpg)
 
-可以看出，MCP 就是以更标准的方式让 LLM Chat 使用不同工具，更简单的可视化如下图所示，这样你应该更容易理解“中间协议层”的概念了。Anthropic 旨在实现 LLM Tool Call 的标准。
+可以看出，MCP 就是以更標準的方式讓 LLM Chat 使用不同工具，更簡單的視覺化如下圖所示，這樣你應該更容易理解“中間協議層”的概念了。Anthropic 旨在實現 LLM Tool Call 的標準。
 
 ![](https://picx.zhimg.com/v2-9fe7fb51f264338a079a444eefa041b1_1440w.jpg)
 
-mcp 简单理解
+mcp 簡單理解
 
-> 为保证阅读的流畅性，本文将 MCP Host / Client / Server 的定义后置。初学者/用户可暂不关注这些概念，不影响对 MCP 的使用。
+> 為保證閱讀的流暢性，本文將 MCP Host / Client / Server 的定義後置。初學者/使用者可暫不關注這些概念，不影響對 MCP 的使用。
 
 ## 2\. Why MCP?
 
-我认为 MCP 的出现是 prompt engineering 发展的产物。更结构化的上下文信息对模型的 performance 提升是显著的。我们在构造 prompt 时，希望能提供一些更 specific 的信息（比如本地文件，数据库，一些网络实时信息等）给模型，这样模型更容易理解真实场景中的问题。
+我認為 MCP 的出現是 prompt engineering 發展的產物。更結構化的上下文資訊對模型的 performance 提升是顯著的。我們在構造 prompt 時，希望能提供一些更 specific 的資訊（比如本地檔案，資料庫，一些網路實時資訊等）給模型，這樣模型更容易理解真實場景中的問題。
 
-**想象一下没有 MCP 之前我们会怎么做**？我们可能会人工从数据库中筛选或者使用工具检索可能需要的信息，手动的粘贴到 prompt 中。随着我们要解决的问题越来越复杂， **手工** 把信息引入到 prompt 中会变得越来越困难。
+**想象一下沒有 MCP 之前我們會怎麼做**？我們可能會人工從資料庫中篩選或者使用工具檢索可能需要的資訊，手動的貼上到 prompt 中。隨著我們要解決的問題越來越複雜， **手工** 把資訊引入到 prompt 中會變得越來越困難。
 
-为了克服手工 prompt 的局限性，许多 LLM 平台（如 OpenAI、Google）引入了 `function call` 功能。这一机制允许模型在需要时调用预定义的函数来获取数据或执行操作，显著提升了自动化水平。
+為了克服手工 prompt 的侷限性，許多 LLM 平臺（如 OpenAI、Google）引入了 `function call` 功能。這一機制允許模型在需要時呼叫預定義的函式來獲取資料或執行操作，顯著提升了自動化水平。
 
-但是 function call 也有其局限性（我对于 function call vs MCP 的理解不一定成熟，欢迎大家补充），我认为重点在于 **function call 平台依赖性强**，不同 LLM 平台的 function call API 实现差异较大。例如，OpenAI 的函数调用方式与 Google 的不兼容，开发者在切换模型时需要重写代码，增加了适配成本。除此之外，还有安全性，交互性等问题。
+但是 function call 也有其侷限性（我對於 function call vs MCP 的理解不一定成熟，歡迎大家補充），我認為重點在於 **function call 平臺依賴性強**，不同 LLM 平臺的 function call API 實現差異較大。例如，OpenAI 的函式呼叫方式與 Google 的不相容，開發者在切換模型時需要重寫程式碼，增加了適配成本。除此之外，還有安全性，互動性等問題。
 
-**数据与工具本身是客观存在的**，只不过我们希望将数据连接到模型的这个环节可以更智能更统一。Anthropic 基于这样的痛点设计了 MCP，充当 AI 模型的"万能转接头"，让 LLM 能轻松的获取数据或者调用工具。更具体的说 MCP 的优势在于：
+**資料與工具本身是客觀存在的**，只不過我們希望將資料連線到模型的這個環節可以更智慧更統一。Anthropic 基於這樣的痛點設計了 MCP，充當 AI 模型的"萬能轉接頭"，讓 LLM 能輕鬆的獲取資料或者呼叫工具。更具體的說 MCP 的優勢在於：
 
-- **生态** \- MCP 提供很多现成的插件，你的 AI 可以直接使用。
-- **统一性** \- 不限制于特定的 AI 模型，任何支持 MCP 的模型都可以灵活切换。
-- **数据安全** \- 你的敏感数据留在自己的电脑上，不必全部上传。（因为我们可以自行设计接口确定传输哪些数据）
+- **生態** \- MCP 提供很多現成的外掛，你的 AI 可以直接使用。
+- **統一性** \- 不限制於特定的 AI 模型，任何支援 MCP 的模型都可以靈活切換。
+- **資料安全** \- 你的敏感資料留在自己的電腦上，不必全部上傳。（因為我們可以自行設計介面確定傳輸哪些資料）
 
-## 3\. 用户如何使用 MCP？
+## 3\. 使用者如何使用 MCP？
 
-对于用户来说，我们并不关心 MCP 是如何实现的，通常我们只考虑如何更简单的用上这一特性。
+對於使用者來說，我們並不關心 MCP 是如何實現的，通常我們只考慮如何更簡單的用上這一特性。
 
-具体的使用方式参考官方文档： [For Claude Desktop Users](https://link.zhihu.com/?target=https%3A//modelcontextprotocol.io/quickstart/user)。这里不再赘述，配置成功后可以在 Claude 中测试： `Can you write a poem and save it to my desktop?` Claude 会请求你的权限后在本地新建一个文件。
+具體的使用方式參考官方文件： [For Claude Desktop Users](https://link.zhihu.com/?target=https%3A//modelcontextprotocol.io/quickstart/user)。這裡不再贅述，配置成功後可以在 Claude 中測試： `Can you write a poem and save it to my desktop?` Claude 會請求你的許可權後在本地新建一個檔案。
 
-并且官方也提供了非常多现成的 MCP Servers，你只需要选择你希望接入的工具，然后接入即可。
+並且官方也提供了非常多現成的 MCP Servers，你只需要選擇你希望接入的工具，然後接入即可。
 
 - [Awesome MCP Servers](https://link.zhihu.com/?target=https%3A//github.com/punkpeye/awesome-mcp-servers)
 - [MCP Servers Website](https://link.zhihu.com/?target=https%3A//mcpservers.org/)
 - [Official MCP Servers](https://link.zhihu.com/?target=https%3A//github.com/modelcontextprotocol/servers)
 
-比如官方介绍的 `filesystem` 工具，它允许 Claude 读取和写入文件，就像在本地文件系统中一样。
+比如官方介紹的 `filesystem` 工具，它允許 Claude 讀取和寫入檔案，就像在本地檔案系統中一樣。
 
-## 4\. MCP Architecture 解构
+## 4\. MCP Architecture 解構
 
-这里首先引用官方给出的架构图。
+這裡首先引用官方給出的架構圖。
 
 ![](https://pica.zhimg.com/v2-9d3681630ed930a8dc74d3b452c0cc94_1440w.jpg)
 
-MCP 由三个核心组件构成：Host、Client 和 Server。让我们通过一个实际场景来理解这些组件如何协同工作：
+MCP 由三個核心元件構成：Host、Client 和 Server。讓我們透過一個實際場景來理解這些元件如何協同工作：
 
-假设你正在使用 Claude Desktop (Host) 询问："我桌面上有哪些文档？"
+假設你正在使用 Claude Desktop (Host) 詢問："我桌面上有哪些文件？"
 
-1. **Host**：Claude Desktop 作为 Host，负责接收你的提问并与 Claude 模型交互。
-2. **Client**：当 Claude 模型决定需要访问你的文件系统时，Host 中内置的 MCP Client 会被激活。这个 Client 负责与适当的 MCP Server 建立连接。
-3. **Server**：在这个例子中，文件系统 MCP Server 会被调用。它负责执行实际的文件扫描操作，访问你的桌面目录，并返回找到的文档列表。
+1. **Host**：Claude Desktop 作為 Host，負責接收你的提問並與 Claude 模型互動。
+2. **Client**：當 Claude 模型決定需要訪問你的檔案系統時，Host 中內建的 MCP Client 會被啟用。這個 Client 負責與適當的 MCP Server 建立連線。
+3. **Server**：在這個例子中，檔案系統 MCP Server 會被呼叫。它負責執行實際的檔案掃描操作，訪問你的桌面目錄，並返回找到的文件列表。
 
-整个流程是这样的：你的问题 → Claude Desktop(Host) → Claude 模型 → 需要文件信息 → MCP Client 连接 → 文件系统 MCP Server → 执行操作 → 返回结果 → Claude 生成回答 → 显示在 Claude Desktop 上。
+整個流程是這樣的：你的問題 → Claude Desktop(Host) → Claude 模型 → 需要檔案資訊 → MCP Client 連線 → 檔案系統 MCP Server → 執行操作 → 返回結果 → Claude 生成回答 → 顯示在 Claude Desktop 上。
 
-这种架构设计使得 Claude 可以在不同场景下灵活调用各种工具和数据源，而开发者只需专注于开发对应的 MCP Server，无需关心 Host 和 Client 的实现细节。
+這種架構設計使得 Claude 可以在不同場景下靈活呼叫各種工具和資料來源，而開發者只需專注於開發對應的 MCP Server，無需關心 Host 和 Client 的實現細節。
 
 ![](https://pic3.zhimg.com/v2-3f7ceba80b16ef134b27119308a04472_1440w.jpg)
 
-## 5\. 原理：模型是如何确定工具的选用的？
+## 5\. 原理：模型是如何確定工具的選用的？
 
-在学习的过程中，我一直好奇一个问题： **Claude（模型）是在什么时候确定使用哪些工具的呢**？好在 Anthropic 为我们提供了详细的 [解释](https://link.zhihu.com/?target=https%3A//modelcontextprotocol.io/quickstart/server%23what%25E2%2580%2599s-happening-under-the-hood)：
+在學習的過程中，我一直好奇一個問題： **Claude（模型）是在什麼時候確定使用哪些工具的呢**？好在 Anthropic 為我們提供了詳細的 [解釋](https://link.zhihu.com/?target=https%3A//modelcontextprotocol.io/quickstart/server%23what%25E2%2580%2599s-happening-under-the-hood)：
 
-当用户提出一个问题时：
+當使用者提出一個問題時：
 
-1. 客户端（Claude Desktop / Cursor）将你的问题发送给 Claude。
-2. Claude 分析可用的工具，并决定使用哪一个（或多个）。
-3. 客户端通过 MCP Server 执行所选的工具。
-4. 工具的执行结果被送回给 Claude。
-5. Claude 结合执行结果构造最终的 prompt 并生成自然语言的回应。
-6. 回应最终展示给用户！
+1. 客戶端（Claude Desktop / Cursor）將你的問題傳送給 Claude。
+2. Claude 分析可用的工具，並決定使用哪一個（或多個）。
+3. 客戶端透過 MCP Server 執行所選的工具。
+4. 工具的執行結果被送回給 Claude。
+5. Claude 結合執行結果構造最終的 prompt 並生成自然語言的回應。
+6. 回應最終展示給使用者！
 
-> MCP Server 是由 Claude 主动选择并调用的。有意思的是 Claude 具体是如何确定该使用哪些工具呢？以及是否会使用一些不存在的工具呢（幻觉）？
+> MCP Server 是由 Claude 主動選擇並呼叫的。有意思的是 Claude 具體是如何確定該使用哪些工具呢？以及是否會使用一些不存在的工具呢（幻覺）？
 
-**（原谅我之前解释的过于简单）** 为了探索这个问题让我们深入 [源码](https://link.zhihu.com/?target=https%3A//github.com/modelcontextprotocol/python-sdk/tree/main/examples/clients/simple-chatbot/mcp_simple_chatbot)。显然这个调用过程可以分为两个步骤：
+**（原諒我之前解釋的過於簡單）** 為了探索這個問題讓我們深入 [原始碼](https://link.zhihu.com/?target=https%3A//github.com/modelcontextprotocol/python-sdk/tree/main/examples/clients/simple-chatbot/mcp_simple_chatbot)。顯然這個呼叫過程可以分為兩個步驟：
 
-1. 由 LLM（Claude）确定使用哪些 MCP Server。
-2. 执行对应的 MCP Server 并对执行结果进行重新处理。
+1. 由 LLM（Claude）確定使用哪些 MCP Server。
+2. 執行對應的 MCP Server 並對執行結果進行重新處理。
 
-先给出一个简单可视化帮助理解：
+先給出一個簡單視覺化幫助理解：
 
 ![](https://pic3.zhimg.com/v2-2bcd98f6541da0b6f14dc9082ee2dcda_1440w.jpg)
 
-### 5.1 模型如何智能选择工具？
+### 5.1 模型如何智慧選擇工具？
 
-先理解第一步 **模型如何确定该使用哪些工具？** 这里以 MCP 官方提供的 [client example](https://link.zhihu.com/?target=https%3A//github.com/modelcontextprotocol/python-sdk/tree/main/examples/clients/simple-chatbot/mcp_simple_chatbot) 为讲解示例，并简化了对应的代码（删除了一些不影响阅读逻辑的异常控制代码）。通过阅读代码，可以发现模型是通过 prompt 来确定当前有哪些工具。我们通过 **将工具的具体使用描述以文本的形式传递给模型**，供模型了解有哪些工具以及结合实时情况进行选择。参考代码中的注释：
+先理解第一步 **模型如何確定該使用哪些工具？** 這裡以 MCP 官方提供的 [client example](https://link.zhihu.com/?target=https%3A//github.com/modelcontextprotocol/python-sdk/tree/main/examples/clients/simple-chatbot/mcp_simple_chatbot) 為講解示例，並簡化了對應的程式碼（刪除了一些不影響閱讀邏輯的異常控制程式碼）。透過閱讀程式碼，可以發現模型是透過 prompt 來確定當前有哪些工具。我們透過 **將工具的具體使用描述以文字的形式傳遞給模型**，供模型瞭解有哪些工具以及結合實時情況進行選擇。參考程式碼中的註釋：
 
 ```python
- ... # 省略了无关的代码
+ ... # 省略了無關的程式碼
  async def start(self):
      # 初始化所有的 mcp server
      for server in self.servers:
          await server.initialize()
  ​
-     # 获取所有的 tools 命名为 all_tools
+     # 獲取所有的 tools 命名為 all_tools
      all_tools = []
      for server in self.servers:
          tools = await server.list_tools()
          all_tools.extend(tools)
  ​
-     # 将所有的 tools 的功能描述格式化成字符串供 LLM 使用
-     # tool.format_for_llm() 我放到了这段代码最后，方便阅读。
+     # 將所有的 tools 的功能描述格式化成字串供 LLM 使用
+     # tool.format_for_llm() 我放到了這段程式碼最後，方便閱讀。
      tools_description = "\n".join(
          [tool.format_for_llm() for tool in all_tools]
      )
  ​
-     # 这里就不简化了，以供参考，实际上就是基于 prompt 和当前所有工具的信息
-     # 询问 LLM（Claude）应该使用哪些工具。
+     # 這裡就不簡化了，以供參考，實際上就是基於 prompt 和當前所有工具的資訊
+     # 詢問 LLM（Claude）應該使用哪些工具。
      system_message = (
          "You are a helpful assistant with access to these tools:\n\n"
          f"{tools_description}\n"
@@ -157,13 +157,13 @@ MCP 由三个核心组件构成：Host、Client 和 Server。让我们通过一�
      messages = [{"role": "system", "content": system_message}]
  ​
      while True:
-         # Final... 假设这里已经处理了用户消息输入。
+         # Final... 假設這裡已經處理了使用者訊息輸入。
          messages.append({"role": "user", "content": user_input})
  ​
-         # 将 system_message 和用户消息输入一起发送给 LLM
+         # 將 system_message 和使用者訊息輸入一起傳送給 LLM
          llm_response = self.llm_client.get_response(messages)
  ​
-     ... # 后面和确定使用哪些工具无关
+     ... # 後面和確定使用哪些工具無關
 
  ​
  class Tool:
@@ -176,7 +176,7 @@ MCP 由三个核心组件构成：Host、Client 和 Server。让我们通过一�
          self.description: str = description
          self.input_schema: dict[str, Any] = input_schema
  ​
-     # 把工具的名字 / 工具的用途（description）和工具所需要的参数（args_desc）转化为文本
+     # 把工具的名字 / 工具的用途（description）和工具所需要的引數（args_desc）轉化為文字
      def format_for_llm(self) -> str:
          """Format tool information for LLM.
  ​
@@ -201,7 +201,7 @@ MCP 由三个核心组件构成：Host、Client 和 Server。让我们通过一�
  """
 ```
 
-那 tool 的描述和代码中的 `input_schema` 是从哪里来的呢？通过进一步分析 MCP 的 Python SDK 源代码可以发现：大部分情况下，当使用装饰器 `@mcp.tool()` 来装饰函数时，对应的 `name` 和 `description` 等其实直接源自用户定义函数的函数名以及函数的 `docstring` 等。这里仅截取一小部分片段，想了解更多请参考 [原始代码](https://link.zhihu.com/?target=https%3A//github.com/modelcontextprotocol/python-sdk/blob/main/src/mcp/server/fastmcp/tools/base.py%23L34-L73)。
+那 tool 的描述和程式碼中的 `input_schema` 是從哪裡來的呢？透過進一步分析 MCP 的 Python SDK 原始碼可以發現：大部分情況下，當使用裝飾器 `@mcp.tool()` 來裝飾函式時，對應的 `name` 和 `description` 等其實直接源自使用者定義函式的函式名以及函式的 `docstring` 等。這裡僅擷取一小部分片段，想了解更多請參考 [原始程式碼](https://link.zhihu.com/?target=https%3A//github.com/modelcontextprotocol/python-sdk/blob/main/src/mcp/server/fastmcp/tools/base.py%23L34-L73)。
 
 ```python
  @classmethod
@@ -213,51 +213,51 @@ MCP 由三个核心组件构成：Host、Client 和 Server。让我们通过一�
      context_kwarg: str | None = None,
  ) -> "Tool":
      """Create a Tool from a function."""
-     func_name = name or fn.__name__ # 获取函数名
+     func_name = name or fn.__name__ # 獲取函式名
  ​
      if func_name == "<lambda>":
          raise ValueError("You must provide a name for lambda functions")
  ​
-     func_doc = description or fn.__doc__ or "" # 获取函数 docstring
+     func_doc = description or fn.__doc__ or "" # 獲取函式 docstring
      is_async = inspect.iscoroutinefunction(fn)
 
-     ... # 更多请参考原始代码...
+     ... # 更多請參考原始程式碼...
 ```
 
-总结： **模型是通过 prompt engineering，即提供所有工具的结构化描述和 few-shot 的 example 来确定该使用哪些工具**。另一方面，Anthropic 肯定对 Claude 做了专门的训练（毕竟是自家协议，Claude 更能理解工具的 prompt 以及输出结构化的 tool call json 代码）
+總結： **模型是透過 prompt engineering，即提供所有工具的結構化描述和 few-shot 的 example 來確定該使用哪些工具**。另一方面，Anthropic 肯定對 Claude 做了專門的訓練（畢竟是自家協議，Claude 更能理解工具的 prompt 以及輸出結構化的 tool call json 程式碼）
 
-### 5.2 工具执行与结果反馈机制
+### 5.2 工具執行與結果反饋機制
 
-其实工具的执行就比较简单和直接了。承接上一步，我们把 system prompt（指令与工具调用描述）和用户消息一起发送给模型，然后接收模型的回复。当模型分析用户请求后，它会决定是否需要调用工具：
+其實工具的執行就比較簡單和直接了。承接上一步，我們把 system prompt（指令與工具呼叫描述）和使用者訊息一起傳送給模型，然後接收模型的回覆。當模型分析使用者請求後，它會決定是否需要呼叫工具：
 
-- **无需工具时**：模型直接生成自然语言回复。
-- **需要工具时**：模型输出结构化 JSON 格式的工具调用请求。
+- **無需工具時**：模型直接生成自然語言回覆。
+- **需要工具時**：模型輸出結構化 JSON 格式的工具呼叫請求。
 
-如果回复中包含结构化 JSON 格式的工具调用请求，则客户端会根据这个 json 代码执行对应的工具。具体的实现逻辑都在 `process_llm_response` 中， [代码](https://link.zhihu.com/?target=https%3A//github.com/modelcontextprotocol/python-sdk/blob/main/examples/clients/simple-chatbot/mcp_simple_chatbot/main.py%23L295-L338)，逻辑非常简单。
+如果回覆中包含結構化 JSON 格式的工具呼叫請求，則客戶端會根據這個 json 程式碼執行對應的工具。具體的實現邏輯都在 `process_llm_response` 中， [程式碼](https://link.zhihu.com/?target=https%3A//github.com/modelcontextprotocol/python-sdk/blob/main/examples/clients/simple-chatbot/mcp_simple_chatbot/main.py%23L295-L338)，邏輯非常簡單。
 
-如果模型执行了 tool call，则工具执行的结果 `result` 会和 system prompt 和用户消息一起 **重新发送** 给模型，请求模型生成最终回复。
+如果模型執行了 tool call，則工具執行的結果 `result` 會和 system prompt 和使用者訊息一起 **重新傳送** 給模型，請求模型生成最終回覆。
 
-如果 tool call 的 json 代码存在问题或者模型产生了幻觉怎么办呢？通过阅读 [代码](https://link.zhihu.com/?target=https%3A//github.com/modelcontextprotocol/python-sdk/blob/main/examples/clients/simple-chatbot/mcp_simple_chatbot/main.py%23L295-L338) 发现，我们会 skip 掉无效的调用请求。
+如果 tool call 的 json 程式碼存在問題或者模型產生了幻覺怎麼辦呢？透過閱讀 [程式碼](https://link.zhihu.com/?target=https%3A//github.com/modelcontextprotocol/python-sdk/blob/main/examples/clients/simple-chatbot/mcp_simple_chatbot/main.py%23L295-L338) 發現，我們會 skip 掉無效的呼叫請求。
 
-执行相关的代码与注释如下：
+執行相關的程式碼與註釋如下：
 
 ```python
- ... # 省略无关的代码
+ ... # 省略無關的程式碼
  async def start(self):
-     ... # 上面已经介绍过了，模型如何选择工具
+     ... # 上面已經介紹過了，模型如何選擇工具
  ​
      while True:
-         # 假设这里已经处理了用户消息输入。
+         # 假設這裡已經處理了使用者訊息輸入。
          messages.append({"role": "user", "content": user_input})
  ​
-         # 获取 LLM 的输出
+         # 獲取 LLM 的輸出
          llm_response = self.llm_client.get_response(messages)
  ​
-         # 处理 LLM 的输出（如果有 tool call 则执行对应的工具）
+         # 處理 LLM 的輸出（如果有 tool call 則執行對應的工具）
          result = await self.process_llm_response(llm_response)
  ​
-         # 如果 result 与 llm_response 不同，说明执行了 tool call（有额外信息了）
-         # 则将 tool call 的结果重新发送给 LLM 进行处理。
+         # 如果 result 與 llm_response 不同，說明執行了 tool call（有額外資訊了）
+         # 則將 tool call 的結果重新傳送給 LLM 進行處理。
          if result != llm_response:
              messages.append({"role": "assistant", "content": llm_response})
              messages.append({"role": "system", "content": result})
@@ -267,104 +267,104 @@ MCP 由三个核心组件构成：Host、Client 和 Server。让我们通过一�
              messages.append(
                  {"role": "assistant", "content": final_response}
              )
-         # 否则代表没有执行 tool call，则直接将 LLM 的输出返回给用户。
+         # 否則代表沒有執行 tool call，則直接將 LLM 的輸出返回給使用者。
          else:
              messages.append({"role": "assistant", "content": llm_response})
 ```
 
-结合这部分原理分析：
+結合這部分原理分析：
 
-- 工具文档至关重要 \- 模型通过工具描述文本来理解和选择工具，因此精心编写工具的名称、docstring 和参数说明至关重要。
-- 由于 MCP 的选择是基于 prompt 的，所以任何模型其实都适配 MCP，只要你能提供对应的工具描述。但是当你使用非 Claude 模型时，MCP 使用的效果和体验难以保证（没有做专门的训练）。
+- 工具文件至關重要 \- 模型透過工具描述文字來理解和選擇工具，因此精心編寫工具的名稱、docstring 和引數說明至關重要。
+- 由於 MCP 的選擇是基於 prompt 的，所以任何模型其實都適配 MCP，只要你能提供對應的工具描述。但是當你使用非 Claude 模型時，MCP 使用的效果和體驗難以保證（沒有做專門的訓練）。
 
-## 6\. 总结
+## 6\. 總結
 
-MCP (Model Context Protocol) 代表了 AI 与外部工具和数据交互的标准建立。通过本文，我们可以了解到：
+MCP (Model Context Protocol) 代表了 AI 與外部工具和資料互動的標準建立。透過本文，我們可以瞭解到：
 
-1. **MCP 的本质**：它是一个统一的协议标准，使 AI 模型能够以一致的方式连接各种数据源和工具，类似于 AI 世界的"USB-C"接口。
+1. **MCP 的本質**：它是一個統一的協議標準，使 AI 模型能夠以一致的方式連線各種資料來源和工具，類似於 AI 世界的"USB-C"介面。
 
-2. **MCP 的价值**：它解决了传统 function call 的平台依赖问题，提供了更统一、开放、安全、灵活的工具调用机制，让用户和开发者都能从中受益。
+2. **MCP 的價值**：它解決了傳統 function call 的平臺依賴問題，提供了更統一、開放、安全、靈活的工具呼叫機制，讓使用者和開發者都能從中受益。
 
-3. **使用与开发**：对于普通用户，MCP 提供了丰富的现成工具， **用户可以在不了解任何技术细节的情况下使用**；对于开发者，MCP 提供了清晰的架构和 SDK，使工具开发变得相对简单。
+3. **使用與開發**：對於普通使用者，MCP 提供了豐富的現成工具， **使用者可以在不瞭解任何技術細節的情況下使用**；對於開發者，MCP 提供了清晰的架構和 SDK，使工具開發變得相對簡單。
 
-MCP 还处于发展初期，但其潜力巨大。更重要的是生态吧，基于统一标准下构筑的生态也会正向的促进整个领域的发展。
+MCP 還處於發展初期，但其潛力巨大。更重要的是生態吧，基於統一標準下構築的生態也會正向的促進整個領域的發展。
 
-以上内容已经覆盖了 MCP 的基本概念、价值和使用方法。对于技术实现感兴趣的读者，以下 **附录提供了一个简单的 MCP Server 开发实践**，帮助你更深入地理解 MCP 的工作原理。
+以上內容已經覆蓋了 MCP 的基本概念、價值和使用方法。對於技術實現感興趣的讀者，以下 **附錄提供了一個簡單的 MCP Server 開發實踐**，幫助你更深入地理解 MCP 的工作原理。
 
-## Appendix A：MCP Server 开发实践
+## Appendix A：MCP Server 開發實踐
 
 `READ⏰: 30min`
 
-在了解 MCP 组件之后，很容易发现对绝大部分 AI 开发者来说，我们只需要关心 Server 的实现。因此，我这里准备通过一个最简单的示例来介绍如何实现一个 MCP Server。
+在瞭解 MCP 元件之後，很容易發現對絕大部分 AI 開發者來說，我們只需要關心 Server 的實現。因此，我這裡準備透過一個最簡單的示例來介紹如何實現一個 MCP Server。
 
-MCP servers 可以提供三种主要类型的功能：
+MCP servers 可以提供三種主要型別的功能：
 
-- Resources（资源）：类似文件的数据，可以被客户端读取（如 API 响应或文件内容）
-- Tools（工具）：可以被 LLM 调用的函数（需要用户批准）
-- Prompts（提示）：预先编写的模板，帮助用户完成特定任务
+- Resources（資源）：類似檔案的資料，可以被客戶端讀取（如 API 響應或檔案內容）
+- Tools（工具）：可以被 LLM 呼叫的函式（需要使用者批准）
+- Prompts（提示）：預先編寫的模板，幫助使用者完成特定任務
 
-本教程将主要关注工具（Tools）。
+本教程將主要關注工具（Tools）。
 
-### A.I 使用 LLM 构建 MCP 的最佳实践
+### A.I 使用 LLM 構建 MCP 的最佳實踐
 
-在开始之前，Anthropic 为我们提供了一个基于 LLM 的 MCP Server 的 [最佳开发实践](https://link.zhihu.com/?target=https%3A//modelcontextprotocol.io/tutorials/building-mcp-with-llms)，总结如下：
+在開始之前，Anthropic 為我們提供了一個基於 LLM 的 MCP Server 的 [最佳開發實踐](https://link.zhihu.com/?target=https%3A//modelcontextprotocol.io/tutorials/building-mcp-with-llms)，總結如下：
 
-- 引入 domain knowledge（说人话就是，告诉他一些 MCP Server 开发的范例和资料）
+- 引入 domain knowledge（說人話就是，告訴他一些 MCP Server 開發的範例和資料）
 
-  - 访问 [https://modelcontextprotocol.io/llms-full.txt](https://link.zhihu.com/?target=https%3A//modelcontextprotocol.io/llms-full.txt) 并复制完整的文档文本。（实测这个太长了，可以忽略）
-  - 导航到 MCP [TypeScript SDK](https://link.zhihu.com/?target=https%3A//github.com/modelcontextprotocol/typescript-sdk) 或 [Python SDK](https://link.zhihu.com/?target=https%3A//github.com/modelcontextprotocol/python-sdk) Github 项目中并复制相关内容。
-  - 把这些作为 prompt 输入到你的 chat 对话中（作为 context）。
+  - 訪問 [https://modelcontextprotocol.io/llms-full.txt](https://link.zhihu.com/?target=https%3A//modelcontextprotocol.io/llms-full.txt) 並複製完整的文件文字。（實測這個太長了，可以忽略）
+  - 導航到 MCP [TypeScript SDK](https://link.zhihu.com/?target=https%3A//github.com/modelcontextprotocol/typescript-sdk) 或 [Python SDK](https://link.zhihu.com/?target=https%3A//github.com/modelcontextprotocol/python-sdk) Github 專案中並複製相關內容。
+  - 把這些作為 prompt 輸入到你的 chat 對話中（作為 context）。
 
 - 描述你的需求
 
-  - 你的服务器会开放哪些资源
-  - 它会提供哪些工具
-  - 它应该给出哪些引导或建议
-  - 它需要跟哪些外部系统互动
+  - 你的伺服器會開放哪些資源
+  - 它會提供哪些工具
+  - 它應該給出哪些引導或建議
+  - 它需要跟哪些外部系統互動
 
-给出一个 example prompt:
+給出一個 example prompt:
 
 ```text
-... （这里是已经引入的 domain knowledge）
+... （這裡是已經引入的 domain knowledge）
 
-打造一个 MCP 服务器，它能够：
+打造一個 MCP 伺服器，它能夠：
 
-- 连接到我公司的 PostgreSQL 数据库
-- 将表格结构作为资源开放出来
-- 提供运行只读 SQL 查询的工具
-- 包含常见数据分析任务的引导
+- 連線到我公司的 PostgreSQL 資料庫
+- 將表格結構作為資源開放出來
+- 提供執行只讀 SQL 查詢的工具
+- 包含常見資料分析任務的引導
 ```
 
-剩下的部分也很重要，但是偏重于方法论，实践性较弱，我这里就不展开了，推荐大家直接看 [官方文档](https://link.zhihu.com/?target=https%3A//modelcontextprotocol.io/tutorials/building-mcp-with-llms)。
+剩下的部分也很重要，但是偏重於方法論，實踐性較弱，我這裡就不展開了，推薦大家直接看 [官方文件](https://link.zhihu.com/?target=https%3A//modelcontextprotocol.io/tutorials/building-mcp-with-llms)。
 
-### A.II 手动实践
+### A.II 手動實踐
 
-本节内容主要参考了官方文档： [Quick Start: For Server Developers](https://link.zhihu.com/?target=https%3A//modelcontextprotocol.io/quickstart/server)。你可以选择直接跳过这部分内容或者进行一个速读。
+本節內容主要參考了官方文件： [Quick Start: For Server Developers](https://link.zhihu.com/?target=https%3A//modelcontextprotocol.io/quickstart/server)。你可以選擇直接跳過這部分內容或者進行一個速讀。
 
-这里我准备了一个简单的示例，使用 Python 实现一个 MCP Server，用来 **统计当前桌面上的 txt 文件数量和获取对应文件的名字**（你可以理解为一点用都没有，但是它足够简单，主要是为了难以配置环境的读者提供一个足够短的实践记录）。以下实践均运行在我的 MacOS 系统上。
+這裡我準備了一個簡單的示例，使用 Python 實現一個 MCP Server，用來 **統計當前桌面上的 txt 檔案數量和獲取對應檔案的名字**（你可以理解為一點用都沒有，但是它足夠簡單，主要是為了難以配置環境的讀者提供一個足夠短的實踐記錄）。以下實踐均執行在我的 MacOS 系統上。
 
 **Step1. 前置工作**
 
-- 安装 Claude Desktop。
-- Python 3.10+ 环境
+- 安裝 Claude Desktop。
+- Python 3.10+ 環境
 - [Python MCP SDK](https://zhida.zhihu.com/search?content_id=254822599&content_type=Article&match_order=1&q=Python+MCP+SDK&zd_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ6aGlkYV9zZXJ2ZXIiLCJleHAiOjE3NDM4MzQwMDIsInEiOiJQeXRob24gTUNQIFNESyIsInpoaWRhX3NvdXJjZSI6ImVudGl0eSIsImNvbnRlbnRfaWQiOjI1NDgyMjU5OSwiY29udGVudF90eXBlIjoiQXJ0aWNsZSIsIm1hdGNoX29yZGVyIjoxLCJ6ZF90b2tlbiI6bnVsbH0.1c42YmabWtcjJAfTjF4cGX2Bsp0Qbkl6Pjc7V22BSJ0&zhida_source=entity) 1.2.0+
 
-**Step2. 环境配置**
+**Step2. 環境配置**
 
-由于我使用的是官方推荐的配置：
+由於我使用的是官方推薦的配置：
 
 ```text
-# 安装 uv
+# 安裝 uv
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
-# 创建项目目录
+# 建立專案目錄
 uv init txt_counter
 cd txt_counter
 
-# 设置 Python 3.10+ 环境
+# 設定 Python 3.10+ 環境
 echo "3.11" > .python-version
 
-# 创建虚拟环境并激活
+# 建立虛擬環境並啟用
 uv venv
 source .venv/bin/activate
 
@@ -375,40 +375,40 @@ uv add "mcp[cli]" httpx
 touch txt_counter.py
 ```
 
-> **Question**: 什么是 `uv` 呢和 `conda` 比有什么区别？
+> **Question**: 什麼是 `uv` 呢和 `conda` 比有什麼區別？
 >
-> **Answer**: 一个用 Rust 编写的超快速 (100x) Python 包管理器和环境管理工具，由 Astral 开发。定位为 pip 和 venv 的替代品，专注于速度、简单性和现代 Python 工作流。
+> **Answer**: 一個用 Rust 編寫的超快速 (100x) Python 包管理器和環境管理工具，由 Astral 開發。定位為 pip 和 venv 的替代品，專注於速度、簡單性和現代 Python 工作流。
 
-**Step3. 构造一个 prompt**
+**Step3. 構造一個 prompt**
 
 ```text
 """
-... （这里是已经引入的 domain knowledge）
+... （這裡是已經引入的 domain knowledge）
 """
 
-打造一个 MCP 服务器，它能够：
+打造一個 MCP 伺服器，它能夠：
 - 功能：
-    - 统计当前桌面上的 txt 文件数量
-    - 获取对应文件的名字
+    - 統計當前桌面上的 txt 檔案數量
+    - 獲取對應檔案的名字
 
 要求：
-- 不需要给出 prompt 和 resource 相关代码。
-- 你可以假设我的桌面路径为 /Users/{username}/Desktop
+- 不需要給出 prompt 和 resource 相關程式碼。
+- 你可以假設我的桌面路徑為 /Users/{username}/Desktop
 ```
 
-- Domain Knowledge 复制于 MCP Python SDK 的 [README 文件](https://link.zhihu.com/?target=https%3A//raw.githubusercontent.com/modelcontextprotocol/python-sdk/refs/heads/main/README.md)
+- Domain Knowledge 複製於 MCP Python SDK 的 [README 檔案](https://link.zhihu.com/?target=https%3A//raw.githubusercontent.com/modelcontextprotocol/python-sdk/refs/heads/main/README.md)
 
-**Step4. 实现 MCP Server**
+**Step4. 實現 MCP Server**
 
-以下代码由 Claude 3.7 直接生成。当然，这主要是因为我的需求足够简单，当你需要实现一个复杂的 MCP Server 时，你可能需要多步的引导和 Debug 才能得到最终的代码。
+以下程式碼由 Claude 3.7 直接生成。當然，這主要是因為我的需求足夠簡單，當你需要實現一個複雜的 MCP Server 時，你可能需要多步的引導和 Debug 才能得到最終的程式碼。
 
 ```python
 import os
 from pathlib import Path
 from mcp.server.fastmcp import FastMCP
 
-# 创建 MCP Server
-mcp = FastMCP("桌面 TXT 文件统计器")
+# 建立 MCP Server
+mcp = FastMCP("桌面 TXT 檔案統計器")
 
 @mcp.tool()
 def count_desktop_txt_files() -> int:
@@ -444,11 +444,11 @@ if __name__ == "__main__":
     mcp.run()
 ```
 
-任务非常简单，只需要调用非常基本的 `os` 就可以完成。
+任務非常簡單，只需要呼叫非常基本的 `os` 就可以完成。
 
-**Step5. 测试 MCP Server**
+**Step5. 測試 MCP Server**
 
-（官方没有这一步，但是我非常推荐大家这么做）
+（官方沒有這一步，但是我非常推薦大家這麼做）
 
 ```text
 $ mcp dev txt_counter.py
@@ -458,23 +458,23 @@ Proxy server listening on port 3000
 MCP Inspector is up and running at http://localhost:5173
 ```
 
-之后进入到给出的链接中，你大概能按下图进行操作：
+之後進入到給出的連結中，你大概能按下圖進行操作：
 
 ![](https://pica.zhimg.com/v2-a5e671c689907229a1d86162597e2da4_1440w.jpg)
 
-如果成功，你应该能像我一样看到对应的输出（ `Tool Result`）～
+如果成功，你應該能像我一樣看到對應的輸出（ `Tool Result`）～
 
 **Step6. 接入 Claude**
 
-最后一步就是把我们写好的 MCP 接入到 Claude Desktop 中。流程如下：
+最後一步就是把我們寫好的 MCP 接入到 Claude Desktop 中。流程如下：
 
 ```text
-# 打开 claude_desktop_config.json (MacOS / Linux)
-# 如果你用的是 cursor 或者 vim 请更换对应的命令
+# 開啟 claude_desktop_config.json (MacOS / Linux)
+# 如果你用的是 cursor 或者 vim 請更換對應的命令
 code ~/Library/Application\ Support/Claude/claude_desktop_config.json
 ```
 
-在配置文件中添加以下内容，记得替换 `/Users/{username}` 为你的实际用户名，以及其他路径为你的实际路径。
+在配置檔案中新增以下內容，記得替換 `/Users/{username}` 為你的實際使用者名稱，以及其他路徑為你的實際路徑。
 
 ```json
 {
@@ -483,40 +483,40 @@ code ~/Library/Application\ Support/Claude/claude_desktop_config.json
       "command": "/Users/{username}/.local/bin/uv",
       "args": [\
         "--directory",\
-        "/Users/{username}/work/mcp-learn/code-example-txt", // 你的项目路径（这里是我的）\
+        "/Users/{username}/work/mcp-learn/code-example-txt", // 你的專案路徑（這裡是我的）\
         "run",\
-        "txt_counter.py" // 你的 MCP Server 文件名\
+        "txt_counter.py" // 你的 MCP Server 檔名\
       ]
     }
   }
 }
 ```
 
-- `uv` 最好是绝对路径，推荐使用 `which uv` 获取。
+- `uv` 最好是絕對路徑，推薦使用 `which uv` 獲取。
 
-配置好后重启 Claude Desktop，如果没问题就能看到对应的 MCP Server 了。
+配置好後重啟 Claude Desktop，如果沒問題就能看到對應的 MCP Server 了。
 
 ![](https://pic3.zhimg.com/v2-cb51fd06ef7663f05a5dd3da1aedeba2_1440w.jpg)
 
-**Step7. 实际使用**
+**Step7. 實際使用**
 
-接下来，我们通过一个简单的 prompt 进行实际测试：
+接下來，我們透過一個簡單的 prompt 進行實際測試：
 
 ```text
-能推测我当前桌面上 txt 文件名的含义吗？
+能推測我當前桌面上 txt 檔名的含義嗎？
 ```
 
-它可能会请求你的使用权限，如图一所示，你可以点击 `Allow for This Chat`
+它可能會請求你的使用許可權，如圖一所示，你可以點選 `Allow for This Chat`
 
 ![](https://pic2.zhimg.com/v2-44e6397dc33c38875198e62d6fcd4317_1440w.jpg)
 
 ![](https://pic1.zhimg.com/v2-d99e12160a8ae3af75df8ddf7eddda24_1440w.jpg)
 
-看起来我们 MCP Server 已经正常工作了！
+看起來我們 MCP Server 已經正常工作了！
 
 ### A.III MCP Server Debug
 
-Debug 是一个非常复杂的话题，这里直接推荐官方的教程：
+Debug 是一個非常複雜的話題，這裡直接推薦官方的教程：
 
 - [Official Tutorial: Debugging](https://link.zhihu.com/?target=https%3A//modelcontextprotocol.io/docs/tools/debugging)
 - [Official Tutorial: Inspector](https://link.zhihu.com/?target=https%3A//modelcontextprotocol.io/docs/tools/inspector)
@@ -529,4 +529,4 @@ Debug 是一个非常复杂的话题，这里直接推荐官方的教程：
 - [Blog: What is Model Context Protocol? (MCP) Architecture Overview](https://link.zhihu.com/?target=https%3A//medium.com/%40tahirbalarabe2/what-is-model-context-protocol-mcp-architecture-overview-c75f20ba4498)
 - [Blog: LLM Function-Calling vs. Model Context Protocol (MCP)](https://link.zhihu.com/?target=https%3A//www.gentoro.com/blog/function-calling-vs-model-context-protocol-mcp)
 
-> 来源：知乎
+> 來源：知乎

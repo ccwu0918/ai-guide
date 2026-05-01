@@ -4,29 +4,29 @@ import footer from "./footer";
 import navbar from "./navbar";
 import sidebar from "./sidebar";
 
-const author = "程序员鱼皮";
+const author = "程式設計師魚皮";
 const domain = "https://ai.codefather.cn";
 const tags = [
   "ai",
   "deepseek",
-  "AI 资讯",
-  "人工智能",
-  "AI 行业趋势",
-  "AI 技术",
-  "AI 新闻",
-  "AI 动态",
-  "AI 市场分析",
+  "AI 資訊",
+  "人工智慧",
+  "AI 行業趨勢",
+  "AI 技術",
+  "AI 新聞",
+  "AI 動態",
+  "AI 市場分析",
   "AI 模型",
-  "AI 独家分析",
-  "AI 深度解读",
+  "AI 獨家分析",
+  "AI 深度解讀",
 ];
 
 export default defineConfig({
-  title: "鱼皮 AI 知识库",
+  title: "魚皮 AI 知識庫",
   description:
-    "鱼皮 AI 知识库 - 免费 DeepSeek 教程｜工具站｜资源库，是一站式开源免费的人工智能知识分享平台，汇集 Deepseek、GPT 等热门 AI 工具介绍、使用指南、技巧分享、应用场景、AI 变现、行业资讯、教程资源汇总，提供系统化的 AI 教程、精选 AI 资源，助你快速掌握 AI 技术，成为 AI 专家！",
+    "魚皮 AI 知識庫 - 免費 DeepSeek 教程｜工具站｜資源庫，是一站式開源免費的人工智慧知識分享平臺，彙集 Deepseek、GPT 等熱門 AI 工具介紹、使用指南、技巧分享、應用場景、AI 變現、行業資訊、教程資源彙總，提供系統化的 AI 教程、精選 AI 資源，助你快速掌握 AI 技術，成為 AI 專家！",
   head: [
-    // 站点图标
+    // 站點圖示
     ["link", { rel: "icon", href: "/favicon.ico" }],
     // SEO
     [
@@ -34,10 +34,10 @@ export default defineConfig({
       {
         name: "keywords",
         content:
-          "ai, deepseek, AI 资讯，人工智能，AI 行业趋势，AI 技术，AI 新闻，AI 动态，AI 市场分析，AI 模型，AI 独家分析，AI 深度解读",
+          "ai, deepseek, AI 資訊，人工智慧，AI 行業趨勢，AI 技術，AI 新聞，AI 動態，AI 市場分析，AI 模型，AI 獨家分析，AI 深度解讀",
       },
     ],
-    // 百度统计
+    // 百度統計
     [
       "script",
       {},
@@ -54,12 +54,12 @@ export default defineConfig({
   ],
   permalink: "/:slug",
 
-  // 监听文件变化，热更新
+  // 監聽檔案變化，熱更新
   extraWatchFiles: [".vuepress/*.ts", ".vuepress/sidebars/*.ts"],
   markdown: {
-    // 开启代码块的行号
+    // 開啟程式碼塊的行號
     lineNumbers: true,
-    // 支持 4 级以上的标题渲染
+    // 支援 4 級以上的標題渲染
     extractHeaders: ["h2", "h3", "h4", "h5", "h6"],
   },
   // @ts-ignore
@@ -69,7 +69,7 @@ export default defineConfig({
     [
       "@vuepress/google-analytics",
       {
-        ga: "GTM-WVS9HM6W", // 补充自己的谷歌分析 ID，比如 UA-00000000-0
+        ga: "GTM-WVS9HM6W", // 補充自己的谷歌分析 ID，比如 UA-00000000-0
       },
     ],
     ["@vuepress/medium-zoom"],
@@ -77,8 +77,8 @@ export default defineConfig({
     [
       "seo",
       {
-        siteTitle: (_, $site) => $site.title + " - 免费 DeepSeek 教程｜工具站｜资源库",
-        title: ($page) => $page.title + " - 免费 DeepSeek 教程｜工具站｜资源库",
+        siteTitle: (_, $site) => $site.title + " - 免費 DeepSeek 教程｜工具站｜資源庫",
+        title: ($page) => $page.title + " - 免費 DeepSeek 教程｜工具站｜資源庫",
         description: ($page) => $page.frontmatter.description || $page.description,
         author: (_, $site) => $site.themeConfig.author || author,
         tags: ($page) => $page.frontmatter.tags || tags,
@@ -106,7 +106,7 @@ export default defineConfig({
     [
       "vuepress-plugin-code-copy",
       {
-        successText: "代码已复制",
+        successText: "程式碼已複製",
       },
     ],
     // https://github.com/webmasterish/vuepress-plugin-feed
@@ -115,32 +115,32 @@ export default defineConfig({
       {
         canonical_base: domain,
         count: 10000,
-        // 需要自动推送的文档目录
+        // 需要自動推送的文件目錄
         posts_directories: [],
       },
     ],
     // https://github.com/tolking/vuepress-plugin-img-lazy
     ["img-lazy"],
   ],
-  // 主题配置
+  // 主題配置
   themeConfig: {
     logo: "/logo.png",
     nav: navbar,
     sidebar,
     lastUpdated: "最近更新",
 
-    // GitHub 仓库位置
+    // GitHub 倉庫位置
     repo: "liyupi/ai-guide",
     docsBranch: "master",
 
-    // 编辑链接
+    // 編輯連結
     editLinks: true,
-    editLinkText: "完善页面",
+    editLinkText: "完善頁面",
 
     // @ts-ignore
-    // 底部版权信息
+    // 底部版權資訊
     footer,
-    // 额外右侧边栏
+    // 額外右側邊欄
     extraSideBar,
   },
 });

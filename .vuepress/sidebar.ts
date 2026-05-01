@@ -3,7 +3,7 @@ import AI from "./sidebars/ai";
 // @ts-ignore
 export default {
   "/AI/": AI,
-  "/AI项目教程/": AI,
-  // 降级，默认根据文章标题渲染侧边栏
+  "/AI專案教程/": AI,
+  // 降級，預設根據文章標題渲染側邊欄
   "/": "auto",
 } as SidebarConfig4Multiple;

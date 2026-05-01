@@ -1,183 +1,183 @@
-# DeepSeek官方整理的模型应用和工具
+# DeepSeek官方整理的模型應用和工具
 
-今天给大家介绍一个由 DeepSeek 团队维护的项目 Awesome DeepSeek Integration，该项目整理了与 DeepSeek 模型相关的各种应用和工具。
+今天給大家介紹一個由 DeepSeek 團隊維護的專案 Awesome DeepSeek Integration，該專案整理了與 DeepSeek 模型相關的各種應用和工具。
 
-DeepSeek 本身做的是基础的模型，很少涉及应用，只对外提供 API 接口，我们可以通过 API 将 DeepSeek 大模型能力轻松接入各类软件。
+DeepSeek 本身做的是基礎的模型，很少涉及應用，只對外提供 API 介面，我們可以透過 API 將 DeepSeek 大模型能力輕鬆接入各類軟體。
 
-另外 DeepSeek 大模型本身是开源的，我们自己也可以搭建一个本地的大模型应用。
+另外 DeepSeek 大模型本身是開源的，我們自己也可以搭建一個本地的大模型應用。
 
-Awesome DeepSeek Integration 刚好提供了一些用于与 DeepSeek 等 AI 平台集成的资源、工具和库的集合。
+Awesome DeepSeek Integration 剛好提供了一些用於與 DeepSeek 等 AI 平臺整合的資源、工具和庫的集合。
 
-**开源地址：https://github.com/deepseek-ai/awesome-deepseek-integration**
+**開源地址：https://github.com/deepseek-ai/awesome-deepseek-integration**
 
-目前该项目已经收获了 15k+ 的 Star:
+目前該專案已經收穫了 15k+ 的 Star:
 
-![图片](https://pic.yupi.icu/yuyi/640-20250220181106646)
+![圖片](https://pic.yupi.icu/yuyi/640-20250220181106646)
 
-DeepSeek 火了之后，该 Star 数是直线上升：
+DeepSeek 火了之後，該 Star 數是直線上升：
 
-![图片](https://pic.yupi.icu/yuyi/640-20250220181106711)
+![圖片](https://pic.yupi.icu/yuyi/640-20250220181106711)
 
-Awesome DeepSeek Integration 是一个精选列表，包含了多种与 DeepSeek 模型集成的应用程序、工具和插件，涵盖了日常对话、AI 编程、大模型开发、知识库等多个领域。
+Awesome DeepSeek Integration 是一個精選列表，包含了多種與 DeepSeek 模型整合的應用程式、工具和外掛，涵蓋了日常對話、AI 程式設計、大模型開發、知識庫等多個領域。
 
-通过这些工具和应用可以帮助开发者和用户更方便地使用 DeepSeek 模型，提升生产力和效率。
+透過這些工具和應用可以幫助開發者和使用者更方便地使用 DeepSeek 模型，提升生產力和效率。
 
 ------
 
-**1. 桌面客户端**
+**1. 桌面客戶端**
 
 
 
-**QuantaLogic：**一个用于打造高级 AI 助手的框架，帮助开发者设计能思考和行动的智能体，提升 AI 解决问题的能力。
+**QuantaLogic：**一個用於打造高階 AI 助手的框架，幫助開發者設計能思考和行動的智慧體，提升 AI 解決問題的能力。
 
-**Chatbox：**电脑端的 AI 聊天软件，支持 Windows、Mac 和 Linux，可接入多种 AI 模型，方便随时与 AI 交流。
+**Chatbox：**電腦端的 AI 聊天軟體，支援 Windows、Mac 和 Linux，可接入多種 AI 模型，方便隨時與 AI 交流。
 
-**ChatGPT-Next-Web：**网页版工具，支持跨设备无缝切换，快速使用 DeepSeek，随时随地与 AI 聊天。
+**ChatGPT-Next-Web：**網頁版工具，支援跨裝置無縫切換，快速使用 DeepSeek，隨時隨地與 AI 聊天。
 
-**留白记事：**微信上的智能助手，通过 DeepSeek 功能管理笔记、任务、日程和待办清单。
+**留白記事：**微信上的智慧助手，透過 DeepSeek 功能管理筆記、任務、日程和待辦清單。
 
-**Pal：**iPhone 和 iPad 上的 AI 助手应用，随时随地解答问题、处理任务。
+**Pal：**iPhone 和 iPad 上的 AI 助手應用，隨時隨地解答問題、處理任務。
 
-**LibreChat：**开源的 AI 聊天工具，可定制性强，能与 DeepSeek 无缝结合，提供个性化交互体验。
+**LibreChat：**開源的 AI 聊天工具，可定製性強，能與 DeepSeek 無縫結合，提供個性化互動體驗。
 
-![图片](https://pic.yupi.icu/yuyi/640-20250220181106893)
+![圖片](https://pic.yupi.icu/yuyi/640-20250220181106893)
 
 ------
 
 **2. AI Agent 框架**
 
-**Anda：**一个用 Rust 语言开发的 AI 智能体框架，能让智能体自主运行、记住事情，并通过 DeepSeek 等模型变得更聪明，适合构建高效、安全的智能体网络。
+**Anda：**一個用 Rust 語言開發的 AI 智慧體框架，能讓智慧體自主執行、記住事情，並透過 DeepSeek 等模型變得更聰明，適合構建高效、安全的智慧體網路。
 
-**YoMo：**一个支持强类型语言的“有状态无服务器”框架，方便开发者快速构建和管理复杂的 AI 应用，特别适合需要记住用户操作的场景。
+**YoMo：**一個支援強型別語言的“有狀態無伺服器”框架，方便開發者快速構建和管理複雜的 AI 應用，特別適合需要記住使用者操作的場景。
 
-**Alice：**基于区块链的 AI 代理，利用 DeepSeek 等模型进行决策，能管理代币、挖矿和参与生态治理，是区块链和 AI 结合的智能助手。
+**Alice：**基於區塊鏈的 AI 代理，利用 DeepSeek 等模型進行決策，能管理代幣、挖礦和參與生態治理，是區塊鏈和 AI 結合的智慧助手。
 
-**ATTPs：**一个智能体之间的通信协议框架，让不同平台的智能体可以安全、可信地交流，支持注册、发送和接收可验证数据，实现高效协作。
+**ATTPs：**一個智慧體之間的通訊協議框架，讓不同平臺的智慧體可以安全、可信地交流，支援註冊、傳送和接收可驗證資料，實現高效協作。
 
-![图片](https://pic.yupi.icu/yuyi/640-20250220181106957)
+![圖片](https://pic.yupi.icu/yuyi/640-20250220181106957)
 
 ------
 
 **3. RAG 框架**
 
-**RAGFlow：**RAGFlow 是一款开源的 RAG（检索增强生成）引擎，基于深度文档理解技术。它支持多种复杂格式的数据，结合大语言模型（LLM），提供可靠的问答和有理有据的引用。
+**RAGFlow：**RAGFlow 是一款開源的 RAG（檢索增強生成）引擎，基於深度文件理解技術。它支援多種複雜格式的資料，結合大語言模型（LLM），提供可靠的問答和有理有據的引用。
 
-**AutoFlow：**AutoFlow 是一个开源的知识库工具，基于 GraphRAG 构建，支持 TiDB Vector、LlamaIndex 和 DSPy。它提供类 Perplexity 的搜索页面，可轻松集成到网站中。
+**AutoFlow：**AutoFlow 是一個開源的知識庫工具，基於 GraphRAG 構建，支援 TiDB Vector、LlamaIndex 和 DSPy。它提供類 Perplexity 的搜尋頁面，可輕鬆整合到網站中。
 
-**DeepSearcher：**DeepSearcher 结合了强大的 LLM（如 DeepSeek 和 OpenAI）和向量数据库（如 Milvus），基于私有数据进行搜索、评估和推理，提供高度准确的答案和全面的报告。
+**DeepSearcher：**DeepSearcher 結合了強大的 LLM（如 DeepSeek 和 OpenAI）和向量資料庫（如 Milvus），基於私有資料進行搜尋、評估和推理，提供高度準確的答案和全面的報告。
 
-![图片](https://pic.yupi.icu/yuyi/640-20250220181107016)
+![圖片](https://pic.yupi.icu/yuyi/640-20250220181107016)
 
 ------
 
 **4. Solana 框架**
 
-Solana Agent Kit：一个开源工具包，用于将 AI 智能体连接到 Solana 区块链协议。它支持任意 AI 模型的代理自主执行 60 多种 Solana 操作，包括代币交易、NFT 创建与管理、借贷、空投等。
+Solana Agent Kit：一個開源工具包，用於將 AI 智慧體連線到 Solana 區塊鏈協議。它支援任意 AI 模型的代理自主執行 60 多種 Solana 操作，包括代幣交易、NFT 建立與管理、借貸、空投等。
 
-![图片](https://pic.yupi.icu/yuyi/640-20250220181107100)
-
-------
-
-**5. 即时通讯插件**
-
-**茴香豆：**一个集成到个人微信群或飞书群的领域知识助手，专注于解答问题，不闲聊。
-
-**LangBot：**一个大模型原生即时通信机器人平台，适配 QQ、企微、飞书等多种消息平台。
-
-**NoneBot：**基于 NoneBot 框架的智能对话工具，支持 QQ、飞书、Discord、TG 等多种消息平台。
-
-![图片](https://pic.yupi.icu/yuyi/640-20250220181107190)
+![圖片](https://pic.yupi.icu/yuyi/640-20250220181107100)
 
 ------
 
-**6. 浏览器插件**
+**5. 即時通訊外掛**
 
-**沉浸式翻译：**一款双语对照网页翻译插件，简洁高效。
+**茴香豆：**一個整合到個人微信群或飛書群的領域知識助手，專注於解答問題，不閒聊。
 
-**沉浸式导读：**一款无侧边栏的沉浸式 AI 网页摘要插件。
+**LangBot：**一個大模型原生即時通訊機器人平臺，適配 QQ、企微、飛書等多種訊息平臺。
 
-**ChatGPT Box：**将 LLM 作为私人助手整合到浏览器中的插件。
+**NoneBot：**基於 NoneBot 框架的智慧對話工具，支援 QQ、飛書、Discord、TG 等多種訊息平臺。
 
-**划词翻译：**整合多家翻译 API 和 LLM API 的浏览器翻译插件。
-
-**欧路翻译：**提供划词搜索、逐段对照翻译、PDF 翻译等功能，支持 DeepSeek、Bing、GPT、Google 等多种翻译引擎。
-
-**流畅阅读：**一款革新性的浏览器开源翻译插件，提供母语般的阅读体验。
-
-**馆长：**知识库 AI 问答助手，帮助整理与分析知识。
-
-**RssFlow：**一款智能 RSS 阅读器浏览器扩展，支持 AI 驱动的 RSS 摘要和多维度订阅视图。
-
-**Typral：**超快的 AI 写作助手，帮助优化日报、文章等文本。
-
-**Trancy：**沉浸式双语对照翻译、视频双语字幕、划句/划词翻译插件。
-
-![图片](https://pic.yupi.icu/yuyi/640-20250220181107315)
+![圖片](https://pic.yupi.icu/yuyi/640-20250220181107190)
 
 ------
 
-**7. VS Code 插件**
+**6. 瀏覽器外掛**
 
-**Continue：**开源 IDE 插件，使用 LLM 作为编程助手。
+**沉浸式翻譯：**一款雙語對照網頁翻譯外掛，簡潔高效。
 
-**Cline：**一款能够与 CLI 和编辑器配合使用的 AI 助手。
+**沉浸式導讀：**一款無側邊欄的沉浸式 AI 網頁摘要外掛。
 
-**AI Commit：**使用 AI 生成 Git commit message 的 VS Code 插件。
+**ChatGPT Box：**將 LLM 作為私人助手整合到瀏覽器中的外掛。
 
-![图片](https://pic.yupi.icu/yuyi/640-20250220181107397)
+**劃詞翻譯：**整合多家翻譯 API 和 LLM API 的瀏覽器翻譯外掛。
 
-------
+**歐路翻譯：**提供劃詞搜尋、逐段對照翻譯、PDF 翻譯等功能，支援 DeepSeek、Bing、GPT、Google 等多種翻譯引擎。
 
-**8. neovim 插件**
+**流暢閱讀：**一款革新性的瀏覽器開源翻譯外掛，提供母語般的閱讀體驗。
 
-**avante.nvim：**开源 IDE 插件，使用 LLM 作为编程助手。
+**館長：**知識庫 AI 問答助手，幫助整理與分析知識。
 
-**llm.nvim：**支持任意大模型（如 Deepseek、GPT）的 Neovim 插件。
+**RssFlow：**一款智慧 RSS 閱讀器瀏覽器擴充套件，支援 AI 驅動的 RSS 摘要和多維度訂閱檢視。
 
-**minuet-ai.nvim：**支持多个主流大模型的实时代码补全插件。
+**Typral：**超快的 AI 寫作助手，幫助最佳化日報、文章等文字。
 
-**codecompanion.nvim：**AI 驱动的编码插件，无缝集成到 Neovim。
+**Trancy：**沉浸式雙語對照翻譯、影片雙語字幕、劃句/劃詞翻譯外掛。
 
-![图片](https://pic.yupi.icu/yuyi/640-20250220181107448)
-
-------
-
-**9. JetBrains 插件**
-
-**Chinese-English Translate：**集成多家翻译和 AI 厂商的 JetBrains 插件，支持中英文翻译。
-
-**AI Git Commit：**使用 AI 生成 Git commit message 的 JetBrains 插件。
-
-![图片](https://pic.yupi.icu/yuyi/640-20250220181107501)
+![圖片](https://pic.yupi.icu/yuyi/640-20250220181107315)
 
 ------
 
-**10. AI Code编辑器**
+**7. VS Code 外掛**
 
-**Cursor：**基于 VS Code 扩展的 AI Code 编辑器。
+**Continue：**開源 IDE 外掛，使用 LLM 作為程式設計助手。
 
-**WindSurf：**基于 VS Code 的 AI Code 编辑器。
+**Cline：**一款能夠與 CLI 和編輯器配合使用的 AI 助手。
 
-![图片](https://pic.yupi.icu/yuyi/640-20250220181107589)
+**AI Commit：**使用 AI 生成 Git commit message 的 VS Code 外掛。
+
+![圖片](https://pic.yupi.icu/yuyi/640-20250220181107397)
+
+------
+
+**8. neovim 外掛**
+
+**avante.nvim：**開源 IDE 外掛，使用 LLM 作為程式設計助手。
+
+**llm.nvim：**支援任意大模型（如 Deepseek、GPT）的 Neovim 外掛。
+
+**minuet-ai.nvim：**支援多個主流大模型的實時程式碼補全外掛。
+
+**codecompanion.nvim：**AI 驅動的編碼外掛，無縫整合到 Neovim。
+
+![圖片](https://pic.yupi.icu/yuyi/640-20250220181107448)
+
+------
+
+**9. JetBrains 外掛**
+
+**Chinese-English Translate：**整合多家翻譯和 AI 廠商的 JetBrains 外掛，支援中英文翻譯。
+
+**AI Git Commit：**使用 AI 生成 Git commit message 的 JetBrains 外掛。
+
+![圖片](https://pic.yupi.icu/yuyi/640-20250220181107501)
+
+------
+
+**10. AI Code編輯器**
+
+**Cursor：**基於 VS Code 擴充套件的 AI Code 編輯器。
+
+**WindSurf：**基於 VS Code 的 AI Code 編輯器。
+
+![圖片](https://pic.yupi.icu/yuyi/640-20250220181107589)
 
 ------
 
 **11. 其他**
 
-**Abso：**TypeScript SDK，支持 OpenAI 格式与任何 LLM 提供商交互。
+**Abso：**TypeScript SDK，支援 OpenAI 格式與任何 LLM 提供商互動。
 
-**ShellOracle：**用于智能 Shell 命令生成的终端工具。
+**ShellOracle：**用於智慧 Shell 命令生成的終端工具。
 
-**深度求索（快捷指令）：**使用 DeepSeek API 增强 Siri 能力的快捷指令。
+**深度求索（快捷指令）：**使用 DeepSeek API 增強 Siri 能力的快捷指令。
 
-**n8n-nodes-deepseek：**支持将 DeepSeek API 集成到 n8n 工作流的社区节点。
+**n8n-nodes-deepseek：**支援將 DeepSeek API 整合到 n8n 工作流的社群節點。
 
-**promptfoo：**用于测试和评估 LLM 提示的工具，支持比较不同 LLM 提供商的响应。
+**promptfoo：**用於測試和評估 LLM 提示的工具，支援比較不同 LLM 提供商的響應。
 
-**deepseek-tokenizer：**一个轻量级的 tokenization 库，仅依赖 tokenizers。
+**deepseek-tokenizer：**一個輕量級的 tokenization 庫，僅依賴 tokenizers。
 
-**deepseek-review：**使用 Deepseek 进行代码审核的工具，支持 GitHub Action 和本地使用。
+**deepseek-review：**使用 Deepseek 進行程式碼稽核的工具，支援 GitHub Action 和本地使用。
 
-**WordPress AI 助手：**对接 Deepseek API，用于 WordPress 站点的 AI 对话、文章生成和总结插件。
+**WordPress AI 助手：**對接 Deepseek API，用於 WordPress 站點的 AI 對話、文章生成和總結外掛。
 
-![图片](https://pic.yupi.icu/yuyi/640-20250220181107651)
+![圖片](https://pic.yupi.icu/yuyi/640-20250220181107651)

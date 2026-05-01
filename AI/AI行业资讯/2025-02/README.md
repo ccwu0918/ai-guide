@@ -1,58 +1,58 @@
-# Ai行业资讯
+# Ai行業資訊
 
->  你全面的 AI 知识库，一网打尽最新 AI 资讯，都在 [https://ai.codefather.cn](https://ai.codefather.cn)
+>  你全面的 AI 知識庫，一網打盡最新 AI 資訊，都在 [https://ai.codefather.cn](https://ai.codefather.cn)
 
-[DeepSeek“朋友圈”不断扩围：10家国内外云厂商宣布接入](DeepSeek“朋友圈”不断扩围：10家国内外云厂商宣布接入.md)
+[DeepSeek“朋友圈”不斷擴圍：10家國內外雲廠商宣佈接入](DeepSeek“朋友圈”不斷擴圍：10家國內外雲廠商宣佈接入.md)
 
-[DeepSeek“金融朋友圈” 从“争先”到“恐后”，从“好用”到“用好”](DeepSeek“金融朋友圈”%20从“争先”到“恐后”，从“好用”到“用好”.md)
+[DeepSeek“金融朋友圈” 從“爭先”到“恐後”，從“好用”到“用好”](DeepSeek“金融朋友圈”%20從“爭先”到“恐後”，從“好用”到“用好”.md)
 
-[DeepSeek如何搅动AI产业？](DeepSeek如何搅动AI产业？.md)
+[DeepSeek如何攪動AI產業？](DeepSeek如何攪動AI產業？.md)
 
-[DeepSeek宣布涨价！](DeepSeek宣布涨价！.md)
+[DeepSeek宣佈漲價！](DeepSeek宣佈漲價！.md)
 
-[DeepSeek带飞科大讯飞？](DeepSeek带飞科大讯飞？.md)
+[DeepSeek帶飛科大訊飛？](DeepSeek帶飛科大訊飛？.md)
 
-[DeepSeek的“服务器繁忙”让所有人抓狂，背后究竟是怎么回事](DeepSeek的“服务器繁忙”让所有人抓狂，背后究竟是怎么回事.md)
+[DeepSeek的“伺服器繁忙”讓所有人抓狂，背後究竟是怎麼回事](DeepSeek的“伺服器繁忙”讓所有人抓狂，背後究竟是怎麼回事.md)
 
-[DeepSeek被封杀了](DeepSeek被封杀了.md)
+[DeepSeek被封殺了](DeepSeek被封殺了.md)
 
-[DeepSeek预测：未来10年，就业前景最好的10个专业](DeepSeek预测：未来10年，就业前景最好的10个专业.md)
+[DeepSeek預測：未來10年，就業前景最好的10個專業](DeepSeek預測：未來10年，就業前景最好的10個專業.md)
 
-[DeepSeek，紧急声明](DeepSeek，紧急声明.md)
+[DeepSeek，緊急宣告](DeepSeek，緊急宣告.md)
 
-[vivo与荣耀相继接入DeepSeek：AI深度融合引领手机创新潮流](vivo与荣耀相继接入DeepSeek：AI深度融合引领手机创新潮流.md)
+[vivo與榮耀相繼接入DeepSeek：AI深度融合引領手機創新潮流](vivo與榮耀相繼接入DeepSeek：AI深度融合引領手機創新潮流.md)
 
-[vivo官宣：将深度融合满血版DeepSeek](vivo官宣：将深度融合满血版DeepSeek.md)
+[vivo官宣：將深度融合滿血版DeepSeek](vivo官宣：將深度融合滿血版DeepSeek.md)
 
-[不在场的DeepSeek，是巴黎AI峰会真正的主角](不在场的DeepSeek，是巴黎AI峰会真正的主角.md)
+[不在場的DeepSeek，是巴黎AI峰會真正的主角](不在場的DeepSeek，是巴黎AI峰會真正的主角.md)
 
-[争先恐后接入DeepSeek的国产手机，它们的自研大模型怎么办？](争先恐后接入DeepSeek的国产手机，它们的自研大模型怎么办？.md)
+[爭先恐後接入DeepSeek的國產手機，它們的自研大模型怎麼辦？](爭先恐後接入DeepSeek的國產手機，它們的自研大模型怎麼辦？.md)
 
-[价值千万美元的“AI.com”，会是谁给DeepSeek公司使用的呢](价值千万美元的“AI.com”，会是谁给DeepSeek公司使用的呢.md)
+[價值千萬美元的“AI.com”，會是誰給DeepSeek公司使用的呢](價值千萬美元的“AI.com”，會是誰給DeepSeek公司使用的呢.md)
 
-[外资机构看DeepSeek：提振中国股市 机会藏在这些领域](外资机构看DeepSeek：提振中国股市%20机会藏在这些领域.md)
+[外資機構看DeepSeek：提振中國股市 機會藏在這些領域](外資機構看DeepSeek：提振中國股市%20機會藏在這些領域.md)
 
-[多家车企接入AI大模型DeepSeek 智能汽车再进一步](多家车企接入AI大模型DeepSeek%20智能汽车再进一步.md)
+[多家車企接入AI大模型DeepSeek 智慧汽車再進一步](多家車企接入AI大模型DeepSeek%20智慧汽車再進一步.md)
 
-[如何利用DeepSeek翻身？抓住AI红利，普通人也能逆袭的3个方向](如何利用DeepSeek翻身？抓住AI红利，普通人也能逆袭的3个方向.md)
+[如何利用DeepSeek翻身？抓住AI紅利，普通人也能逆襲的3個方向](如何利用DeepSeek翻身？抓住AI紅利，普通人也能逆襲的3個方向.md)
 
 [日本如何看待Deepseek](日本如何看待Deepseek.md)
 
-[深度求索正在物色韩国人工智能人才，展开确保人才的战争](深度求索正在物色韩国人工智能人才，展开确保人才的战争.md)
+[深度求索正在物色韓國人工智慧人才，展開確保人才的戰爭](深度求索正在物色韓國人工智慧人才，展開確保人才的戰爭.md)
 
-[清华大学：普通人如何抓住DeepSeek红利2025](清华大学：普通人如何抓住DeepSeek红利2025.md)
+[清華大學：普通人如何抓住DeepSeek紅利2025](清華大學：普通人如何抓住DeepSeek紅利2025.md)
 
-[点赞收藏！DeepSeek在GitHub星标量已超OpenAI](点赞收藏！DeepSeek在GitHub星标量已超OpenAI.md)
+[點贊收藏！DeepSeek在GitHub星標量已超OpenAI](點贊收藏！DeepSeek在GitHub星標量已超OpenAI.md)
 
-[爆冷，DeepSeek出局，苹果AI国行版将与阿里合作](爆冷，DeepSeek出局，苹果AI国行版将与阿里合作.md)
+[爆冷，DeepSeek出局，蘋果AI國行版將與阿里合作](爆冷，DeepSeek出局，蘋果AI國行版將與阿里合作.md)
 
-[看短剧、“交朋友”，DeepSeek挤进中老年社交圈](看短剧、“交朋友”，DeepSeek挤进中老年社交圈.md)
+[看短劇、“交朋友”，DeepSeek擠進中老年社交圈](看短劇、“交朋友”，DeepSeek擠進中老年社交圈.md)
 
-[被DeepSeek刺激到了？文心一言、ChatGPT同时宣布：免费！ ](被DeepSeek刺激到了？文心一言、ChatGPT同时宣布：免费！%20.md)
+[被DeepSeek刺激到了？文心一言、ChatGPT同時宣佈：免費！ ](被DeepSeek刺激到了？文心一言、ChatGPT同時宣佈：免費！%20.md)
 
-[运营商全面接入DeepSeek意味着什么？](运营商全面接入DeepSeek意味着什么？.md)
+[運營商全面接入DeepSeek意味著什麼？](運營商全面接入DeepSeek意味著什麼？.md)
 
-[雷军：钦佩DeepSeek取得的成就，每个人可能都要学习AI知识](雷军：钦佩DeepSeek取得的成就，每个人可能都要学习AI知识.md)
+[雷軍：欽佩DeepSeek取得的成就，每個人可能都要學習AI知識](雷軍：欽佩DeepSeek取得的成就，每個人可能都要學習AI知識.md)
 
->  你全面的 AI 知识库，一网打尽最新 AI 资讯，都在 [https://ai.codefather.cn](https://ai.codefather.cn)
+>  你全面的 AI 知識庫，一網打盡最新 AI 資訊，都在 [https://ai.codefather.cn](https://ai.codefather.cn)
 

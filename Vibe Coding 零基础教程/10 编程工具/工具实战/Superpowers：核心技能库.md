@@ -1,24 +1,24 @@
-# Superpowers：核心技能库
+# Superpowers：核心技能庫
 
-> 让 AI 像专业程序员一样工作
-
-
-
-你好，我是程序员鱼皮。
-
-在前面的文章中，我们学习了各种 AI 编程工具和规范化开发框架。但你可能会想：有没有一套完整的开发流程，能让 AI 像专业程序员一样工作呢？
-
-这篇文章，我会介绍 **Superpowers**，一套让 AI 编程助手变得更专业的软件开发流程。
+> 讓 AI 像專業程式設計師一樣工作
 
 
 
-## 一、什么是 Superpowers？
+你好，我是程式設計師魚皮。
 
-[Superpowers](https://github.com/obra/superpowers) 是一套让 AI 编程助手变得更专业的 **软件开发流程**。它不仅为 Claude Code 提供了一套可组合的 **编程技能包**，还提供了规范和指令，确保 AI 能够正确使用这些技能。
+在前面的文章中，我們學習了各種 AI 程式設計工具和規範化開發框架。但你可能會想：有沒有一套完整的開發流程，能讓 AI 像專業程式設計師一樣工作呢？
 
-传统的 AI 编程，你一说需求它就开始噼里啪啦地写，结果可能并不是你想要的。而装了 Superpowers 之后，AI 会先问清楚你到底想做什么，然后出设计方案让你确认，接着制定详细的执行计划，最后才分步骤去实现，每一步还会自我检查。
+這篇文章，我會介紹 **Superpowers**，一套讓 AI 程式設計助手變得更專業的軟體開發流程。
 
-就像给一个刚进公司啥都不懂的 AI 加上了超能力，瞬间让它有了专业程序员的开发习惯。
+
+
+## 一、什麼是 Superpowers？
+
+[Superpowers](https://github.com/obra/superpowers) 是一套讓 AI 程式設計助手變得更專業的 **軟體開發流程**。它不僅為 Claude Code 提供了一套可組合的 **程式設計技能包**，還提供了規範和指令，確保 AI 能夠正確使用這些技能。
+
+傳統的 AI 程式設計，你一說需求它就開始噼裡啪啦地寫，結果可能並不是你想要的。而裝了 Superpowers 之後，AI 會先問清楚你到底想做什麼，然後出設計方案讓你確認，接著制定詳細的執行計劃，最後才分步驟去實現，每一步還會自我檢查。
+
+就像給一個剛進公司啥都不懂的 AI 加上了超能力，瞬間讓它有了專業程式設計師的開發習慣。
 
 ![](https://pic.yupi.icu/1/%E6%BC%AB%E7%94%BB%E5%9B%BE8%E5%A4%A7.jpeg)
 
@@ -26,13 +26,13 @@
 
 ## 二、快速上手 Superpowers
 
-让我通过一个实际例子，带你快速上手 Superpowers。
+讓我透過一個實際例子，帶你快速上手 Superpowers。
 
-### 1、安装 Superpowers
+### 1、安裝 Superpowers
 
-参考 [Superpowers 官方文档](https://github.com/obra/superpowers)，在 Claude Code 中运行以下命令安装。
+參考 [Superpowers 官方文件](https://github.com/obra/superpowers)，在 Claude Code 中執行以下命令安裝。
 
-先注册市场：
+先註冊市場：
 
 ```bash
 /plugin marketplace add obra/superpowers-marketplace
@@ -40,7 +40,7 @@
 
 ![](https://pic.yupi.icu/1/image-20260116171109190.png)
 
-再从市场安装插件：
+再從市場安裝外掛：
 
 ```bash
 /plugin install superpowers@superpowers-marketplace
@@ -48,166 +48,166 @@
 
 ![](https://pic.yupi.icu/1/image-20260116171125164.png)
 
-安装后运行 `/help` 查看可用命令，你会看到这 3 个命令
+安裝後執行 `/help` 檢視可用命令，你會看到這 3 個命令
 
-- `/superpowers:brainstorm` 通过和用户交互来不断改进设计
-- `/superpowers:write-plan` 创建实现方案
-- `/superpowers:execute-plan` 批量执行方案
+- `/superpowers:brainstorm` 透過和使用者互動來不斷改進設計
+- `/superpowers:write-plan` 建立實現方案
+- `/superpowers:execute-plan` 批次執行方案
 
 ![](https://pic.yupi.icu/1/image-20260116171300633.png)
 
 
 
-### 2、标准工作流程
+### 2、標準工作流程
 
-下面以开发一个 "用户注册模块" 为例，演示 Superpowers 官方的标准工作流程。
+下面以開發一個 "使用者註冊模組" 為例，演示 Superpowers 官方的標準工作流程。
 
-首先，在终端中运行 `claude` 命令来启动 Claude Code，然后按照下面的 7 个步骤操作：
+首先，在終端中執行 `claude` 命令來啟動 Claude Code，然後按照下面的 7 個步驟操作：
 
-#### 1）Brainstorming 头脑风暴 => 对齐需求
+#### 1）Brainstorming 頭腦風暴 => 對齊需求
 
-选择 `/superpowers:brainstorm` 命令并输入需求：
+選擇 `/superpowers:brainstorm` 命令並輸入需求：
 
 ![](https://pic.yupi.icu/1/image-20260116175524611.png)
 
-Superpowers 不会急着写代码，而是先通过多轮问答和你对齐需求，比如：
+Superpowers 不會急著寫程式碼，而是先透過多輪問答和你對齊需求，比如：
 
-- 用户注册模块的主要场景是什么？
-- 希望支持哪些注册方式？
+- 使用者註冊模組的主要場景是什麼？
+- 希望支援哪些註冊方式？
 
 ![](https://pic.yupi.icu/1/image-20260116175456666.png)
 
-通过交互问答，AI 会探索不同方案、不断改进设计。
+透過互動問答，AI 會探索不同方案、不斷改進設計。
 
 ![](https://pic.yupi.icu/1/image-20260116175907783.png)
 
-当需求和方案确认无误后，它会自动将详细的设计文档保存到 `docs/plans/` 目录。
+當需求和方案確認無誤後，它會自動將詳細的設計文件儲存到 `docs/plans/` 目錄。
 
 ![](https://pic.yupi.icu/1/image-20260116180740987.png)
 
 
 
-#### 2）Using Git Worktrees 创建独立工作空间（可选）
+#### 2）Using Git Worktrees 建立獨立工作空間（可選）
 
-设计方案通过后，Superpowers 会帮你创建一个 Git 工作树（worktree），在新分支上建立隔离的工作空间，运行项目初始化，并验证测试基线是否干净。这样可以避免污染主分支。
+設計方案透過後，Superpowers 會幫你建立一個 Git 工作樹（worktree），在新分支上建立隔離的工作空間，執行專案初始化，並驗證測試基線是否乾淨。這樣可以避免汙染主分支。
 
-这一步是可选的，我这里直接让 AI 继续执行，看看会发生什么：
+這一步是可選的，我這裡直接讓 AI 繼續執行，看看會發生什麼：
 
 ![](https://pic.yupi.icu/1/image-20260116181020601.png)
 
 
 
-#### 3）Writing Plans 制定实施计划
+#### 3）Writing Plans 制定實施計劃
 
-运行 `/superpowers:write-plan` 命令，让 Superpowers 生成一份详细的实施计划，把开发任务拆解成多个原子级步骤（每个任务控制在 2 ~ 5 分钟）。
+執行 `/superpowers:write-plan` 命令，讓 Superpowers 生成一份詳細的實施計劃，把開發任務拆解成多個原子級步驟（每個任務控制在 2 ~ 5 分鐘）。
 
-我这里 AI 直接自动执行了，省了一步命令~
+我這裡 AI 直接自動執行了，省了一步命令~
 
 ![](https://pic.yupi.icu/1/image-20260116180907360-20260116180953363-20260116181058928-20260116181118631.png)
 
-查看 AI 生成的实施计划文档，每个任务都包含：
+檢視 AI 生成的實施計劃文件，每個任務都包含：
 
-- 精确的文件路径
-- 完整的代码内容
-- 验证步骤
+- 精確的檔案路徑
+- 完整的程式碼內容
+- 驗證步驟
 
 ![](https://pic.yupi.icu/1/image-20260116181910011.png)
 
-好家伙，这哪里是实施计划文档啊，感觉大多数代码都写出来了！
+好傢伙，這哪裡是實施計劃文件啊，感覺大多數程式碼都寫出來了！
 
 ![](https://pic.yupi.icu/1/image-20260116181959589.png)
 
 
 
-#### 4）执行任务
+#### 4）執行任務
 
-运行 `/superpowers:execute-plan` 命令，Superpowers 会采用以下方式之一执行：
-- 子代理驱动开发（Subagent-Driven Development）：为每个任务分配一个全新的子代理，经过两阶段审查（规范合规性检查 + 代码质量检查）
-- 批量执行（Executing Plans）：分批执行任务，在关键节点暂停让人工检查
+執行 `/superpowers:execute-plan` 命令，Superpowers 會採用以下方式之一執行：
+- 子代理驅動開發（Subagent-Driven Development）：為每個任務分配一個全新的子代理，經過兩階段審查（規範合規性檢查 + 程式碼質量檢查）
+- 批次執行（Executing Plans）：分批執行任務，在關鍵節點暫停讓人工檢查
 
-我这里 AI 直接问我想要哪种方式：
+我這裡 AI 直接問我想要哪種方式：
 
 ![](https://pic.yupi.icu/1/image-20260116182128737.png)
 
-我盲选一手 Subagent-Driven 方式，AI 自动选择了对应的开发技能：
+我盲選一手 Subagent-Driven 方式，AI 自動選擇了對應的開發技能：
 
 ![](https://pic.yupi.icu/1/image-20260116182244311.png)
 
-然后 AI 就开始干活了：
+然後 AI 就開始幹活了：
 
 ![](https://pic.yupi.icu/1/image-20260116182445078.png)
 
 
 
-#### 5）Test-Driven Development 测试驱动开发
+#### 5）Test-Driven Development 測試驅動開發
 
-在实现过程中，Superpowers 会强制执行 `红-绿-重构` 流程：
-- 先写失败的测试
-- 运行测试，确认失败
-- 写最小化的代码让测试通过
-- 运行测试，确认通过
-- 提交代码
+在實現過程中，Superpowers 會強制執行 `紅-綠-重構` 流程：
+- 先寫失敗的測試
+- 執行測試，確認失敗
+- 寫最小化的程式碼讓測試透過
+- 執行測試，確認透過
+- 提交程式碼
 
 ![](https://pic.yupi.icu/1/image-20260116183728764.png)
 
-如果发现有代码是在测试之前写的，Superpowers 会删除它，强制你先写测试。
+如果發現有程式碼是在測試之前寫的，Superpowers 會刪除它，強制你先寫測試。
 
 
 
-#### 6）Code Review 代码审查
+#### 6）Code Review 程式碼審查
 
-每完成一批任务后，Superpowers 会自动触发代码审查，对照计划检查代码，按严重程度报告问题。如果发现严重问题（Critical），会阻止继续进行。
+每完成一批任務後，Superpowers 會自動觸發程式碼審查，對照計劃檢查程式碼，按嚴重程度報告問題。如果發現嚴重問題（Critical），會阻止繼續進行。
 
 ![](https://pic.yupi.icu/1/image-20260116182947482.png)
 
 
 
-#### 7）完成开发
+#### 7）完成開發
 
-所有任务完成后，Superpowers 会验证所有测试是否通过：
+所有任務完成後，Superpowers 會驗證所有測試是否透過：
 
 ![](https://pic.yupi.icu/1/image-20260116194339313.png)
 
-然后 AI 可能会提供几个选项，比如合并到主分支 / 创建 PR / 保留分支 / 丢弃更改。
+然後 AI 可能會提供幾個選項，比如合併到主分支 / 建立 PR / 保留分支 / 丟棄更改。
 
-如果你确定功能没有问题，可以利用 Superpowers 内置的技能来完成开发分支的清理工作。
+如果你確定功能沒有問題，可以利用 Superpowers 內建的技能來完成開發分支的清理工作。
 
 ![](https://pic.yupi.icu/1/image-20260116194520921.png)
 
 
 
-## 三、Superpowers 的优缺点
+## 三、Superpowers 的優缺點
 
-这套 “先设计后编码” 的规范流程走下来，代码质量会更有保障，不过代价就是速度确实比让 AI 直接生成代码会慢很多。真的是慢很多！就这么个需求我搞了半个多小时！！！
+這套 “先設計後編碼” 的規範流程走下來，程式碼質量會更有保障，不過代價就是速度確實比讓 AI 直接生成程式碼會慢很多。真的是慢很多！就這麼個需求我搞了半個多小時！！！
 
 ![](https://pic.yupi.icu/1/image-20260116183405162.png)
 
-如果你正在开发大型项目，需要团队协作，那么可以试试 Superpowers，前期多花的时间会在后期省回来。但是如果你只是想写个简单的脚本或者快速验证一个想法，用它就有点儿牛刀杀鸡了，真没必要。
+如果你正在開發大型專案，需要團隊協作，那麼可以試試 Superpowers，前期多花的時間會在後期省回來。但是如果你只是想寫個簡單的指令碼或者快速驗證一個想法，用它就有點兒牛刀殺雞了，真沒必要。
 
 
 
-## 写在最后
+## 寫在最後
 
-看到这里，相信你已经对 Superpowers 有了基本的了解。
+看到這裡，相信你已經對 Superpowers 有了基本的瞭解。
 
-**Superpowers 能让 AI 像专业程序员一样工作，但代价是开发速度会变慢。**
+**Superpowers 能讓 AI 像專業程式設計師一樣工作，但代價是開發速度會變慢。**
 
-如果你正在做大型项目、需要高质量的代码、团队协作，那么 Superpowers 会是不错的选择。但如果你只是做简单的个人项目，直接让 AI 生成代码会更快。
+如果你正在做大型專案、需要高質量的程式碼、團隊協作，那麼 Superpowers 會是不錯的選擇。但如果你只是做簡單的個人專案，直接讓 AI 生成程式碼會更快。
 
-选择合适的工具，才能事半功倍。
+選擇合適的工具，才能事半功倍。
 
-到这里，我们已经学习了多种规范化开发工具，希望你能找到最适合自己的开发方式。
+到這裡，我們已經學習了多種規範化開發工具，希望你能找到最適合自己的開發方式。
 
 
 
-## 推荐资源
+## 推薦資源
 
-1）鱼皮 AI 导航网站：[AI 资源大全、最新 AI 资讯、免费 AI 教程](https://ai.codefather.cn)
+1）魚皮 AI 導航網站：[AI 資源大全、最新 AI 資訊、免費 AI 教程](https://ai.codefather.cn)
 
-2）编程导航学习圈：[学习路线、编程教程、实战项目、求职宝典、交流答疑](https://www.codefather.cn)
+2）程式設計導航學習圈：[學習路線、程式設計教程、實戰專案、求職寶典、交流答疑](https://www.codefather.cn)
 
-3）程序员面试八股文：[实习/校招/社招高频考点、企业真题解析](https://www.mianshiya.com)
+3）程式設計師面試八股文：[實習/校招/社招高頻考點、企業真題解析](https://www.mianshiya.com)
 
-4）程序员写简历神器：[专业模板、丰富例句、直通面试](https://www.laoyujianli.com)
+4）程式設計師寫簡歷神器：[專業模板、豐富例句、直通面試](https://www.laoyujianli.com)
 
-5）1 对 1 模拟面试：[实习/校招/社招面试拿 Offer 必备](https://ai.mianshiya.com)
+5）1 對 1 模擬面試：[實習/校招/社招面試拿 Offer 必備](https://ai.mianshiya.com)

@@ -1,118 +1,118 @@
-# 产品服务
+# 產品服務
 
-鱼皮创立的公司 —— 鱼鸢网络，我们的官网：[https://www.yuyuanweb.com](https://www.yuyuanweb.com)
-
-
-
-## 关于我们
-
-鱼鸢网络是一家新兴的互联网科技公司，我们的使命愿景是 “用科技节约您的每一分钟”。
-
-我们希望通过科技创新，为您提升学习、工作、生活、以及获取信息的效率，拥抱更美好的未来。
+魚皮創立的公司 —— 魚鳶網路，我們的官網：[https://www.yuyuanweb.com](https://www.yuyuanweb.com)
 
 
 
-## 业务领域
+## 關於我們
 
-自研创新产品 + 编程教育 + 科技自媒体
+魚鳶網路是一家新興的網際網路科技公司，我們的使命願景是 “用科技節約您的每一分鐘”。
+
+我們希望透過科技創新，為您提升學習、工作、生活、以及獲取資訊的效率，擁抱更美好的未來。
 
 
 
-## 产品服务
+## 業務領域
 
-### 自研产品
+自研創新產品 + 程式設計教育 + 科技自媒體
 
-#### 老鱼简历
 
-老鱼简历：[https://laoyujianli.com](https://laoyujianli.com)（快速制作精美专业的个人简历）
 
-[我做了个网站，帮你写出满分简历！](产品/老鱼简历/我做了个网站，帮你写出满分简历！.md)
+## 產品服務
 
-[我在简历上写了这个，超级加分！](产品/老鱼简历/我在简历上写了这个，超级加分！.md)
+### 自研產品
 
-[要来了我们实习生的简历，仅供参考。。](产品/老鱼简历/要来了我们实习生的简历，仅供参考。。.md)
+#### 老魚簡歷
 
-#### 鱼聪明
-鱼聪明 AI：[https://yucongming.com](https://yucongming.com)（智能 AI 助手，写书问答绘画）
+老魚簡歷：[https://laoyujianli.com](https://laoyujianli.com)（快速製作精美專業的個人簡歷）
 
-[工具 - 无门槛 AI 对话  绘画神器](产品/鱼聪明/工具%20-%20无门槛%20AI%20对话%20%20绘画神器.md)
+[我做了個網站，幫你寫出滿分簡歷！](產品/老魚簡歷/我做了個網站，幫你寫出滿分簡歷！.md)
 
-#### 代码小抄
-[工具 - 简单易用的代码分享神器](产品/代码小抄/工具%20-%20简单易用的代码分享神器.md)
+[我在簡歷上寫了這個，超級加分！](產品/老魚簡歷/我在簡歷上寫了這個，超級加分！.md)
 
-#### 剪切板助手
+[要來了我們實習生的簡歷，僅供參考。。](產品/老魚簡歷/要來了我們實習生的簡歷，僅供參考。。.md)
 
-[我们做的小工具上线啦！（剪切助手上线）](产品/剪切板助手/工具 - 高颜值的剪切板助手)
+#### 魚聰明
+魚聰明 AI：[https://yucongming.com](https://yucongming.com)（智慧 AI 助手，寫書問答繪畫）
 
-#### 公益项目
-框框大学：[https://kkdaxue.com](https://kkdaxue.com)（公益项目，大学各专业学习建议汇总）
+[工具 - 無門檻 AI 對話  繪畫神器](產品/魚聰明/工具%20-%20無門檻%20AI%20對話%20%20繪畫神器.md)
+
+#### 程式碼小抄
+[工具 - 簡單易用的程式碼分享神器](產品/程式碼小抄/工具%20-%20簡單易用的程式碼分享神器.md)
+
+#### 剪下板助手
+
+[我們做的小工具上線啦！（剪下助手上線）](產品/剪下板助手/工具 - 高顏值的剪下板助手)
+
+#### 公益專案
+框框大學：[https://kkdaxue.com](https://kkdaxue.com)（公益專案，大學各專業學習建議彙總）
 
 #### 其他
 
-知识助手：[https://zhishizhushou.com](https://zhishizhushou.com)（强大的知识管理辅助工具）
+知識助手：[https://zhishizhushou.com](https://zhishizhushou.com)（強大的知識管理輔助工具）
 
-### 编程学习
+### 程式設計學習
 
-#### 后端求职突击 - 狂飙后端训练营
+#### 後端求職突擊 - 狂飆後端訓練營
 
-[150位，我们出成果了！](编程学习/后端求职突击-狂飙训练营/150位，我们出成果了！.md)
+[150位，我們出成果了！](程式設計學習/後端求職突擊-狂飆訓練營/150位，我們出成果了！.md)
 
-#### 编程宝典
+#### 程式設計寶典
 
-[我的编程宝典网站上线啦！](编程学习/编程宝典/我的编程宝典网站上线啦！.md)
+[我的程式設計寶典網站上線啦！](程式設計學習/程式設計寶典/我的程式設計寶典網站上線啦！.md)
 
-### 编程教育
+### 程式設計教育
 
-[💎 学好编程 - 编程导航](https://yuyuanweb.feishu.cn/wiki/VC1qwmX9diCBK3kidyec74vFnde) 
+[💎 學好程式設計 - 程式設計導航](https://yuyuanweb.feishu.cn/wiki/VC1qwmX9diCBK3kidyec74vFnde) 
 
-编程导航网站：[https://www.codefather.cn](https://www.codefather.cn)（编程交流、面试题、简历修改平台）
+程式設計導航網站：[https://www.codefather.cn](https://www.codefather.cn)（程式設計交流、面試題、簡歷修改平臺）
 
-[后端突击 - 狂飙后端训练营](https://yuyuanweb.feishu.cn/wiki/EShmwklfJifDv4k4fCEcdp0Qnrd) 
+[後端突擊 - 狂飆後端訓練營](https://yuyuanweb.feishu.cn/wiki/EShmwklfJifDv4k4fCEcdp0Qnrd) 
 
-[前端突击 - 前端面试训练营](https://yuyuanweb.feishu.cn/wiki/UIoAwQAZLiDecgkVw65cQFoenKf)
+[前端突擊 - 前端面試訓練營](https://yuyuanweb.feishu.cn/wiki/UIoAwQAZLiDecgkVw65cQFoenKf)
 
-[考研陪跑 - 编程导航计狗上岸](https://yuyuanweb.feishu.cn/wiki/Qr35wx2dgif2wNkIwikc0jjRnyw) 
+[考研陪跑 - 程式設計導航計狗上岸](https://yuyuanweb.feishu.cn/wiki/Qr35wx2dgif2wNkIwikc0jjRnyw) 
 
 
 
-### 科技自媒体
+### 科技自媒體
 
-[程序员鱼皮](https://space.bilibili.com/12890453/)：编程知识、学习经验、科技科普、原创项目分享，全网粉丝量超 150 万
+[程式設計師魚皮](https://space.bilibili.com/12890453/)：程式設計知識、學習經驗、科技科普、原創專案分享，全網粉絲量超 150 萬
 
-编程导航：编程知识、编程学习经历分享
+程式設計導航：程式設計知識、程式設計學習經歷分享
 
-面试鸭：专注分享优质编程面试题的公众号
+面試鴨：專注分享優質程式設計面試題的公眾號
 
-无敌信息差：科技类前沿资讯热点分享
+無敵資訊差：科技類前沿資訊熱點分享
 
-鱼聪明 AI：AI 相关内容资讯分享
+魚聰明 AI：AI 相關內容資訊分享
 
 
 
 ## 合作伙伴
 
-我们的合作伙伴包括：
+我們的合作伙伴包括：
 
-1）50 多名编程、科技、知识领域的自媒体博主 / 技术专家
+1）50 多名程式設計、科技、知識領域的自媒體博主 / 技術專家
 
-2）微软官方认证的商业合作伙伴
+2）微軟官方認證的商業合作伙伴
 
-3）科大讯飞、Api Fox 等知名公司和产品合作
-
-
-
-## 团队信息
-
-[年轻快乐的团队](https://yuyuanweb.feishu.cn/wiki/DmB9wCm52iVVQLk98E2clx26nFg) 
+3）科大訊飛、Api Fox 等知名公司和產品合作
 
 
 
-## 加入我们
+## 團隊資訊
 
-[招聘岗位](https://yuyuanweb.feishu.cn/wiki/GlMiw80xIiOC3PkQb59c5ecKnoH) 
+[年輕快樂的團隊](https://yuyuanweb.feishu.cn/wiki/DmB9wCm52iVVQLk98E2clx26nFg) 
 
 
 
-## 商务合作
+## 加入我們
 
-点击联系我们：[商务合作](https://yuyuanweb.feishu.cn/wiki/AOzgw1mOliX6SskAVEicK6u7nDA) 
+[招聘崗位](https://yuyuanweb.feishu.cn/wiki/GlMiw80xIiOC3PkQb59c5ecKnoH) 
+
+
+
+## 商務合作
+
+點選聯絡我們：[商務合作](https://yuyuanweb.feishu.cn/wiki/AOzgw1mOliX6SskAVEicK6u7nDA) 

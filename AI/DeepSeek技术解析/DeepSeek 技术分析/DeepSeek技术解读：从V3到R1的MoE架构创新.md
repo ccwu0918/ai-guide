@@ -1,671 +1,671 @@
-## DeepSeek技术解读：从V3到R1的MoE架构创新
+## DeepSeek技術解讀：從V3到R1的MoE架構創新
 
-首先简单提一下MoE的发展历史，早在1991年一篇名为《[Adaptive Mixtures of Local Experts](https://link.zhihu.com/?target=https%3A//ieeexplore.ieee.org/abstract/document/6797059) 》的研究，最早提出了[Mixture of Experts](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=Mixture+of+Experts&zhida_source=entity)的原型框架，如图1，直至今日，MoE的框架依然保持这种方式。
+首先簡單提一下MoE的發展歷史，早在1991年一篇名為《[Adaptive Mixtures of Local Experts](https://link.zhihu.com/?target=https%3A//ieeexplore.ieee.org/abstract/document/6797059) 》的研究，最早提出了[Mixture of Experts](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=Mixture+of+Experts&zhida_source=entity)的原型框架，如圖1，直至今日，MoE的框架依然保持這種方式。
 
 ![img](https://pic.yupi.icu/yuyi/1739504717902-2954b618-90a5-4b46-a6fc-bdc01a8be919.png)
 
-图1、Adaptive Mixtures of Local Experts 框图
+圖1、Adaptive Mixtures of Local Experts 框圖
 
 
-**MoE(Mixture of Experts)是一种网络层结构， 网络层主要包括三部分：**
+**MoE(Mixture of Experts)是一種網路層結構， 網路層主要包括三部分：**
 
-- [**专家网络**](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=专家网络&zhida_source=entity)**(Expert Network)**：[前馈网络](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=前馈网络&zhida_source=entity)，逻辑上一个专家网络擅长处理一类专项的子任务，所有专家都接受相同的输入，来做特定计算处理，产出不同的输出
-- [**门控网络**](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=门控网络&zhida_source=entity)**(Gating Network)**：跟专家网络接收一样的输入，负责产出专家偏好的权重。来指示对于一个输入，不同专家的重要程度。
-- **选择器(selector)**：根据专家权重来做专家选择的策略。可以选择权重最高的Top1专家或选择TopK专家来融合得到最终的结果。
+- [**專家網路**](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=專家網路&zhida_source=entity)**(Expert Network)**：[前饋網路](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=前饋網路&zhida_source=entity)，邏輯上一個專家網路擅長處理一類專項的子任務，所有專家都接受相同的輸入，來做特定計算處理，產出不同的輸出
+- [**門控網路**](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=門控網路&zhida_source=entity)**(Gating Network)**：跟專家網路接收一樣的輸入，負責產出專家偏好的權重。來指示對於一個輸入，不同專家的重要程度。
+- **選擇器(selector)**：根據專家權重來做專家選擇的策略。可以選擇權重最高的Top1專家或選擇TopK專家來融合得到最終的結果。
 
-随后一段时间，主要是Google在主导着MoE的发展。进入Transformer时代后，2020年Google把模型训到了600B的规模，在Transformer上做MoE的经典设计，主要包括Transformer MoE层设计和辅助负载均衡损失。
+隨後一段時間，主要是Google在主導著MoE的發展。進入Transformer時代後，2020年Google把模型訓到了600B的規模，在Transformer上做MoE的經典設計，主要包括Transformer MoE層設計和輔助負載均衡損失。
 
-**Transformer** [**MoE层**](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=2&q=MoE层&zhida_source=entity)：MoE层替换Transformer的FFN层，计算逻辑：对于一个token 分别通过门控网络和专家网络计算门控值和专家输出，然后用门控值加权多个专家输出来产出最终结果。具体如下：
+**Transformer** [**MoE層**](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=2&q=MoE層&zhida_source=entity)：MoE層替換Transformer的FFN層，計算邏輯：對於一個token 分別透過門控網路和專家網路計算門控值和專家輸出，然後用門控值加權多個專家輸出來產出最終結果。具體如下：
 
-- 门控计算：
+- 門控計算：
 
 (1)[gs,1,gs,2,...,gs,E]=softmax(wg.xs)
 
-- 专家计算（专家就是FFN网络）
+- 專家計算（專家就是FFN網路）
 
 (2)FFNe(xs)=Woe.ReLU(Wie.xs)
 
-多专家结果加权就和得到MoE的输出(3)ys=∑e=1Egs,e.FFNe(xs)
+多專家結果加權就和得到MoE的輸出(3)ys=∑e=1Egs,e.FFNe(xs)
 
-注：这里的专家是**token级专家**，而不是样本粒度，每个token都会做专家路由。此外专家是**稀疏激活**的，是根据门控值取topK个专家来融合计算最终的结果。GShard最多激活权重最高的2个专家。
+注：這裡的專家是**token級專家**，而不是樣本粒度，每個token都會做專家路由。此外專家是**稀疏啟用**的，是根據門控值取topK個專家來融合計算最終的結果。GShard最多啟用權重最高的2個專家。
 
-**负载均衡-辅助损失**：引入负载均衡损失，目的是解决多专家token分布不均的问题。因为如果完全按门控权重选取topk专家，容易导致训练过程出现负载不均衡的问题。比如：大多数token被分配到少数几个专家，导致只有少数专家数据通信繁忙造成拥堵，从而减缓训练速度；也会导致其他专家得不到充分训练。为了解决这个问题，定义了一个辅助损失（[aux_loss](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=aux_loss&zhida_source=entity)）来降低负载不均衡问题。
+**負載均衡-輔助損失**：引入負載均衡損失，目的是解決多專家token分佈不均的問題。因為如果完全按門控權重選取topk專家，容易導致訓練過程出現負載不均衡的問題。比如：大多數token被分配到少數幾個專家，導致只有少數專家資料通訊繁忙造成擁堵，從而減緩訓練速度；也會導致其他專家得不到充分訓練。為了解決這個問題，定義了一個輔助損失（[aux_loss](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=aux_loss&zhida_source=entity)）來降低負載不均衡問題。
 
-那么怎么定义负载均衡的辅助损失？
+那麼怎麼定義負載均衡的輔助損失？
 
-考虑每个专家收到的token占总token的比例，分别为： c1S,c2S,...,cES ，其中 S 表示token的数量， {1,2,...,E} 表示专家集合， ce 表示第 e 个专家接受的token数量。如果是负载均衡的，那么每个专家收到的token一样多，token比例 ciS 值一样。
+考慮每個專家收到的token佔總token的比例，分別為： c1S,c2S,...,cES ，其中 S 表示token的數量， {1,2,...,E} 表示專家集合， ce 表示第 e 個專家接受的token數量。如果是負載均衡的，那麼每個專家收到的token一樣多，token比例 ciS 值一樣。
 
-我们可以用每个专家收到的token比例的[平方和](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=平方和&zhida_source=entity)来描述负载均衡损失，如下公式 (4) 所示。当所有专家收到token比例都相等时， laux 取最小值。 (4)laux=1E∑e=1E(ceS)2
+我們可以用每個專家收到的token比例的[平方和](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=平方和&zhida_source=entity)來描述負載均衡損失，如下公式 (4) 所示。當所有專家收到token比例都相等時， laux 取最小值。 (4)laux=1E∑e=1E(ceS)2
 
-但由于公式 (1) 是参数无关的量，不可梯度更新。作者用每个专家的门控权重的均值 me 作为 ceS 的近似。如公式 (5)
+但由於公式 (1) 是引數無關的量，不可梯度更新。作者用每個專家的門控權重的均值 me 作為 ceS 的近似。如公式 (5)
 
 (5)me=1S∑s=1Sgs,e
 
-其中 gs,e 为公式 (1) 针对token s 计算的专家 e 的门控权重。
+其中 gs,e 為公式 (1) 針對token s 計算的專家 e 的門控權重。
 
-在这里要再弄再搞清楚两个问题：
+在這裡要再弄再搞清楚兩個問題：
 
-问题1：公式 (5) 计算的 me为什么可以看作是 ceS 的近似？
-答：直观理解，我们假设极端情况下每个token最多分配给1个专家，那么可以假设被激活的专家的权重可以是1，其他专家权重都是0，这样对于专家 e 来说， 可以计算得到 me=ceS 。另外从定义上 me=1S∑s=1Sgs,e 表示token集合 S 分配给专家 e 的token概率，如果不考虑token分配的完整性。这其实就是 ceS 的定义。只不过 me 是个soft的计算方式，而 ceS 是取TopK的hard计算的。理解上可再参考下示例图，图示展示有6个专家，在6个token上计算，取Top1专家激活。左图每一行是多专家softmax的结果。左边按列加和计算 ∑s=1Sgs,e=me×S 其实是计算分配给专家 e 的token数，是soft的计算，右边按列加和计算 ce 也是计算分配给专家 i 的token数，是hard的计算。 ci 和 me×S 的值是近似的（四舍五入取整的结果），也就是 ce≈me×S ，所以me可以近似看作是 ceS 。
+問題1：公式 (5) 計算的 me為什麼可以看作是 ceS 的近似？
+答：直觀理解，我們假設極端情況下每個token最多分配給1個專家，那麼可以假設被啟用的專家的權重可以是1，其他專家權重都是0，這樣對於專家 e 來說， 可以計算得到 me=ceS 。另外從定義上 me=1S∑s=1Sgs,e 表示token集合 S 分配給專家 e 的token機率，如果不考慮token分配的完整性。這其實就是 ceS 的定義。只不過 me 是個soft的計算方式，而 ceS 是取TopK的hard計算的。理解上可再參考下示例圖，圖示展示有6個專家，在6個token上計算，取Top1專家啟用。左圖每一行是多專家softmax的結果。左邊按列加和計算 ∑s=1Sgs,e=me×S 其實是計算分配給專家 e 的token數，是soft的計算，右邊按列加和計算 ce 也是計算分配給專家 i 的token數，是hard的計算。 ci 和 me×S 的值是近似的（四捨五入取整的結果），也就是 ce≈me×S ，所以me可以近似看作是 ceS 。
 
 ![img](https://pic.yupi.icu/yuyi/1739504718170-ffbaeed0-4139-45f7-8edd-ee4f686fca0d.png)
 
-问题2：这样近似计算有什么好处？
-答：因为 me 计算引入了门控 gs,e 项， gs,e 计算如公式(1)所示，包括的可学习参数 wg ，保证了这个一个可微的计算，可以做梯度更新。
+問題2：這樣近似計算有什麼好處？
+答：因為 me 計算引入了門控 gs,e 項， gs,e 計算如公式(1)所示，包括的可學習引數 wg ，保證了這個一個可微的計算，可以做梯度更新。
 
-我们用 me 把公式 (4) 改造下，将平方项的一个分量替换成 me ，如公式 (6) :
+我們用 me 把公式 (4) 改造下，將平方項的一個分量替換成 me ，如公式 (6) :
 
-(6)laux=1E∑e=1E(ceS)×me公式 (6) 就是我们经常看到的负载均衡loss形式。这里也要注意，**对于专家级的负载均衡的loss是加到每个MoE层的，每层都有一个** laux **辅助损失。**
+(6)laux=1E∑e=1E(ceS)×me公式 (6) 就是我們經常看到的負載均衡loss形式。這裡也要注意，**對於專家級的負載均衡的loss是加到每個MoE層的，每層都有一個** laux **輔助損失。**
 
-上面对MoE有了基本的认识，我们接下来看看DeepSeek在MoE方面的工作。DeepSeek的最新模型DeepSeek-V3和DeepSeek-R1都属于MoE（混合专家）架构，并在开源世界产生了较大的影响力。特别是2025 年 1 月开源的DeepSeek-R1，模型性能可挑战 OpenAI 闭源的 o1 模型。
+上面對MoE有了基本的認識，我們接下來看看DeepSeek在MoE方面的工作。DeepSeek的最新模型DeepSeek-V3和DeepSeek-R1都屬於MoE（混合專家）架構，並在開源世界產生了較大的影響力。特別是2025 年 1 月開源的DeepSeek-R1，模型效能可挑戰 OpenAI 閉源的 o1 模型。
 
-## 1 V3与R1的主要特征
+## 1 V3與R1的主要特徵
 
-DeepSeek-R1的模型架构来自于V3，甚至可以说R1是具有推理（Reasoning）能力的V3。下面先分别分析V3和R1的架构特征。
+DeepSeek-R1的模型架構來自於V3，甚至可以說R1是具有推理（Reasoning）能力的V3。下面先分別分析V3和R1的架構特徵。
 
-### 1.1 V3/R1架构特征
+### 1.1 V3/R1架構特徵
 
-DeepSeek-V3 是一个混合专家 (MoE)语言模型，具有 6710 亿(671B)参数，其中每个Token（词元）的计算约激活 370 亿（37B）参数。这个模型参数量与GPT-4大致在同一数量级。
+DeepSeek-V3 是一個混合專家 (MoE)語言模型，具有 6710 億(671B)引數，其中每個Token（詞元）的計算約啟用 370 億（37B）引數。這個模型引數量與GPT-4大致在同一數量級。
 
-**‌MoE（Mixture of Experts）是组合多个专家模型提升深度学习模型性能和效率的架构。‌其核心思想是通过引入多个**[**专家模型**](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=2&q=专家模型&zhida_source=entity)**（Experts），每个输入数据只选择和激活其中的一部分专家模型进行处理，从而减少计算量，提高训练和推理速度。‌MoE的概念在1991年就已提出，训练不容易收敛是其在大模型领域应用的主要障碍。**
+**‌MoE（Mixture of Experts）是組合多個專家模型提升深度學習模型效能和效率的架構。‌其核心思想是透過引入多個**[**專家模型**](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=2&q=專家模型&zhida_source=entity)**（Experts），每個輸入資料只選擇和啟用其中的一部分專家模型進行處理，從而減少計算量，提高訓練和推理速度。‌MoE的概念在1991年就已提出，訓練不容易收斂是其在大模型領域應用的主要障礙。**
 
 ![img](https://pic.yupi.icu/yuyi/1739504717871-b1e1b809-d0a6-47fb-b060-7183b83d33ca.png)
 
-MoE模型基本结构示意（来源：网络）
+MoE模型基本結構示意（來源：網路）
 
-DeepSeek-V3 采用了多头潜注意力 (MLA，对传统[多头注意力](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=多头注意力&zhida_source=entity)机制的改进) 和 DeepSeekMoE 架构（对传统MoE架构的改进），无辅助损失的负载平衡策略等创新技术，基于 14.8 万亿Token的数据进行训练，在代码生成、分析等任务中表现出色。
+DeepSeek-V3 採用了多頭潛注意力 (MLA，對傳統[多頭注意力](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=多頭注意力&zhida_source=entity)機制的改進) 和 DeepSeekMoE 架構（對傳統MoE架構的改進），無輔助損失的負載平衡策略等創新技術，基於 14.8 萬億Token的資料進行訓練，在程式碼生成、分析等任務中表現出色。
 
-其中多头潜注意力 (MLA) 机制和DeepSeekMoE是V3和R1模型提高计算效率，减少算力浪费的关键。其中MLA大概贡献了2-4倍的计算效率提升，MoE大概贡献了4倍以上的计算效率提升。
+其中多頭潛注意力 (MLA) 機制和DeepSeekMoE是V3和R1模型提高計算效率，減少算力浪費的關鍵。其中MLA大概貢獻了2-4倍的計算效率提升，MoE大概貢獻了4倍以上的計算效率提升。
 
 **1）MLA（Multi-Head Latent Attention）**
 
-在“attention”大一统的背景下，传统的多头注意力（MHA，Multi-Head Attention）的键值（KV）缓存机制事实上对计算效率形成了较大阻碍。缩小KV缓存（KV Cache）大小，并提高性能，在之前的模型架构中并未很好的解决。DeepSeek引入了MLA，一种通过低秩键值联合压缩的注意力机制，在显著减小KV缓存的同时提高计算效率。[低秩近似](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=低秩近似&zhida_source=entity)是快速矩阵计算的常用方法，在MLA之前很少用于大模型计算。在这里我们可以看到DeepSeek团队的量化金融基因在发挥关键作用。当然实现潜空间表征不止低秩近似一条路，预计后面会有更精准高效的方法。
+在“attention”大一統的背景下，傳統的多頭注意力（MHA，Multi-Head Attention）的鍵值（KV）快取機制事實上對計算效率形成了較大阻礙。縮小KV快取（KV Cache）大小，並提高效能，在之前的模型架構中並未很好的解決。DeepSeek引入了MLA，一種透過低秩鍵值聯合壓縮的注意力機制，在顯著減小KV快取的同時提高計算效率。[低秩近似](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=低秩近似&zhida_source=entity)是快速矩陣計算的常用方法，在MLA之前很少用於大模型計算。在這裡我們可以看到DeepSeek團隊的量化金融基因在發揮關鍵作用。當然實現潛空間表徵不止低秩近似一條路，預計後面會有更精準高效的方法。
 
-从大模型架构的演进情况来看，Prefill和KV Cache容量瓶颈的问题正一步步被新的模型架构攻克，巨大的KV Cache正逐渐成为历史。（事实上在2024年6月发布DeepSeek-V2的时候就已经很好的降低了[KV Cache](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=4&q=KV+Cache&zhida_source=entity)的大小）
+從大模型架構的演進情況來看，Prefill和KV Cache容量瓶頸的問題正一步步被新的模型架構攻克，巨大的KV Cache正逐漸成為歷史。（事實上在2024年6月釋出DeepSeek-V2的時候就已經很好的降低了[KV Cache](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=4&q=KV+Cache&zhida_source=entity)的大小）
 
 **2）DeepSeekMoE**
 
-为了MoE架构更好的融入大模型体系，克服传统[MoE模型](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=2&q=MoE模型&zhida_source=entity)的训练难题。DeepSeek采用了细粒度专家+通才专家的思路，不再使用少数大专家的结构，而是使用大量极小的专家结构。这个思路的本质在于将知识空间进行离散细化，以更好的逼近连续的多维知识空间，是一个非常好的方法。
+為了MoE架構更好的融入大模型體系，克服傳統[MoE模型](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=2&q=MoE模型&zhida_source=entity)的訓練難題。DeepSeek採用了細粒度專家+通才專家的思路，不再使用少數大專家的結構，而是使用大量極小的專家結構。這個思路的本質在於將知識空間進行離散細化，以更好的逼近連續的多維知識空間，是一個非常好的方法。
 
-无辅助损失的负载平衡策略可在不依赖辅助损失函数的情况下平衡分配计算/训练负载，更好的提高训练稳定性。
+無輔助損失的負載平衡策略可在不依賴輔助損失函式的情況下平衡分配計算/訓練負載，更好的提高訓練穩定性。
 
-基于以上关键的改进，V3实现了更高的训练效率，比性能类似的 Llama 3.1 405B 少了大约 10 倍的训练计算量。
+基於以上關鍵的改進，V3實現了更高的訓練效率，比效能類似的 Llama 3.1 405B 少了大約 10 倍的訓練計算量。
 
-### 1.2 R1在CoT的进化
+### 1.2 R1在CoT的進化
 
-广义上的DeepSeek-R1 不是一个单一的模型，还包括了R1的初始阶段模型DeepSeek-R1-Zero，以及几个基于[R1蒸馏](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=R1蒸馏&zhida_source=entity)的较小的大模型。在这里我们主要讨论R1-Zero和R1。
+廣義上的DeepSeek-R1 不是一個單一的模型，還包括了R1的初始階段模型DeepSeek-R1-Zero，以及幾個基於[R1蒸餾](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=R1蒸餾&zhida_source=entity)的較小的大模型。在這裡我們主要討論R1-Zero和R1。
 
 ### 1.2.1 DeepSeek-R1-Zero
 
-DeepSeek-R1-Zero最大的特点在于，该模型仅使用强化学习进行的训练，通过各种[思维链](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=思维链&zhida_source=entity)（CoT，Chain of Thought）数据特别是Long CoT数据来激活模型的推理能力。
+DeepSeek-R1-Zero最大的特點在於，該模型僅使用強化學習進行的訓練，透過各種[思維鏈](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=思維鏈&zhida_source=entity)（CoT，Chain of Thought）資料特別是Long CoT資料來啟用模型的推理能力。
 
-DeepSeek-R1-Zero 是一个独特的通过大规模强化学习 (RL，Reinforcement Learning) 训练的模型，无需有监督微调 (SFT，Supervised Fine-Tuning) ，具备较强的推理（Reasoning）能力。
+DeepSeek-R1-Zero 是一個獨特的透過大規模強化學習 (RL，Reinforcement Learning) 訓練的模型，無需有監督微調 (SFT，Supervised Fine-Tuning) ，具備較強的推理（Reasoning）能力。
 
-**‌首先要区分两个容易混淆的概念：Reasoning（推理）‌：通过对事实的考虑和分析来得出结论的过程。推理强调的是思考和决策的过程，比“推断”具有更多的逻辑和分析过程。 ‌‌Inference‌（推断）：基于已有信息或数据推导出新的信息或结论的过程。推断侧重于通过既定的算法或模型来实现，与“推理”相比，更强调形式化和计算过程。‌**
+**‌首先要區分兩個容易混淆的概念：Reasoning（推理）‌：透過對事實的考慮和分析來得出結論的過程。推理強調的是思考和決策的過程，比“推斷”具有更多的邏輯和分析過程。 ‌‌Inference‌（推斷）：基於已有資訊或資料推匯出新的資訊或結論的過程。推斷側重於透過既定的演算法或模型來實現，與“推理”相比，更強調形式化和計算過程。‌**
 
-R1-Zero展示出自我验证、反思和长链思维推理能力，甚至在推理方面得分略微超过R1。虽然R1-Zero有一些明显的局限性，特别是在输出可读性和语言一致性方面，仍需要解决可读性差和语言混合等问题。
+R1-Zero展示出自我驗證、反思和長鏈思維推理能力，甚至在推理方面得分略微超過R1。雖然R1-Zero有一些明顯的侷限性，特別是在輸出可讀性和語言一致性方面，仍需要解決可讀性差和語言混合等問題。
 
-这大概是第一个公开验证大模型的推理（Reasoning）能力可以仅通过 强化学习来完成训练。现在看来，R1-Zero的价值远超R1。按照NLP领域对语言的理解，人类的自然语言并不是最完美的推理语言。在R1-Zero的进一步进化过程中，或许可以构建出更适合推理的混合语言IR，建立更高效的推演体系。
+這大概是第一個公開驗證大模型的推理（Reasoning）能力可以僅透過 強化學習來完成訓練。現在看來，R1-Zero的價值遠超R1。按照NLP領域對語言的理解，人類的自然語言並不是最完美的推理語言。在R1-Zero的進一步進化過程中，或許可以構建出更適合推理的混合語言IR，建立更高效的推演體系。
 
 ### 1.2.2 DeepSeek-R1
 
-相比之下，DeepSeek-R1采用了多阶段训练方法，加入了SFT，而不是采用纯粹的强化学习，R1从一小组精心挑选的示例数据（称为“[冷启动数据](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=冷启动数据&zhida_source=entity)”）进行有监督微调（SFT），再进入强化学习。这种方法改善了 DeepSeek-R1-Zero 的语言可读性和连贯性，同时在推理之外的测试中实现了更好的性能。
+相比之下，DeepSeek-R1採用了多階段訓練方法，加入了SFT，而不是採用純粹的強化學習，R1從一小組精心挑選的示例資料（稱為“[冷啟動資料](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=冷啟動資料&zhida_source=entity)”）進行有監督微調（SFT），再進入強化學習。這種方法改善了 DeepSeek-R1-Zero 的語言可讀性和連貫性，同時在推理之外的測試中實現了更好的效能。
 
 ![img](https://pic.yupi.icu/yuyi/1739504718443-b8017ec5-b78e-4139-ac86-b9b7586199b5.png)
 
-DeepSeek-V3整体架构（来源：DeepSeek）
+DeepSeek-V3整體架構（來源：DeepSeek）
 
-## 2 V3/R1的架构提升
+## 2 V3/R1的架構提升
 
-### 2.1 多头潜注意力 (MLA)
+### 2.1 多頭潛注意力 (MLA)
 
-### 2.1.1 从KV Cache（[KV缓存](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=3&q=KV缓存&zhida_source=entity)）说起
+### 2.1.1 從KV Cache（[KV快取](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=3&q=KV快取&zhida_source=entity)）說起
 
-当使用传统 Transformer 在推断（Inference）过程中计算并生成 Token（词元）时，模型需要读入所有过去 Token 的上下文，以决定接下来输出什么Token。最直观的方法就是简单的再次进行一次包括所有过去 Token 的[前向传播](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=前向传播&zhida_source=entity)（计算）。
+當使用傳統 Transformer 在推斷（Inference）過程中計算並生成 Token（詞元）時，模型需要讀入所有過去 Token 的上下文，以決定接下來輸出什麼Token。最直觀的方法就是簡單的再次進行一次包括所有過去 Token 的[前向傳播](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=前向傳播&zhida_source=entity)（計算）。
 
 ![img](https://pic.yupi.icu/yuyi/1739504718004-73dcaf10-1b09-4c97-87dc-350ce0505b68.png)
 
-KV Cache（来源：互联网）
+KV Cache（來源：網際網路）
 
-传统的基于 Transformer 的模型在推理过程中会计算每个键值 (KV) 对，但事实上这种方法效率并不高，因为大部分过去的 Token 已经在上一次计算中处理过了，重复计算会产生大量的浪费。
+傳統的基於 Transformer 的模型在推理過程中會計算每個鍵值 (KV) 對，但事實上這種方法效率並不高，因為大部分過去的 Token 已經在上一次計算中處理過了，重複計算會產生大量的浪費。
 
-目前常用的方法是缓存所有过去 Token 的相关内部状态，主要是[注意力机制](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=3&q=注意力机制&zhida_source=entity)中的键（Key）和值（Value）向量。这也是键值缓存（简称 KV 缓存）名称的由来。
+目前常用的方法是快取所有過去 Token 的相關內部狀態，主要是[注意力機制](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=3&q=注意力機制&zhida_source=entity)中的鍵（Key）和值（Value）向量。這也是鍵值快取（簡稱 KV 快取）名稱的由來。
 
 ![img](https://pic.yupi.icu/yuyi/1739504718848-a5879ade-a777-4579-8c98-ec9f3a1a3034.png)
 
-不同注意力机制的对比（来源：DeepSeek V2）
+不同注意力機制的對比（來源：DeepSeek V2）
 
-目前开源大模型中的主流方法是分组查询注意力（Grouped-Query Attention）机制。在这种机制中，为每对键和值头分配多个查询头，将查询头有效的分组在一起。在 Llama 3.3 70B 和 Mistral Large 2 等模型中，仅[分组查询注意力机制](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=分组查询注意力机制&zhida_source=entity)就将 KV 缓存大小减少了大约一个数量级。
+目前開源大模型中的主流方法是分組查詢注意力（Grouped-Query Attention）機制。在這種機制中，為每對鍵和值頭分配多個查詢頭，將查詢頭有效的分組在一起。在 Llama 3.3 70B 和 Mistral Large 2 等模型中，僅[分組查詢注意力機制](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=分組查詢注意力機制&zhida_source=entity)就將 KV 快取大小減少了大約一個數量級。
 
-### 2.1.2 MLA的原理与优势
+### 2.1.2 MLA的原理與優勢
 
-DeepSeek使用的Multi-Head Latent Attention技术可大大节省KV缓存，从而显著降低了计算成本。
+DeepSeek使用的Multi-Head Latent Attention技術可大大節省KV快取，從而顯著降低了計算成本。
 
-MLA的本质是对KV的有损压缩，提高存储信息密度的同时尽可能保留关键细节。该方法首次在 DeepSeek-V2 中引入，与分组查询和多查询注意力等方法相比，MLA是目前开源模型里显著减小 KV 缓存大小的最佳方法。
+MLA的本質是對KV的有失真壓縮，提高儲存資訊密度的同時儘可能保留關鍵細節。該方法首次在 DeepSeek-V2 中引入，與分組查詢和多查詢注意力等方法相比，MLA是目前開源模型裡顯著減小 KV 快取大小的最佳方法。
 
-MLA的方法是将KV矩阵转换为低秩形式：将原矩阵表示为两个较小矩阵（相当于潜向量）的乘积，在推断过程中，仅缓存潜向量，而不缓存完整的键KV。这规避了分组查询注意力和多查询注意力的查询的信息损失，从而在降低KV缓存的前提下获得更好的性能。
+MLA的方法是將KV矩陣轉換為低秩形式：將原矩陣表示為兩個較小矩陣（相當於潛向量）的乘積，在推斷過程中，僅快取潛向量，而不快取完整的鍵KV。這規避了分組查詢注意力和多查詢注意力的查詢的資訊損失，從而在降低KV快取的前提下獲得更好的效能。
 
 ![img](https://pic.yupi.icu/yuyi/1739504719103-d47530eb-d50a-449c-b9c2-286f07959828.png)
 
-矩阵的低秩近似（来源：互联网）
+矩陣的低秩近似（來源：網際網路）
 
-另外为了与MLA技术的低秩KV压缩兼容，DeepSeek也将编码方式RoPE 进行了改进，使V2/V3/R1获得了长上下文的外延能力。
+另外為了與MLA技術的低秩KV壓縮相容，DeepSeek也將編碼方式RoPE 進行了改進，使V2/V3/R1獲得了長上下文的外延能力。
 
 ![img](https://pic.yupi.icu/yuyi/1739504719549-8614732c-69e5-474c-88d6-e543d0668915.png)
 
-MLA方法有效降低KV Cache和训练成本（来源：DeepSeek）
+MLA方法有效降低KV Cache和訓練成本（來源：DeepSeek）
 
-### 2.1.4 MLA是颠覆性创新吗？
+### 2.1.4 MLA是顛覆性創新嗎？
 
-我们认为MLA是个非常有趣且先进的创新，这一工作建立在对注意力机制深度理解的之上，并且需要进行大胆谨慎的验证。限于算力条件和个人ROI，能够独立完成这一创新的团队并不多。能做出MLA这样的工作，确实是达到国际一线架构水平了。换一个角度看，MLA也是建立在DeepSeek团队的量化金融基因之上，不禁让我们联想到优秀的量化码农对每个矩阵计算的FPGA底层优化。
+我們認為MLA是個非常有趣且先進的創新，這一工作建立在對注意力機制深度理解的之上，並且需要進行大膽謹慎的驗證。限於算力條件和個人ROI，能夠獨立完成這一創新的團隊並不多。能做出MLA這樣的工作，確實是達到國際一線架構水平了。換一個角度看，MLA也是建立在DeepSeek團隊的量化金融基因之上，不禁讓我們聯想到優秀的量化碼農對每個矩陣計算的FPGA底層最佳化。
 
 ![img](https://pic.yupi.icu/yuyi/1739504720135-760b9839-5597-4f52-9261-548f7ed65f53.png)
 
-MLA之外的KV Cache优化方法（来源：武汉大学）
+MLA之外的KV Cache最佳化方法（來源：武漢大學）
 
-我们认为，MLA之后，应该还会有QMLA（量化MLA）或者CMLA（压缩MLA），甚至是超越现有Attention模式的技术出现，而用了很多年的Transformer也将经历大的变革。真正的颠覆创新可能，正摆在DeepSeek和国内其他大模型团队的面前。
+我們認為，MLA之後，應該還會有QMLA（量化MLA）或者CMLA（壓縮MLA），甚至是超越現有Attention模式的技術出現，而用了很多年的Transformer也將經歷大的變革。真正的顛覆創新可能，正擺在DeepSeek和國內其他大模型團隊的面前。
 
-### 2.2 MoE架构与辅助无损负载均衡
+### 2.2 MoE架構與輔助無損負載均衡
 
-### 2.2.1 MoE与Dense模型的混战
+### 2.2.1 MoE與Dense模型的混戰
 
-目前的主流的大模型架构可以分为Dense（稠密）架构和MoE架构。
+目前的主流的大模型架構可以分為Dense（稠密）架構和MoE架構。
 
-**‌Dense模型‌在深度学习中通常指的是一种全部神经元都参与计算的网络结构。这种结构使得模型能够充分利用数据特征，并且训练过程中参数共享，减少了计算量和**[**过拟合**](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=过拟合&zhida_source=entity)**的风险。**
+**‌Dense模型‌在深度學習中通常指的是一種全部神經元都參與計算的網路結構。這種結構使得模型能夠充分利用資料特徵，並且訓練過程中引數共享，減少了計算量和**[**過擬合**](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=過擬合&zhida_source=entity)**的風險。**
 
-一般来说，Dense模型可以视为仅有一个专家的MoE模型。在大模型领域，Dense模型和MoE各有各的应用场景和优势，MoE还无法代替Dense模型的行业应用。
+一般來說，Dense模型可以視為僅有一個專家的MoE模型。在大模型領域，Dense模型和MoE各有各的應用場景和優勢，MoE還無法代替Dense模型的行業應用。
 
 |      | **Dense模型**                                | **MoE模型**                                            |
 | ---- | -------------------------------------------- | ------------------------------------------------------ |
-| 优势 | 在专业领域计算参数量更少，更节省计算资源     | 在通用计算领域激活的参数少，更节省计算资源             |
-| 劣势 | 在通用领域需要激活更多的参数，计算资源消耗大 | 在专业领域无需多位专家，容易产生大量参数冗余，浪费资源 |
+| 優勢 | 在專業領域計算引數量更少，更節省計算資源     | 在通用計算領域啟用的引數少，更節省計算資源             |
+| 劣勢 | 在通用領域需要啟用更多的引數，計算資源消耗大 | 在專業領域無需多位專家，容易產生大量引數冗餘，浪費資源 |
 
-相比Dense模型，MoE主要增加了专家路由，通过门控（开或关）的方法，负责将数据流引向不同的专家模块。专家路由事实上引入了一个不连续的门控函数（对梯度计算不友好），这导致梯度下降优化方法在 MoE 训练中表现不佳，甚至出现“路由崩溃”，即模型容易陷入始终为每个 Token 激活相同的少数专家的窘境，而不是将计算合理的传播到所有的可用专家。这也是MoE模型训练的难点。
+相比Dense模型，MoE主要增加了專家路由，透過門控（開或關）的方法，負責將資料流引向不同的專家模組。專家路由事實上引入了一個不連續的門控函式（對梯度計算不友好），這導致梯度下降最佳化方法在 MoE 訓練中表現不佳，甚至出現“路由崩潰”，即模型容易陷入始終為每個 Token 啟用相同的少數專家的窘境，而不是將計算合理的傳播到所有的可用專家。這也是MoE模型訓練的難點。
 
-### 2.2.2 无辅助损耗负载均衡
+### 2.2.2 無輔助損耗負載均衡
 
-传统的规避路由崩溃的方法是强制“平衡路由”，即通过训练策略让每个专家在足够大的训练批次中被激活的次数大致相等。这一策略也就是“辅助损失”。但这种强制性的辅助损失会由于训练数据的结构不均衡特征，导致同领域的专家能力分散到不同的专家模块之中，极度损害MoE模型的性能。理想的 MoE 应该有一些经常访问高频通用信息，并具备其他访问较少的专业领域专家。如果强制平衡路由，将失去实现此类路由设置的能力，并且必须在不同的专家之间冗余地复制信息。
+傳統的規避路由崩潰的方法是強制“平衡路由”，即透過訓練策略讓每個專家在足夠大的訓練批次中被啟用的次數大致相等。這一策略也就是“輔助損失”。但這種強制性的輔助損失會由於訓練資料的結構不均衡特徵，導致同領域的專家能力分散到不同的專家模組之中，極度損害MoE模型的效能。理想的 MoE 應該有一些經常訪問高頻通用資訊，並具備其他訪問較少的專業領域專家。如果強制平衡路由，將失去實現此類路由設定的能力，並且必須在不同的專家之間冗餘地複製資訊。
 
-DeekSeek采用了“增加共享专家+无辅助损耗负载平衡”的方法解决这一问题。
+DeekSeek採用了“增加共享專家+無輔助損耗負載平衡”的方法解決這一問題。
 
-DeepSeek将专家分为两类：共享专家和路由专家。共享专家始终会被路由，在训练中重点确保路由专家的路由均衡。
+DeepSeek將專家分為兩類：共享專家和路由專家。共享專家始終會被路由，在訓練中重點確保路由專家的路由均衡。
 
 ![img](https://pic.yupi.icu/yuyi/1739504720251-0940d320-39ad-4bfa-96d3-a5674637a881.png)
 
-DeepSeekMoE与传统的多路由和细粒度专家MoE对比（来源：DeepSeek）
+DeepSeekMoE與傳統的多路由和細粒度專家MoE對比（來源：DeepSeek）
 
-无辅助损耗负载均衡（Auxiliary-Loss-Free Load Balancing）方法是将特定于专家的偏差项添加到路由机制和专家亲和力中。偏差项不会通过梯度下降进行更新，而是在整个训练过程中持续监控并进行调整以确保负载平衡。如果训练中某个专家没有获得合理的命中次数，可以在每个梯度步骤中微调偏差项增加命中概率。
+無輔助損耗負載均衡（Auxiliary-Loss-Free Load Balancing）方法是將特定於專家的偏差項新增到路由機制和專家親和力中。偏差項不會透過梯度下降進行更新，而是在整個訓練過程中持續監控並進行調整以確保負載平衡。如果訓練中某個專家沒有獲得合理的命中次數，可以在每個梯度步驟中微調偏差項增加命中機率。
 
-通过动态调整，DeepSeek-V3 在训练过程中获得了比有辅助损失均衡模型更好的性能。
+透過動態調整，DeepSeek-V3 在訓練過程中獲得了比有輔助損失均衡模型更好的效能。
 
-从模型架构分析看，我们认为这种分配策略可能还不是理论最优的，但该方法已经比强制辅助损失有了显著的改进。
+從模型架構分析看，我們認為這種分配策略可能還不是理論最優的，但該方法已經比強制輔助損失有了顯著的改進。
 
-### 2.2.3 MoE会是大模型的终局吗？
+### 2.2.3 MoE會是大模型的終局嗎？
 
-MoE架构自1991年提出后，就一直在与Dense架构共生发展。
+MoE架構自1991年提出後，就一直在與Dense架構共生髮展。
 
-DeepSeek R1的推出确实大大推动了开源MoE大模型的发展，并为MoE的落地应用提供了更多可能。但是我们也应看到，MoE模型与应用领域高度和TOC（Total Owning Cost，总拥有成本）密切相关，很多场景MoE未必比Dense模型好。
+DeepSeek R1的推出確實大大推動了開源MoE大模型的發展，併為MoE的落地應用提供了更多可能。但是我們也應看到，MoE模型與應用領域高度和TOC（Total Owning Cost，總擁有成本）密切相關，很多場景MoE未必比Dense模型好。
 
 ![img](https://pic.yupi.icu/yuyi/1739504721099-5c04e5d6-3dd5-4338-a999-929efa8a99d8.png)
 
-不同的MoE架构（来源：香港科技大学）
+不同的MoE架構（來源：香港科技大學）
 
-另外，MoE模型也有不同的细分架构类型。不是所有的MoE的参数量都远大于计算带宽要求。
+另外，MoE模型也有不同的細分架構型別。不是所有的MoE的引數量都遠大於計算頻寬要求。
 
-MoE架构的本质是模型参数分布式存储，MoE减少计算量的代价可能是不同专家模型的参数重复和总参数量增加，这往往也意味着更大更贵的HBM成本。外界传言的MoE模型可以更小，其实是指的MoE模型蒸馏的Dense模型可以兼顾参数量和推理（Reasoning）性能。
+MoE架構的本質是模型引數分散式儲存，MoE減少計算量的代價可能是不同專家模型的引數重複和總引數量增加，這往往也意味著更大更貴的HBM成本。外界傳言的MoE模型可以更小，其實是指的MoE模型蒸餾的Dense模型可以兼顧引數量和推理（Reasoning）效能。
 
-不同应用场景对Dense和MoE模型的需求
+不同應用場景對Dense和MoE模型的需求
 
-|          | **To B计算场景**                            | **To C云计算场景**                                   | **To C边缘/端侧计算场景**                         |
+|          | **To B計算場景**                            | **To C雲端計算場景**                                   | **To C邊緣/端側計算場景**                         |
 | -------- | ------------------------------------------- | ---------------------------------------------------- | ------------------------------------------------- |
-| 特点     | 专业领域应用多，对RAG高度依赖，不需要多专家 | 通用领域多，对检索和训练数据更新时间敏感，需要多专家 | 通用领域多，可不需要高性能/精度回答，不需要多专家 |
-| 主力架构 | 行业大模型，主要是Dense架构                 | 通用基础模型，主要是MoE或MoA架构                     | 限于成本，主要是Dense架构                         |
-| 占有率   | 较高                                        | 较低                                                 | 目前较低                                          |
+| 特點     | 專業領域應用多，對RAG高度依賴，不需要多專家 | 通用領域多，對檢索和訓練資料更新時間敏感，需要多專家 | 通用領域多，可不需要高效能/精度回答，不需要多專家 |
+| 主力架構 | 行業大模型，主要是Dense架構                 | 通用基礎模型，主要是MoE或MoA架構                     | 限於成本，主要是Dense架構                         |
+| 佔有率   | 較高                                        | 較低                                                 | 目前較低                                          |
 
-按照上表的分析，基于成本考虑，目前只有To C云计算场景（类似OpenAI的网页版服务）才会真正用上MoE这种多专家的模型架构。
+按照上表的分析，基於成本考慮，目前只有To C雲端計算場景（類似OpenAI的網頁版服務）才會真正用上MoE這種多專家的模型架構。
 
-## 3 V3/R1训练架构的独特优势
+## 3 V3/R1訓練架構的獨特優勢
 
-DeepSeek 的优势不仅仅来自于其模型架构。从低比特 FP8 训练到All-to-All通信优化，其专用训练框架旨在尽可能提高训练的速度，以最高效率在解空间中找到较优的MoE参数集。
+DeepSeek 的優勢不僅僅來自於其模型架構。從低位元 FP8 訓練到All-to-All通訊最佳化，其專用訓練框架旨在儘可能提高訓練的速度，以最高效率在解空間中找到較優的MoE引數集。
 
-国内很多人在看DeepSeek团队时，更多关注了他们做Training的能力，但实际上DeekSeek的AI Infra能力，特别时软硬件协同优化能力，才是他们超越国内其他大模型团队的关键。
+國內很多人在看DeepSeek團隊時，更多關注了他們做Training的能力，但實際上DeekSeek的AI Infra能力，特別時軟硬體協同最佳化能力，才是他們超越國內其他大模型團隊的關鍵。
 
-这一架构的核心优势包括：
+這一架構的核心優勢包括：
 
-1）引入了FP8[混合精度训练](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=混合精度训练&zhida_source=entity)框架，并首次在超大规模大模型训练上验证了这一框架的有效性。通过对FP8低比特计算和存储的支持，实现了训练的加速和GPU内存使用的减少。
+1）引入了FP8[混合精度訓練](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=混合精度訓練&zhida_source=entity)框架，並首次在超大規模大模型訓練上驗證了這一框架的有效性。透過對FP8低位元計算和儲存的支援，實現了訓練的加速和GPU記憶體使用的減少。
 
-2）设计了DualPipe算法来实现更高效的流水线并行，并通过计算-通信重叠隐藏了大模型训练过程中的大部分通信开销。
+2）設計了DualPipe演算法來實現更高效的流水線並行，並透過計算-通訊重疊隱藏了大模型訓練過程中的大部分通訊開銷。
 
-3）开发了高效的跨节点All-to-All通信内核，以充分利用InfiniBand（IB）和NVLink带宽；对显存使用进行了优化，无需使用昂贵的张量并行即可训练DeepSeek-V3。
+3）開發了高效的跨節點All-to-All通訊核心，以充分利用InfiniBand（IB）和NVLink頻寬；對視訊記憶體使用進行了最佳化，無需使用昂貴的張量並行即可訓練DeepSeek-V3。
 
-### 3.1 HAI-LLM框架的[软硬件协同设计](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=软硬件协同设计&zhida_source=entity)
+### 3.1 HAI-LLM框架的[軟硬體協同設計](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=軟硬體協同設計&zhida_source=entity)
 
-V3 的训练基于DeepSeek自研的HAI-LLM 框架。HAI-LLM是一个高效、轻量级的训练框架，其设计充分考虑了多种并行策略，包括DP、PP、TP、EP和FSDP的并行模式。
+V3 的訓練基於DeepSeek自研的HAI-LLM 框架。HAI-LLM是一個高效、輕量級的訓練框架，其設計充分考慮了多種並行策略，包括DP、PP、TP、EP和FSDP的並行模式。
 
 ![img](https://pic.yupi.icu/yuyi/1739504720340-ffe7c1bc-91fa-465b-ada9-41d37a216c53.png)
 
-并行模式对比（来源：互联网）
+並行模式對比（來源：網際網路）
 
-### 3.1.1 软件层面的并行优化
+### 3.1.1 軟體層面的並行最佳化
 
-HAI-LLM框架所作的并行改进（来源：中存算）
+HAI-LLM框架所作的並行改進（來源：中存算）
 
-| **缩写** | **简介**                                                                                                                                                                                                                                                                                                                                                                       | **DeepSeek所做的工作或优化**                                                                                                                                                                         |
+| **縮寫** | **簡介**                                                                                                                                                                                                                                                                                                                                                                       | **DeepSeek所做的工作或最佳化**                                                                                                                                                                         |
 | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| TP       | 张量并行 （Tensor Parallelism）：将模型层放置在并行执行计算的多个设备（计算芯片）上，包括逐行和逐列并行，                                                                                                                                                                                                                                                                      | 将 NVLink Bridge 集成到系统中，在每对 GPU之间建立了 600GB/s 的带宽，增加TP效率                                                                                                                       |
-| PP       | 流水线并行 （Pipeline Parallelism）：每个设备（计算芯片）都包含一部分模型层，每个训练批次分为串行的小批次以进行流水线执行                                                                                                                                                                                                                                                      | 通过配置数据并行排队，规避单个节点（服务器）8个GPU共享一个 IB NIC流水线并行 （PP） 期间出现的网络带宽竞争，实现GPU的交替通信和91%的并行效率                                                          |
-| FSDP     | 全共享数据并行 （Fully Sharded Data Parallel） 基于 ZeRO Stage 3 算法，对模型的参数、优化器状态和梯度分布到不同的设备（计算芯片）上。在正向传播期间，FSDP 执行 allgather作来组装完整的参数，并正向传播完成后释放；反向传播期间，FSDP 执行 allgather获取完整参数，并进行反向梯度计算，然后执行 reduce-scatter以同步所有设备之间的梯度，每个设备只保留部分梯度、参数和优化器更新 | 基于 ZeRO Stage-3 算法实现FSDP。将 allgather 和 reduce-scatter 通信与前向和反向传播计算重叠，拆分反向传播步骤以增强重叠，减少通信量。与 PyTorch 的 FSDP 相比，HAI-LLM 的 FSDP 将训练时间缩短了近一半 |
-| DP       | 数据并行 （Data Parallelism）：模型和优化器的状态在多个设备（计算芯片）之间复制，数据均匀分布给所有设备进行并行计算                                                                                                                                                                                                                                                            | 对PCIe进行工程优化，提升DP                                                                                                                                                                           |
-| EP       | 专家并行 （Expert Parallelism）：在MoE 训练期间，MoE 模型的不同专家分布在不同的设备（计算芯片）上，由门控单元将输入的Token分配给不同的专家                                                                                                                                                                                                                                     | 对PCIe进行工程优化，提升EP                                                                                                                                                                           |
+| TP       | 張量並行 （Tensor Parallelism）：將模型層放置在並行執行計算的多個裝置（計算晶片）上，包括逐行和逐列並行，                                                                                                                                                                                                                                                                      | 將 NVLink Bridge 整合到系統中，在每對 GPU之間建立了 600GB/s 的頻寬，增加TP效率                                                                                                                       |
+| PP       | 流水線並行 （Pipeline Parallelism）：每個裝置（計算晶片）都包含一部分模型層，每個訓練批次分為序列的小批次以進行流水線執行                                                                                                                                                                                                                                                      | 透過配置資料並行排隊，規避單個節點（伺服器）8個GPU共享一個 IB NIC流水線並行 （PP） 期間出現的網路頻寬競爭，實現GPU的交替通訊和91%的並行效率                                                          |
+| FSDP     | 全共享資料並行 （Fully Sharded Data Parallel） 基於 ZeRO Stage 3 演算法，對模型的引數、最佳化器狀態和梯度分佈到不同的裝置（計算晶片）上。在正向傳播期間，FSDP 執行 allgather作來組裝完整的引數，並正向傳播完成後釋放；反向傳播期間，FSDP 執行 allgather獲取完整引數，並進行反向梯度計算，然後執行 reduce-scatter以同步所有裝置之間的梯度，每個裝置只保留部分梯度、引數和最佳化器更新 | 基於 ZeRO Stage-3 演算法實現FSDP。將 allgather 和 reduce-scatter 通訊與前向和反向傳播計算重疊，拆分反向傳播步驟以增強重疊，減少通訊量。與 PyTorch 的 FSDP 相比，HAI-LLM 的 FSDP 將訓練時間縮短了近一半 |
+| DP       | 資料並行 （Data Parallelism）：模型和最佳化器的狀態在多個裝置（計算晶片）之間複製，資料均勻分佈給所有裝置進行平行計算                                                                                                                                                                                                                                                            | 對PCIe進行工程最佳化，提升DP                                                                                                                                                                           |
+| EP       | 專家並行 （Expert Parallelism）：在MoE 訓練期間，MoE 模型的不同專家分佈在不同的裝置（計算晶片）上，由門控單元將輸入的Token分配給不同的專家                                                                                                                                                                                                                                     | 對PCIe進行工程最佳化，提升EP                                                                                                                                                                           |
 
-根据DeepSeek的论文，V3 应用了 16 路流水线并行 （PP）、跨越 8 个（服务器）节点的 64 路专家并行 （EP）和 ZeRO-1 数据并行 （DP）。
+根據DeepSeek的論文，V3 應用了 16 路流水線並行 （PP）、跨越 8 個（伺服器）節點的 64 路專家並行 （EP）和 ZeRO-1 資料並行 （DP）。
 
-### 3.1.2 针对软件并行策略的硬件优化
+### 3.1.2 針對軟體並行策略的硬體最佳化
 
 ![img](https://pic.yupi.icu/yuyi/1739504722768-7fee67fb-2fd7-45f0-ab80-1698f3504dd3.png)
 
-低成本的万卡集群架构（来源：DeepSeek）
+低成本的萬卡叢集架構（來源：DeepSeek）
 
-为了配合HAI-LLM训练框架（软件），DeepSeek采用两层Fat-Tree拓扑+ InfiniBand （IB）作为集群架构（硬件）。这一集群架构的核心思路是减少互连层次，降低训练的综合成本。相对DGX-A100 的标准万卡集群三层Fat-Tree的1320个交换机，DeepSeek的同规模集群仅仅需要122台交换机，至少节省了40%的互连成本。
+為了配合HAI-LLM訓練框架（軟體），DeepSeek採用兩層Fat-Tree拓撲+ InfiniBand （IB）作為叢集架構（硬體）。這一叢集架構的核心思路是減少互連層次，降低訓練的綜合成本。相對DGX-A100 的標準萬卡叢集三層Fat-Tree的1320個交換機，DeepSeek的同規模叢集僅僅需要122臺交換機，至少節省了40%的互連成本。
 
-### 3.1.3 针对硬件架构的软件优化
+### 3.1.3 針對硬體架構的軟體最佳化
 
 ![img](https://pic.yupi.icu/yuyi/1739504721244-e59b15dd-8636-49a1-bc79-c2100183dae2.png)
 
-针对硬件架构优化的HFReduce（来源：DeepSeek）
+針對硬體架構最佳化的HFReduce（來源：DeepSeek）
 
-针对所采用的硬件架构特点，DeekSeek开发了HFReduce（针对不使用NVLink的方案），以执行高效的 allreduce操作。 HFReduce会首先执行节点内 reduce，然后通过 CPU 执行节点间 allreduce，最后将 reduced 数据传输到 GPU 。这样的优化需要DeepSeek团队对硬件互连有非常深刻的理解。
+針對所採用的硬體架構特點，DeekSeek開發了HFReduce（針對不使用NVLink的方案），以執行高效的 allreduce操作。 HFReduce會首先執行節點內 reduce，然後透過 CPU 執行節點間 allreduce，最後將 reduced 資料傳輸到 GPU 。這樣的最佳化需要DeepSeek團隊對硬體互連有非常深刻的理解。
 
-当然DeepSeek团队也开发了基于NVLink的HFReduce with NVLink，在将梯度传递给 CPU 之前，先在NVLink 互连的GPU 之间执reduce减作；当 CPU 返回结果时，会将数据切分并分别返回给 NVLink 连接的配对 GPU，再通过 NVLink 执行allgather。
+當然DeepSeek團隊也開發了基於NVLink的HFReduce with NVLink，在將梯度傳遞給 CPU 之前，先在NVLink 互連的GPU 之間執reduce減作；當 CPU 返回結果時，會將資料切分並分別返回給 NVLink 連線的配對 GPU，再透過 NVLink 執行allgather。
 
-### 3.2 FP8 训练框架体系
+### 3.2 FP8 訓練框架體系
 
-### 3.2.1 低比特训练框架的构建
+### 3.2.1 低位元訓練框架的構建
 
 ![img](https://pic.yupi.icu/yuyi/1739504721485-24e3cdb2-16f0-4abc-8d79-a297c35fd5c5.png)
 
-FP8与其他数据格式占据空间对比（来源：互联网）
+FP8與其他資料格式佔據空間對比（來源：網際網路）
 
-通常的大模型训练会采用BF16（16位浮点）或FP32/TF32（32位浮点）精度作为数据计算和存储的格式，来确保较高的训练精度。相比之下，FP8占用的数据位宽仅为FP32的1/4，可以有力的提升计算速度，降低对存储的消耗。当然，FP8也存在精度不高，容易导致训练失败的潜在问题。
+通常的大模型訓練會採用BF16（16位浮點）或FP32/TF32（32位浮點）精度作為資料計算和儲存的格式，來確保較高的訓練精度。相比之下，FP8佔用的資料位寬僅為FP32的1/4，可以有力的提升計算速度，降低對儲存的消耗。當然，FP8也存在精度不高，容易導致訓練失敗的潛在問題。
 
 ![img](https://pic.yupi.icu/yuyi/1739504722018-6e4163a3-ecd9-4bf3-89f4-1cf7c5167cc3.png)
 
-FP8训练框架局部方案（来源：DeepSeek）
+FP8訓練框架區域性方案（來源：DeepSeek）
 
-DeepSeek-V3 使用 FP8（8 位浮点数）来提高计算速度并减少训练期间的显存使用量。为了让FP8更好的完成训练，DeepSeek专门设计了针对FP8的训练框架体系。当然，就在撰写本文的时候，微软已经跑通了FP4（4位浮点数）的完整模型训练。
+DeepSeek-V3 使用 FP8（8 位浮點數）來提高計算速度並減少訓練期間的視訊記憶體使用量。為了讓FP8更好的完成訓練，DeepSeek專門設計了針對FP8的訓練框架體系。當然，就在撰寫本文的時候，微軟已經跑通了FP4（4位浮點數）的完整模型訓練。
 
-使用FP8框架进行训练的主要挑战在于精度与误差的处理。
+使用FP8框架進行訓練的主要挑戰在於精度與誤差的處理。
 
-DeepSeek为其FP8低比特训练框架做了以下优化：
+DeepSeek為其FP8低位元訓練框架做了以下最佳化：
 
-**1）细粒度量化**
+**1）細粒度量化**
 
-将数据分解成更小的组，每个组都使用特定乘数进行调整以保持高精度。这一方法类似于Tile-Wise或Block-Wise。对于激活，在 1x128 大小的基础上对计算数据进行分组和缩放;对于权重， 以128x128 大小对计算数据进行分组和缩放。该方法可以根据最大或最小数据调整缩放系数，来更好的适应计算中的异常值。
+將資料分解成更小的組，每個組都使用特定乘數進行調整以保持高精度。這一方法類似於Tile-Wise或Block-Wise。對於啟用，在 1x128 大小的基礎上對計算資料進行分組和縮放;對於權重， 以128x128 大小對計算資料進行分組和縮放。該方法可以根據最大或最小資料調整縮放係數，來更好的適應計算中的異常值。
 
-**2）在线量化**
+**2）線上量化**
 
-为了提高精度并简化框架，该框架在线计算每个 1x128 激活块或 128x128 权重块的最大绝对值，在线推算缩放因子，然后将激活或权重在线转化为 FP8 格式，而不是采用静态的历史数据。相对静态的量化方法，该方法可以获得更高的转换精度，减小误差的累积。
+為了提高精度並簡化框架，該框架線上計算每個 1x128 啟用塊或 128x128 權重塊的最大絕對值，線上推算縮放因子，然後將啟用或權重線上轉化為 FP8 格式，而不是採用靜態的歷史資料。相對靜態的量化方法，該方法可以獲得更高的轉換精度，減小誤差的累積。
 
 **3）提高累加精度**
 
-FP8在大量累加时会累积出现随机误差。例如FP8 GEMM在英伟达 H800 GPU 上的累加精度保留 14 位左右，明显低于 FP32 累加精度。以 K = 4096 的两个[随机矩阵](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=随机矩阵&zhida_source=entity)的 GEMM 运算为例，Tensor Core 中的有限累加精度可导致最大相对误差接近 2%。
+FP8在大量累加時會累積出現隨機誤差。例如FP8 GEMM在英偉達 H800 GPU 上的累加精度保留 14 位左右，明顯低於 FP32 累加精度。以 K = 4096 的兩個[隨機矩陣](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=隨機矩陣&zhida_source=entity)的 GEMM 運算為例，Tensor Core 中的有限累加精度可導致最大相對誤差接近 2%。
 
-DeepSeek将中间结果储存计算升级为 FP32（32位浮点），实行高精度累加，然后再转换回 FP8，以降低大量微小误差累加带来的训练偏差。
+DeepSeek將中間結果儲存計算升級為 FP32（32位浮點），實行高精度累加，然後再轉換回 FP8，以降低大量微小誤差累加帶來的訓練偏差。
 
-**4）低精度/混合精度存储与通信**
+**4）低精度/混合精度儲存與通訊**
 
-为了进一步减少 MoE 训练中的显存和通信开销，该框架基于FP8 进行数据/参数缓存和处理激活，以节省显存与缓存空间并提升性能，并在 BF16（16位浮点数）中存储低精度优化器状态。
+為了進一步減少 MoE 訓練中的視訊記憶體和通訊開銷，該框架基於FP8 進行資料/引數快取和處理啟用，以節省視訊記憶體與快取空間並提升效能，並在 BF16（16位浮點數）中儲存低精度最佳化器狀態。
 
-该框架中以下组件保持原始精度（例如 BF16 或 FP32）：嵌入模块、MoE 门控模块、归一化算子和注意力算子，以确保模型的动态稳定训练。为保证数值稳定性，以高精度存储主要权重、权重梯度和优化器状态。
+該框架中以下元件保持原始精度（例如 BF16 或 FP32）：嵌入模組、MoE 門控模組、歸一化運算元和注意力運算元，以確保模型的動態穩定訓練。為保證數值穩定性，以高精度儲存主要權重、權重梯度和最佳化器狀態。
 
 ![img](https://pic.yupi.icu/yuyi/1739504722056-dedfa96f-b381-47fe-97f7-352c65176808.png)
 
-细粒度量化与提高累加精度（来源：DeepSeek）
+細粒度量化與提高累加精度（來源：DeepSeek）
 
-以上这些针对FP8训练的优化设计，都是精雕细作的工作，需要框架设计人员对GPU硬件架构和训练误差具有很强的整合分析能力。从DeepSeek的FP8训练框架来看，这个团队具有很强的技术和工程整合能力，已经不是单纯的大模型算法或AI Infra团队。
+以上這些針對FP8訓練的最佳化設計，都是精雕細作的工作，需要框架設計人員對GPU硬體架構和訓練誤差具有很強的整合分析能力。從DeepSeek的FP8訓練框架來看，這個團隊具有很強的技術和工程整合能力，已經不是單純的大模型演算法或AI Infra團隊。
 
-### 3.2.2 对英伟达GPU市场有巨大影响？
+### 3.2.2 對英偉達GPU市場有巨大影響？
 
-2025年1月27日，英伟达股价暴跌近17%，市值蒸发近6000亿美元，创下美国历史上单日最大市值跌幅纪录。AI领域的明星公司普遍遭受重创：博通（Broadcom）下跌17.4%，AMD下跌6.4%。微软下跌2.1%。此外，AI产业链的衍生板块也未能幸免，电力供应商Constellation Energy下跌近21%，Vistra下跌28%。国内很多媒体认为这是DeepSeek的崛起，引起投资者对于英伟达等半导体企业估值过高的担忧。
+2025年1月27日，英偉達股價暴跌近17%，市值蒸發近6000億美元，創下美國歷史上單日最大市值跌幅紀錄。AI領域的明星公司普遍遭受重創：博通（Broadcom）下跌17.4%，AMD下跌6.4%。微軟下跌2.1%。此外，AI產業鏈的衍生板塊也未能倖免，電力供應商Constellation Energy下跌近21%，Vistra下跌28%。國內很多媒體認為這是DeepSeek的崛起，引起投資者對於英偉達等半導體企業估值過高的擔憂。
 
-英伟达估值是否过高不好说，毕竟MoE架构的发展已经展现出“存力重要性优于算力+对存储带宽瓶颈下降”的倾向。但从技术角度看，DeepSeek的大模型目前依然存在对英伟达GPU的路径依赖。
+英偉達估值是否過高不好說，畢竟MoE架構的發展已經展現出“存力重要性優於算力+對儲存頻寬瓶頸下降”的傾向。但從技術角度看，DeepSeek的大模型目前依然存在對英偉達GPU的路徑依賴。
 
-1）目前英伟达仍在低比特计算方面领先。包括DeepSeek使用的FP8和微软使用的FP4，都是由英伟达率先产品化并推向市场的。FP8训练最早也是在英伟达内部开始验证的。英伟达之外，暂时还没有企业有这样的生态推动力和落实能力。
+1）目前英偉達仍在低位元計算方面領先。包括DeepSeek使用的FP8和微軟使用的FP4，都是由英偉達率先產品化並推向市場的。FP8訓練最早也是在英偉達內部開始驗證的。英偉達之外，暫時還沒有企業有這樣的生態推動力和落實能力。
 
-2）MoE模型仍属于大模型演进的常规路径，并不会因为MoE模型的路径切换导致GPU应用不及预期。目前主要的MoE模型依然是基于英伟达生态构建的，在算力单价昂贵、模型性能仍需提升的现在，MoE的应用事实上是基于有限的算力成本，进一步提升通用大模型（以to C为主）性能的有效路径。这个路线早已有之，不管DeepSeek的影响力是否扩大，目前通用大模型都在朝着这个方向发展。过于夸大DeepSeek对AI产业的影响，只会加速美国商务部对DeepSeek的封禁速度，对DeepSeek自身反而不利。
+2）MoE模型仍屬於大模型演進的常規路徑，並不會因為MoE模型的路徑切換導致GPU應用不及預期。目前主要的MoE模型依然是基於英偉達生態構建的，在算力單價昂貴、模型效能仍需提升的現在，MoE的應用事實上是基於有限的算力成本，進一步提升通用大模型（以to C為主）效能的有效路徑。這個路線早已有之，不管DeepSeek的影響力是否擴大，目前通用大模型都在朝著這個方向發展。過於誇大DeepSeek對AI產業的影響，只會加速美國商務部對DeepSeek的封禁速度，對DeepSeek自身反而不利。
 
-3）DeepSeek使用的一些训练成本优化技术属于定制化技术，其他竞品企业未必有类似的定制能力。例如前面提到的混合精度存储/计算，与模型本身的特征高度绑定，迁移起来并不简单，属于DeepSeek内部的定制化技术，与量化交易中的FPGA优化有原理类似之处。这类定制化技术一般难以简单的复制，其他企业短期内难以复盘，进行规模化成本降低的概率不高。有这个AI Infra能力的早就已经做了，没有这个能力也不会冒着成本不可控的风险冒然进入。
+3）DeepSeek使用的一些訓練成本最佳化技術屬於定製化技術，其他競品企業未必有類似的定製能力。例如前面提到的混合精度儲存/計算，與模型本身的特徵高度繫結，遷移起來並不簡單，屬於DeepSeek內部的定製化技術，與量化交易中的FPGA最佳化有原理類似之處。這類定製化技術一般難以簡單的複製，其他企業短期內難以覆盤，進行規模化成本降低的機率不高。有這個AI Infra能力的早就已經做了，沒有這個能力也不會冒著成本不可控的風險冒然進入。
 
-我们认为DeepSeek的V3/R1模型事实上为英伟达GPU开拓了除Llama开源系列Dense模型之外的MoE开源模型新大陆，等同于为苹果的IOS市场增加了新的免费Killer App。
+我們認為DeepSeek的V3/R1模型事實上為英偉達GPU開拓了除Llama開源系列Dense模型之外的MoE開源模型新大陸，等同於為蘋果的IOS市場增加了新的免費Killer App。
 
-DeepSeek本身对英伟达的股价影响，看起来更像是骆驼背上的最后一根稻草，大概不会超过以下几个因素：
+DeepSeek本身對英偉達的股價影響，看起來更像是駱駝背上的最後一根稻草，大概不會超過以下幾個因素：
 
-1）美国贸易关税风险。
+1）美國貿易關稅風險。
 
-2）B200/5090不达市场预期的风险。
+2）B200/5090不達市場預期的風險。
 
-3）大陆高成本GPU（主要是H100）算力过剩的风险。
+3）大陸高成本GPU（主要是H100）算力過剩的風險。
 
-4）对大陆禁运加强的风险。
+4）對大陸禁運加強的風險。
 
-### 3.3 DualPipe优化
+### 3.3 DualPipe最佳化
 
-V3/R1的训练框架中引入DualPipe算法以实现高效的流水线并行性。
+V3/R1的訓練框架中引入DualPipe演算法以實現高效的流水線並行性。
 
-与现有的流水线并行（PP）方法相比，DualPipe具备以下优势：
+與現有的流水線並行（PP）方法相比，DualPipe具備以下優勢：
 
-1）DualPipe的流水线气泡更少，信道使用效率更高。
+1）DualPipe的流水線氣泡更少，通道使用效率更高。
 
-2）DualPipe将前向和后向传播中的计算和通信重叠，解决了跨节点专家并行（EP）带来的繁重通信开销问题.
+2）DualPipe將前向和後向傳播中的計算和通訊重疊，解決了跨節點專家並行（EP）帶來的繁重通訊開銷問題.
 
-3）在确保计算与通信比例恒定的情况下，具有很好的Scale-out能力。
+3）在確保計算與通訊比例恆定的情況下，具有很好的Scale-out能力。
 
-DualPipe算法将每个数据块分为四个部分：attention（图中ATTN）、all-to-all dispatch（图中DISPATCH）、MLP 和 all-to-all combine（图中COMBINE）。对于后向块，attention和 MLP 都进一步分为后向输入、后向权重。对于一对前向和后向块，针对通信和计算的过程和瓶颈进行优化。DualPipe采用双向流水线调度，同时从流水线发送前向和后向数据，尽可能提高使用率。
+DualPipe演算法將每個資料塊分為四個部分：attention（圖中ATTN）、all-to-all dispatch（圖中DISPATCH）、MLP 和 all-to-all combine（圖中COMBINE）。對於後向塊，attention和 MLP 都進一步分為後向輸入、後向權重。對於一對前向和後向塊，針對通訊和計算的過程和瓶頸進行最佳化。DualPipe採用雙向流水線排程，同時從流水線傳送前向和後向資料，儘可能提高使用率。
 
 ![img](https://pic.yupi.icu/yuyi/1739504722121-883f6efb-a013-4c13-a3fe-22089113988e.png)
 
-DualPipe的流水线（来源：DeepSeek）
+DualPipe的流水線（來源：DeepSeek）
 
-### 3.4 跨节点 All-to-All 通信与显存优化
+### 3.4 跨節點 All-to-All 通訊與視訊記憶體最佳化
 
-V3/R1的训练框架还定制了高效的跨节点All-to-All通信内核，以充分利用IB 和 NVLink 带宽，并节约流式多处理器 （SM，(Stream Multiprocessor）。DeepSeek还优化了显存分配，以在不使用或少使用张量并行 （TP） 的情况下训练 V3/R1。
+V3/R1的訓練框架還定製了高效的跨節點All-to-All通訊核心，以充分利用IB 和 NVLink 頻寬，並節約流式多處理器 （SM，(Stream Multiprocessor）。DeepSeek還最佳化了視訊記憶體分配，以在不使用或少使用張量並行 （TP） 的情況下訓練 V3/R1。
 
-### 3.4.1 对于SM与NVLink的优化
+### 3.4.1 對於SM與NVLink的最佳化
 
-为了保证 DualPipe的计算性能不被通信影响，DeepSeek定制了高效的跨节点 All-to-All 通信内核（包括 dispatching 和 combining），以节省专用于通信的 SM数量。
+為了保證 DualPipe的計算效能不被通訊影響，DeepSeek定製了高效的跨節點 All-to-All 通訊核心（包括 dispatching 和 combining），以節省專用於通訊的 SM數量。
 
 ![img](https://pic.yupi.icu/yuyi/1739504722826-8362d317-5bab-4a88-a55d-ce78845eff6f.png)
 
-传统的基于NVSwitch的All-to-All通信结构（来源：互联网）
+傳統的基於NVSwitch的All-to-All通訊結構（來源：網際網路）
 
-通信内核（通信SM控制代码）的实现与MoE 门控算法和集群[网络拓扑](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=网络拓扑&zhida_source=entity)是按照软硬件协同的思路来进行设计的。具体来说，在集群中，跨节点 GPU与 IB 完全互连，节点内（单台服务器内）通信通过NVLink完成。NVLink 提供 160 GB/s 的带宽，约是 IB 的 3.2 倍 （50 GB/s）。
+通訊核心（通訊SM控制程式碼）的實現與MoE 門控演算法和叢集[網路拓撲](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=網路拓撲&zhida_source=entity)是按照軟硬體協同的思路來進行設計的。具體來說，在叢集中，跨節點 GPU與 IB 完全互連，節點內（單臺伺服器內）通訊透過NVLink完成。NVLink 提供 160 GB/s 的頻寬，約是 IB 的 3.2 倍 （50 GB/s）。
 
-为了有效利用IB 和NVLink的不同带宽，DeepSeek将每个Token（词元）的分发限制为最多4 个节点，从而减少IB流量限制的影响。 对于每个Token，在做节点间路由决策时，先通过IB传输到目标节点上具有相同节点内索引的GPU；到达目标节点后，再通过NVLink 转发到托管目标专家的特定GPU。通过这种方式，通过IB和NVLink的通信重叠，平均每个Token可以在每个节点选择3.2名专家，而不会产生额外的NVLink开销。
+為了有效利用IB 和NVLink的不同頻寬，DeepSeek將每個Token（詞元）的分發限制為最多4 個節點，從而減少IB流量限制的影響。 對於每個Token，在做節點間路由決策時，先透過IB傳輸到目標節點上具有相同節點內索引的GPU；到達目標節點後，再透過NVLink 轉發到託管目標專家的特定GPU。透過這種方式，透過IB和NVLink的通訊重疊，平均每個Token可以在每個節點選擇3.2名專家，而不會產生額外的NVLink開銷。
 
-实际算法中，V3/R1只通过[路由选择](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=路由选择&zhida_source=entity)了8个专家，但在保持相同通信成本的情况下，该架构可以扩展到最多13 个专家（4 个节点x3.2个专家/节点）。
+實際演算法中，V3/R1只透過[路由選擇](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=路由選擇&zhida_source=entity)了8個專家，但在保持相同通訊成本的情況下，該架構可以擴充套件到最多13 個專家（4 個節點x3.2個專家/節點）。
 
-DeepSeek还采用了warp（线程束）专用化技术，将20个SM划分为10个通信信道。
+DeepSeek還採用了warp（執行緒束）專用化技術，將20個SM劃分為10個通訊通道。
 
-1）在调度过程中，（a）IB 发送、（b）IB 到NVLink 转发、（c） NVLink 接收由相应的warp处理。分配给每个通信任务的warp数量会根据所有SM的实际工作负载动态调整。
+1）在排程過程中，（a）IB 傳送、（b）IB 到NVLink 轉發、（c） NVLink 接收由相應的warp處理。分配給每個通訊任務的warp數量會根據所有SM的實際工作負載動態調整。
 
-2）在合并过程中，（a） NVLink 发送、（b）NVLink到IB的转发和累积、（c）IB接收和累积也由动态调整的warp处理。
+2）在合併過程中，（a） NVLink 傳送、（b）NVLink到IB的轉發和累積、（c）IB接收和累積也由動態調整的warp處理。
 
-3）dispatching 和combining kernel都与计算流重叠，采用定制的PTX（Parallel Thread Execution）指令以自动调整通信块大小，减少了对L2缓存的使用和对其他 SM 的干扰。
+3）dispatching 和combining kernel都與計算流重疊，採用定製的PTX（Parallel Thread Execution）指令以自動調整通訊塊大小，減少了對L2快取的使用和對其他 SM 的干擾。
 
-### 3.4.2 显存节省技术
+### 3.4.2 視訊記憶體節省技術
 
-为了减少训练期间的内存占用，V3/R1还采用了以下技术节省显存：
+為了減少訓練期間的記憶體佔用，V3/R1還採用了以下技術節省視訊記憶體：
 
-DeepSeek采用的显存节省技术（来源：中存算）
+DeepSeek採用的視訊記憶體節省技術（來源：中存算）
 
-| **技术**                               | **方法说明**                                                                                | **优势**                                                              |
+| **技術**                               | **方法說明**                                                                                | **優勢**                                                              |
 | -------------------------------------- | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| RMSNorm 和MLA Up-Projection 的重新计算 | 在反向传播期间重新计算所有MSNorm操作和MLA Up-Projection，无需持久存储其输出激活             | 以算代存，充分利用GPU内算力充沛但缓存不足的特点                       |
-| 在CPU内存中保存指数平均数指标（EMA）   | 在CPU 内存中保存EMA，并在每个训练步骤后异步更新                                             | 把EMA从GPU显存占用改为CPU内存占用，释放动态存储空间                   |
-| 在多标记预测（MTP）中共享嵌入和输出头  | 使用DualPipe 策略，将模型最浅的层（包括嵌入层）和最深的层（包括输出头）部署在相同的PP等级上 | 允许MTP模块和主模型之间物理共享参数、梯度、嵌入和输出头，提升显存效率 |
+| RMSNorm 和MLA Up-Projection 的重新計算 | 在反向傳播期間重新計算所有MSNorm操作和MLA Up-Projection，無需持久儲存其輸出啟用             | 以算代存，充分利用GPU內算力充沛但快取不足的特點                       |
+| 在CPU記憶體中儲存指數平均數指標（EMA）   | 在CPU 記憶體中儲存EMA，並在每個訓練步驟後非同步更新                                             | 把EMA從GPU視訊記憶體佔用改為CPU記憶體佔用，釋放動態儲存空間                   |
+| 在多標記預測（MTP）中共享嵌入和輸出頭  | 使用DualPipe 策略，將模型最淺的層（包括嵌入層）和最深的層（包括輸出頭）部署在相同的PP等級上 | 允許MTP模組和主模型之間物理共享引數、梯度、嵌入和輸出頭，提升視訊記憶體效率 |
 
-### 3.4.3 打破了CUDA生态壁垒？
+### 3.4.3 打破了CUDA生態壁壘？
 
-网上很多人，看到DeepSeek使用了PTX指令，而没有直接使用CUDA进行SM编程，就认为DeepSeek打破了CUDA生态的垄断。
+網上很多人，看到DeepSeek使用了PTX指令，而沒有直接使用CUDA進行SM程式設計，就認為DeepSeek打破了CUDA生態的壟斷。
 
-但实际上，
+但實際上，
 
-1）PTX指令集也是CUDA生态的一环，是CUDA生态的基础。
+1）PTX指令集也是CUDA生態的一環，是CUDA生態的基礎。
 
-2）PTX指令比CUDA更底层，与英伟达的绑定比CUDA更深。
+2）PTX指令比CUDA更底層，與英偉達的繫結比CUDA更深。
 
-3）CUDA是以PTX指令集为基础构建的，是PTX的外壳和泛化。
+3）CUDA是以PTX指令集為基礎構建的，是PTX的外殼和泛化。
 
-4）PTX的移植比CUDA移植挑战更大，难以在国产GPU上直接移植。
+4）PTX的移植比CUDA移植挑戰更大，難以在國產GPU上直接移植。
 
 ![img](https://pic.yupi.icu/yuyi/1739504722935-5d089e59-edc1-485b-8b1a-64cb97b43922.png)
 
-CUDA与PTX、SASS的层次关系（来源：互联网）
+CUDA與PTX、SASS的層次關係（來源：網際網路）
 
-如果把CUDA理解为C语言的话，PTX相当于CUDA的高级汇编语言，可以在不同的GPU上运行。另一种更加底层的指令集是Streaming Assembly（SASS），与GPU的型号深度帮绑定。无论PTX还是SASS都是英伟达的根基，其他GPU厂家很难插手。
+如果把CUDA理解為C語言的話，PTX相當於CUDA的高階組合語言，可以在不同的GPU上執行。另一種更加底層的指令集是Streaming Assembly（SASS），與GPU的型號深度幫繫結。無論PTX還是SASS都是英偉達的根基，其他GPU廠家很難插手。
 
-DeepSeek在训练过程中使用PTX，感觉就是量化码农用C语言写交易代码，发现优化效率不够，那么就尝试在C语言中嵌入汇编语言来提高硬件调度效率。难道这就等于打破了C语言的江湖地位？
+DeepSeek在訓練過程中使用PTX，感覺就是量化碼農用C語言寫交易程式碼，發現最佳化效率不夠，那麼就嘗試在C語言中嵌入組合語言來提高硬體排程效率。難道這就等於打破了C語言的江湖地位？
 
-### 3.4.4 挖了NVLink的墙角？
+### 3.4.4 挖了NVLink的牆角？
 
-有传言说DeepSeek主要使用Infiniband，以EP（专家并行）代替TP（张量并行），挖了NVLink的墙角，从而坚定的认为以PCIe（节点内互连）+IB（节点间互连）就足以进行大模型的训练。
+有傳言說DeepSeek主要使用Infiniband，以EP（專家並行）代替TP（張量並行），挖了NVLink的牆角，從而堅定的認為以PCIe（節點內互連）+IB（節點間互連）就足以進行大模型的訓練。
 
-在这里面，NVLink主要负责芯片间（C2C）的通信，而Infiniband负责节点间（服务器间）通信。如果使用PCIe进行C2C通信，带宽远不如NVLink。
+在這裡面，NVLink主要負責晶片間（C2C）的通訊，而Infiniband負責節點間（伺服器間）通訊。如果使用PCIe進行C2C通訊，頻寬遠不如NVLink。
 
 ![img](https://pic.yupi.icu/yuyi/1739504723720-366b3ee6-df3c-41e5-9796-6fd43ebb30c7.png)
 
-NVLink+Infinband互连（来源：英伟达）
+NVLink+Infinband互連（來源：英偉達）
 
-规避NVLink的想法很美好，但现实很骨感。按照DeepSeek发表的论文描述，只是在早期没有加入NVSwitch的时候用过PCIe+InfiniBand实现HFReduce，当具备NVSwitch后就立刻增加了HFReduce with NVLink。特别是在V3的论文中，明确写了针对NVLink信道加入了定制PTX优化，好让更多的有效SM参与计算。
+規避NVLink的想法很美好，但現實很骨感。按照DeepSeek發表的論文描述，只是在早期沒有加入NVSwitch的時候用過PCIe+InfiniBand實現HFReduce，當具備NVSwitch後就立刻增加了HFReduce with NVLink。特別是在V3的論文中，明確寫了針對NVLink通道加入了定製PTX最佳化，好讓更多的有效SM參與計算。
 
-这就好比学校的教学高楼里没有大电梯，怕楼梯上孩子太多出危险，就先用“算法+楼梯”代替，拿到“算法许可”的小孩才能到不同楼层去报道。但不能说这样就挖了“电梯”的墙角，卡住了“电梯”的脖子。一个高效的训练系统，依然需要大量的C2C或D2D互连实现更优的[拓扑结构](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=拓扑结构&zhida_source=entity)。咱不能因为玄奘法师能克服艰难险阻走到古印度取到真经，就认为需要反思火车飞机的重要性。
+這就好比學校的教學高樓裡沒有大電梯，怕樓梯上孩子太多出危險，就先用“演算法+樓梯”代替，拿到“演算法許可”的小孩才能到不同樓層去報道。但不能說這樣就挖了“電梯”的牆角，卡住了“電梯”的脖子。一個高效的訓練系統，依然需要大量的C2C或D2D互連實現更優的[拓撲結構](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=拓撲結構&zhida_source=entity)。咱不能因為玄奘法師能克服艱難險阻走到古印度取到真經，就認為需要反思火車飛機的重要性。
 
-下篇请看：
+下篇請看：
 
 
 
-[陈巍：DeepSeek是否有国运级的创新？从V3到R1的架构创新与误传的万字长文分析（下）162 赞同 · 9 评论文章](https://zhuanlan.zhihu.com/p/21755758234)
+[陳巍：DeepSeek是否有國運級的創新？從V3到R1的架構創新與誤傳的萬字長文分析（下）162 贊同 · 9 評論文章](https://zhuanlan.zhihu.com/p/21755758234)
 
 
 
 ![img](https://pic.yupi.icu/yuyi/1739504723170-75db169f-eb34-4864-81e7-1771d3c6d558.png)
 
-## 4 V3的训练流程
+## 4 V3的訓練流程
 
-DeepSeek的R1是以V3为基础构建的（冷启动）。如果想深入理解R1的训练，就要先看V3的训练流程。V3的训练包括预训练（含基础预训练和上下文长度扩展）、后训练三个阶段。
+DeepSeek的R1是以V3為基礎構建的（冷啟動）。如果想深入理解R1的訓練，就要先看V3的訓練流程。V3的訓練包括預訓練（含基礎預訓練和上下文長度擴充套件）、後訓練三個階段。
 
-在预训练阶段后，对DeepSeek-V3 进行了两次上下文长度扩展，第一阶段将最大上下文长度扩展到32K，第二阶段进一步扩展到128K。然后在 DeepSeek-V3的基础模型上进行包括有监督精调 (SFT) 和强化学习(RL)在内的后训练，使其更贴近人类的偏好。
+在預訓練階段後，對DeepSeek-V3 進行了兩次上下文長度擴充套件，第一階段將最大上下文長度擴充套件到32K，第二階段進一步擴充套件到128K。然後在 DeepSeek-V3的基礎模型上進行包括有監督精調 (SFT) 和強化學習(RL)在內的後訓練，使其更貼近人類的偏好。
 
 ![img](https://pic.yupi.icu/yuyi/1739504723701-9dba35c9-ac9c-4d3a-9163-d2cb4ad9699d.png)
 
-DeepSeek-V3训练流程（来源：中存算）
+DeepSeek-V3訓練流程（來源：中存算）
 
-### 4.1 V3的基础预训练
+### 4.1 V3的基礎預訓練
 
-DeepSeek-V3 总共包含 671B参数，其中每个Token激活了37B。在路由专家中，每个Token激活8个专家，并确保每个Token最多发送到4个节点，以减小通信资源的浪费。多Token预测（MTP）深度设置为1，即除了下一个 Token之外，每个Token还将预测一个额外的Token。
+DeepSeek-V3 總共包含 671B引數，其中每個Token啟用了37B。在路由專家中，每個Token啟用8個專家，並確保每個Token最多傳送到4個節點，以減小通訊資源的浪費。多Token預測（MTP）深度設定為1，即除了下一個 Token之外，每個Token還將預測一個額外的Token。
 
-在14.8T预训练数据集结构上，V3采用了以下策略：
+在14.8T預訓練資料集結構上，V3採用了以下策略：
 
-1）提高数学和编程样本的比例来优化预训练[语料库](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=语料库&zhida_source=entity)，以提升推理能力。
+1）提高數學和程式設計樣本的比例來最佳化預訓練[語料庫](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=語料庫&zhida_source=entity)，以提升推理能力。
 
-2）基于中国互联网可用的语料库整合了更多的中文数据。（这也是V3能玩中文梗的关键）
+2）基於中國網際網路可用的語料庫整合了更多的中文資料。（這也是V3能玩中文梗的關鍵）
 
-3）将多语言覆盖范围扩展到英文和中文之外。
+3）將多語言覆蓋範圍擴充套件到英文和中文之外。
 
-4）优化数据处理/过滤算法，在保持语料库多样性的同时最大限度减少信息冗余。
+4）最佳化資料處理/過濾演算法，在保持語料庫多樣性的同時最大限度減少資訊冗餘。
 
-过滤掉有争议的内容，减少特定区域文化引入的数据偏差
+過濾掉有爭議的內容，減少特定區域文化引入的資料偏差
 
-5）通过文档打包，减少在短文本块的训练浪费，同时在训练过程中没有使用交叉样本注意力屏蔽。
+5）透過文件打包，減少在短文字塊的訓練浪費，同時在訓練過程中沒有使用交叉樣本注意力遮蔽。
 
-高质量的数据结构与数据投喂顺序，其实是大模型性能提升的关键。可惜DeepSeek并没有给出预训练数据更具体的构建方法。
+高質量的資料結構與資料投餵順序，其實是大模型效能提升的關鍵。可惜DeepSeek並沒有給出預訓練資料更具體的構建方法。
 
 ![img](https://pic.yupi.icu/yuyi/1739504723778-ebd8e76b-f049-41e4-bf55-50696d76a16d.png)
 
-Fill-in-Middle方法（来源：互联网）
+Fill-in-Middle方法（來源：網際網路）
 
-V3的训练采用前缀-后缀-中间（PSM）框架来构建FIM训练数据。Fill-in-Middle（FIM，中间补全）是一种针对代码补全能力的预训练方式，模型在训练过程中学习使用上下文的语境来预测文段中间缺失的部分。FIM策略不会损害下一Token预测（NTP）能力，同时可使模型能够根据上下文线索准确预测中间文本。
+V3的訓練採用字首-字尾-中間（PSM）框架來構建FIM訓練資料。Fill-in-Middle（FIM，中間補全）是一種針對程式碼補全能力的預訓練方式，模型在訓練過程中學習使用上下文的語境來預測文段中間缺失的部分。FIM策略不會損害下一Token預測（NTP）能力，同時可使模型能夠根據上下文線索準確預測中間文字。
 
-V3使用 AdamW 优化器来预训练，同时避免过度拟合。
+V3使用 AdamW 最佳化器來預訓練，同時避免過度擬合。
 
-### 4.2 V3长文扩展训练
+### 4.2 V3長文擴充套件訓練
 
-在基础预训练后，V3使用YARN技术将上下文长度，按照两阶段训练扩展到128K，每个阶段包括1000步。在第一阶段，使用32K的序列长度和1920的批量来执行1000步训练。在第二阶段，采用128K的序列长度和480个序列的批量大小执行1000步训练。
+在基礎預訓練後，V3使用YARN技術將上下文長度，按照兩階段訓練擴充套件到128K，每個階段包括1000步。在第一階段，使用32K的序列長度和1920的批次來執行1000步訓練。在第二階段，採用128K的序列長度和480個序列的批次大小執行1000步訓練。
 
-### 4.3 V3的后训练/精调
+### 4.3 V3的後訓練/精調
 
-### 4.3.1 V3的有监督精调（SFT）
+### 4.3.1 V3的有監督精調（SFT）
 
-V3的有监督精调做了以下这些事：
+V3的有監督精調做了以下這些事：
 
-1）梳理指令精调（instruction-tuning）数据集。该数据集包括1.5M个实例，跨多个域，每个域都量身定制的不同的数据合成方法。
+1）梳理指令精調（instruction-tuning）資料集。該資料集包括1.5M個例項，跨多個域，每個域都量身定製的不同的資料合成方法。
 
-2）利用DeepSeek-R1 模型合成与推理（Reasoning）相关的SFT数据集。这里很有意思，基于R1来SFT V3，再基于V3冷启动R1。感觉上这里有关键的训练信息没有透露，DeepSeek应该还是留了一手。
+2）利用DeepSeek-R1 模型合成與推理（Reasoning）相關的SFT資料集。這裡很有意思，基於R1來SFT V3，再基於V3冷啟動R1。感覺上這裡有關鍵的訓練資訊沒有透露，DeepSeek應該還是留了一手。
 
-3）为特定领域（例如代码、数学或一般推理）构建量身定制的专家模型数据合成器。使用复合有监督精调和强化学习训练该专家模型。训练过程中为每个实例生成两种不同类型的 SFT样本：第一种将问题与其原始响应耦合，格式为`<problem, original response>`，而第二种将系统提示与问题和R1响应合并，格式为`<system prompt, problem, R1 response>`。
+3）為特定領域（例如程式碼、數學或一般推理）構建量身定製的專家模型資料合成器。使用複合有監督精調和強化學習訓練該專家模型。訓練過程中為每個例項生成兩種不同型別的 SFT樣本：第一種將問題與其原始響應耦合，格式為`<problem, original response>`，而第二種將系統提示與問題和R1響應合併，格式為`<system prompt, problem, R1 response>`。
 
-4）建立高质量提示（Prompt）体系，引导模型形成自身的反馈与验证机制。同时整合了来自R1合成的数据，通过强化学习加强这一能力。
+4）建立高質量提示（Prompt）體系，引導模型形成自身的反饋與驗證機制。同時整合了來自R1合成的資料，透過強化學習加強這一能力。
 
-5）对于非推理数据（例如创意写作、角色扮演和简单的问答），利用 DeepSeek-V2.5生成数据，并通过人工注释验证数据的准确性。
+5）對於非推理資料（例如創意寫作、角色扮演和簡單的問答），利用 DeepSeek-V2.5生成資料，並透過人工註釋驗證資料的準確性。
 
-### 4.3.2 V3的强化学习
+### 4.3.2 V3的強化學習
 
-V3的强化学习包括奖励模型与组相对策略优化（GRPO）。
+V3的強化學習包括獎勵模型與組相對策略最佳化（GRPO）。
 
-与GPT-4类似，V3中奖励模型包括：
+與GPT-4類似，V3中獎勵模型包括：
 
-1）基于规则的奖励模型
+1）基於規則的獎勵模型
 
-对于可以使用特定规则验证的问题，采用基于规则的奖励模型来提供训练反馈。例如，对于 LeetCode 问题，可以利用编译器根据测试用例生成反馈。基于规则的模型验证，可以确保更高的生成可靠性。
+對於可以使用特定規則驗證的問題，採用基於規則的獎勵模型來提供訓練反饋。例如，對於 LeetCode 問題，可以利用編譯器根據測試用例生成反饋。基於規則的模型驗證，可以確保更高的生成可靠性。
 
-2）基于模型的奖励模型
+2）基於模型的獎勵模型
 
-对于不具有收敛性的问题，依靠模型判断来确进行强化学习。V3训练中构建了特殊的偏好数据，该数据同时包括提供最终奖励结果和形成奖励的思维链，以降低特定任务中的奖励破解攻击风险。
+對於不具有收斂性的問題，依靠模型判斷來確進行強化學習。V3訓練中構建了特殊的偏好資料，該資料同時包括提供最終獎勵結果和形成獎勵的思維鏈，以降低特定任務中的獎勵破解攻擊風險。
 
-大模型的训练通常用无监督或有监督进行预训练，然后通过有监督精调（SFT）进一步学习。然而SFT有时难以将人类的偏好显式地整合进去，这时就需要强化学习来进行精调。在以往的大模型训练中一般使用PPO（Proximal Policy Optimization）来形成梯度策略。PPO的代价在于需要维护较大的价值网络（也是一个神经网络），需要占用较大的显存与计算资源。
+大模型的訓練通常用無監督或有監督進行預訓練，然後透過有監督精調（SFT）進一步學習。然而SFT有時難以將人類的偏好顯式地整合進去，這時就需要強化學習來進行精調。在以往的大模型訓練中一般使用PPO（Proximal Policy Optimization）來形成梯度策略。PPO的代價在於需要維護較大的價值網路（也是一個神經網路），需要佔用較大的視訊記憶體與計算資源。
 
 ![img](https://pic.yupi.icu/yuyi/1739504724024-89e259ad-d548-4e2c-965f-21b11dc381a2.png)
 
-GRPO与PPO对比（来源：DeepSeek）
+GRPO與PPO對比（來源：DeepSeek）
 
-V3中则采用了DeepSeek提出的GRPO（Group Relative Policy Optimization）策略，只需要在一个分组内进行多个采样输出的比较，再根据比较结果选择较优的策略。GRPO中不再需要一个显式的价值网络，从而降低了显存占用并提高了训练速度。
+V3中則採用了DeepSeek提出的GRPO（Group Relative Policy Optimization）策略，只需要在一個分組內進行多個取樣輸出的比較，再根據比較結果選擇較優的策略。GRPO中不再需要一個顯式的價值網路，從而降低了視訊記憶體佔用並提高了訓練速度。
 
-GRPO的计算流程包括：
+GRPO的計算流程包括：
 
-1）采样一组输出并计算每个输出的奖励。
+1）取樣一組輸出並計算每個輸出的獎勵。
 
-2）对组内奖励进行归一化处理。
+2）對組內獎勵進行歸一化處理。
 
-3）使用归一化后的奖励计算优势函数。
+3）使用歸一化後的獎勵計算優勢函式。
 
-4）通过最大化目标函数更新策略模型。
+4）透過最大化目標函式更新策略模型。
 
-5）迭代训练，逐步优化策略模型。
+5）迭代訓練，逐步最佳化策略模型。
 
-## 5 R1的训练流程
+## 5 R1的訓練流程
 
-### 5.1 无SFT的R1-Zero训练
+### 5.1 無SFT的R1-Zero訓練
 
-DeepSeek-R1 建立在其基础模型DeepSeek-V3的混合专家（MoE）架构之上，采用专家并行方式，对于任意输入，只有部分参数处于活跃状态。
+DeepSeek-R1 建立在其基礎模型DeepSeek-V3的混合專家（MoE）架構之上，採用專家並行方式，對於任意輸入，只有部分引數處於活躍狀態。
 
-作为R1的无SFT版本，R1-Zero使用 DeepSeek-V3-Base 作为基础模型，直接使用 GRPO进行强化学习来提升模型的推理（Reasoning）性能, 根据准确度和格式进行训练奖励。
+作為R1的無SFT版本，R1-Zero使用 DeepSeek-V3-Base 作為基礎模型，直接使用 GRPO進行強化學習來提升模型的推理（Reasoning）效能, 根據準確度和格式進行訓練獎勵。
 
-R1-Zero的训练过程具有重要意义：
+R1-Zero的訓練過程具有重要意義：
 
-1）在大模型训练领域，SFT 需要高质量的人工标注数据（标注过程一般需要很长周期、成本高，且可能因标记者的偏好而引入潜在偏差）。
+1）在大模型訓練領域，SFT 需要高質量的人工標註資料（標註過程一般需要很長週期、成本高，且可能因標記者的偏好而引入潛在偏差）。
 
-2）复杂的推理任务可能超出了普通人类的能力。无SFT的纯强化学习方法也许可以使模型能够涌现出超越传统人类思维上限的超级推理能力。
+2）複雜的推理任務可能超出了普通人類的能力。無SFT的純強化學習方法也許可以使模型能夠湧現出超越傳統人類思維上限的超級推理能力。
 
-3）无SFT的纯强化学习不依赖于显式标注，允许模型使用非自然语言表征方法进行“思考”，从而具有超越自然语言进行逻辑推理的潜力。
+3）無SFT的純強化學習不依賴於顯式標註，允許模型使用非自然語言表徵方法進行“思考”，從而具有超越自然語言進行邏輯推理的潛力。
 
-奖励的计算方式在很大程度上决定了强化学习训练的效果。DeepSeek-R1-Zero 的基于规则的奖励系统包括：
+獎勵的計算方式在很大程度上決定了強化學習訓練的效果。DeepSeek-R1-Zero 的基於規則的獎勵系統包括：
 
-1）准确度奖励（Accuracy rewards）。评估响应是否正确。
+1）準確度獎勵（Accuracy rewards）。評估響應是否正確。
 
-2）格式奖励（Format rewards）。奖励模型将其思考过程置于“`<think>`”和“`</think>`”标签之间。
+2）格式獎勵（Format rewards）。獎勵模型將其思考過程置於“`<think>`”和“`</think>`”標籤之間。
 
 ![img](https://pic.yupi.icu/yuyi/1739504724564-16c630a6-8fe8-4e46-a7e5-08b7c0a5633a.png)
 
-DeepSeek的准确度奖励与格式奖励（来源：互联网）
+DeepSeek的準確度獎勵與格式獎勵（來源：網際網路）
 
-通过强化学习训练，R1-Zero 形成了复杂的推理能力，包括反思（模型重新审视并重新评估其先前的回答）以及探索解决问题的替代方法。这些能力并非通过常规编程或提示工程实现的，而是大模型在强化学习环境中自发产生的能力。
+透過強化學習訓練，R1-Zero 形成了複雜的推理能力，包括反思（模型重新審視並重新評估其先前的回答）以及探索解決問題的替代方法。這些能力並非透過常規程式設計或提示工程實現的，而是大模型在強化學習環境中自發產生的能力。
 
-根据R1的论文，强化学习训练中R1-Zero形成的另一个关键特征是顿悟时刻（Aha Moment）。R1-Zero 通过重新评估其初始方法学会为问题分配更多的思考时间（更长的推理）。无需明确的教模型如何解决问题，只需为其提供适当的激励，模型就会自主形成解决问题的策略。这也说明强化学习有潜力解锁新的智能水平，为未来更自主、更具适应性的模型铺平道路，提供了形成超级智能的可能路线。
+根據R1的論文，強化學習訓練中R1-Zero形成的另一個關鍵特徵是頓悟時刻（Aha Moment）。R1-Zero 透過重新評估其初始方法學會為問題分配更多的思考時間（更長的推理）。無需明確的教模型如何解決問題，只需為其提供適當的激勵，模型就會自主形成解決問題的策略。這也說明強化學習有潛力解鎖新的智慧水平，為未來更自主、更具適應性的模型鋪平道路，提供了形成超級智慧的可能路線。
 
-与OpenAI的GPT-4 相比，DeepSeek-R1-Zero在推理任务上表现出了显著的改进。例如，在AIME 2024 基准（推理能力测试）上，DeepSeek-R1-Zero的性能从15.6%跃升至71.0%，这表明R1-Zero的无SFT推理训练方法是有效的。
+與OpenAI的GPT-4 相比，DeepSeek-R1-Zero在推理任務上表現出了顯著的改進。例如，在AIME 2024 基準（推理能力測試）上，DeepSeek-R1-Zero的效能從15.6%躍升至71.0%，這表明R1-Zero的無SFT推理訓練方法是有效的。
 
-### 5.2 DeepSeek-R1的训练流程
+### 5.2 DeepSeek-R1的訓練流程
 
-DeepSeek-R1 的训练过程分为4个阶段，包括使用数千高质量CoT示例进行SFT的冷启动，面向推理的强化学习，通过拒绝抽样的SFT，面向全场景任务的强化学习与对齐。
+DeepSeek-R1 的訓練過程分為4個階段，包括使用數千高質量CoT示例進行SFT的冷啟動，面向推理的強化學習，透過拒絕抽樣的SFT，面向全場景任務的強化學習與對齊。
 
-两个SFT阶段进行推理和非推理能力的能力植入，两个强化学习阶段旨在泛化学习推理模式并与人类偏好保持一致。
+兩個SFT階段進行推理和非推理能力的能力植入，兩個強化學習階段旨在泛化學習推理模式並與人類偏好保持一致。
 
 ![img](https://pic.yupi.icu/yuyi/1739504724606-f48071cb-6b06-4167-84d7-022c2b2ac3ad.png)
 
-DeepSeek-R1训练流程（来源：中存算）
+DeepSeek-R1訓練流程（來源：中存算）
 
-### 5.2.1 冷启动（Cold Start）：CoT SFT
+### 5.2.1 冷啟動（Cold Start）：CoT SFT
 
-与R1-Zero不同，R1首先基于DeepSeek-V3-Base进行有监督精调（SFT），以克服强化学习的早期不稳定。DeekSeek认为这种基于人类先验知识冷启动并进行迭代训练的方式更适合推理模型。
+與R1-Zero不同，R1首先基於DeepSeek-V3-Base進行有監督精調（SFT），以克服強化學習的早期不穩定。DeekSeek認為這種基於人類先驗知識冷啟動並進行迭代訓練的方式更適合推理模型。
 
-由于这一训练阶段主要采用CoT数据，我们更喜欢将其称为CoT SFT。
+由於這一訓練階段主要採用CoT資料，我們更喜歡將其稱為CoT SFT。
 
-为构建少量的长CoT数据，DeepSeek探索了几种合成方法：使用长CoT 的few-shot提示作为示例，直接提示模型通过反思和验证生成详细回答，以可读格式收集DeepSeek-R1-Zero 输出，并通过人工标注员的后处理来完善结果。在此步骤中收集了数千个冷启动样本以进行精调。
+為構建少量的長CoT資料，DeepSeek探索了幾種合成方法：使用長CoT 的few-shot提示作為示例，直接提示模型透過反思和驗證生成詳細回答，以可讀格式收集DeepSeek-R1-Zero 輸出，並透過人工標註員的後處理來完善結果。在此步驟中收集了數千個冷啟動樣本以進行精調。
 
-其中可读模式指为每个回答在末尾包含一个摘要，并过滤掉不易阅读的部分。其输出格式为 `|special_token|<reasoning_process>|special_token|<summary>`。
+其中可讀模式指為每個回答在末尾包含一個摘要，並過濾掉不易閱讀的部分。其輸出格式為 `|special_token|<reasoning_process>|special_token|<summary>`。
 
-### 5.2.2 面向推理的强化学习
+### 5.2.2 面向推理的強化學習
 
-在基于冷启动数据对V3-Base 精调后，采用与R1-Zero相当的强化学习训练流程，基于GRPO进行强化学习，根据准确度和格式进行训练奖励。为了解决语言混杂问题，还在强化学习训练中引入了语言一致性奖励，该奖励以CoT中目标语言单词的比例计算。
+在基於冷啟動資料對V3-Base 精調後，採用與R1-Zero相當的強化學習訓練流程，基於GRPO進行強化學習，根據準確度和格式進行訓練獎勵。為了解決語言混雜問題，還在強化學習訓練中引入了語言一致性獎勵，該獎勵以CoT中目標語言單詞的比例計算。
 
-此阶段主要提升模型的推理（Reasoning）性能，特别是在编码、数学、科学和逻辑推理等推理密集型任务，这些任务涉及定义明确且解决方案明确的问题。
+此階段主要提升模型的推理（Reasoning）效能，特別是在編碼、數學、科學和邏輯推理等推理密集型任務，這些任務涉及定義明確且解決方案明確的問題。
 
-### 5.2.3 拒绝采样与SFT
+### 5.2.3 拒絕取樣與SFT
 
-这是另一个使用标记数据的有监督精调 (SFT)训练阶段，分批进行了两个epoch的精调，样本量为800k。800k中包括600k推理数据和200k非推理数据。
+這是另一個使用標記資料的有監督精調 (SFT)訓練階段，分批進行了兩個epoch的精調，樣本量為800k。800k中包括600k推理資料和200k非推理資料。
 
-与主要侧重于推理的冷启动数据不同，此阶段结合了来自其他领域的数据，以增强模型在写作、角色扮演和其他通用任务中的能力。
+與主要側重於推理的冷啟動資料不同，此階段結合了來自其他領域的資料，以增強模型在寫作、角色扮演和其他通用任務中的能力。
 
-拒绝采样（Rejection Sampling）提供了一种桥梁，使用易于采样的分布来近似训练真正感兴趣的复杂分布。目标响应（ground-truth）从一组生成的回答经过拒绝采样生成，其分数由奖励系统确定。
+拒絕取樣（Rejection Sampling）提供了一種橋樑，使用易於取樣的分佈來近似訓練真正感興趣的複雜分佈。目標響應（ground-truth）從一組生成的回答經過拒絕取樣生成，其分數由獎勵系統確定。
 
-**拒绝采样（Rejection Sampling）是一种**[**蒙特卡洛方法**](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=蒙特卡洛方法&zhida_source=entity)**，和重要性采样一样，都是在原始分布难以采样时，用一个易于采样的建议分布进行采样，通过拒绝原始分布之外的采样数据来获得采样结果。拒绝采样只是为了解决目标分布采样困难问题，该方法需要原始分布是已知的。**
+**拒絕取樣（Rejection Sampling）是一種**[**蒙特卡洛方法**](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=蒙特卡洛方法&zhida_source=entity)**，和重要性取樣一樣，都是在原始分佈難以取樣時，用一個易於取樣的建議分佈進行取樣，透過拒絕原始分佈之外的取樣資料來獲得取樣結果。拒絕取樣只是為了解決目標分佈取樣困難問題，該方法需要原始分佈是已知的。**
 
 ![img](https://pic.yupi.icu/yuyi/1739504724694-43f72ddf-a9a7-43bc-8db4-971d54582374.png)
 
-拒绝采样示意（来源：互联网）
+拒絕取樣示意（來源：網際網路）
 
-**600k推理数据的生成：**
+**600k推理資料的生成：**
 
-1）通过从上一轮强化学习训练的检查点进行拒绝抽样，整理推理提示并生成推理轨迹（Reasoning Trajectories）。
+1）透過從上一輪強化學習訓練的檢查點進行拒絕抽樣，整理推理提示並生成推理軌跡（Reasoning Trajectories）。
 
-2）除基于规则奖励进行评估的数据外，还包括了基于奖励模型的V3判断生成数据。
+2）除基於規則獎勵進行評估的資料外，還包括了基於獎勵模型的V3判斷生成資料。
 
-3）过滤掉了混合语言、长段落和代码块的思路链数据。
+3）過濾掉了混合語言、長段落和程式碼塊的思路鏈資料。
 
-4）对于每个提示（Prompt），会生成多个回答，然后并仅保留正确的响应。
+4）對於每個提示（Prompt），會生成多個回答，然後並僅保留正確的響應。
 
-**200k非推理数据的生成（如写作、事实问答、自我认知和翻译等）：**
+**200k非推理資料的生成（如寫作、事實問答、自我認知和翻譯等）：**
 
-1）采用DeepSeek-V3流程并复用V3 的部分 SFT 数据集。
+1）採用DeepSeek-V3流程並複用V3 的部分 SFT 資料集。
 
-2）可调用V3生成潜在的思路链，再通过提示回答。
+2）可呼叫V3生成潛在的思路鏈，再透過提示回答。
 
-3）对于更简单的查询（例如“你好”），不提供CoT回答。
+3）對於更簡單的查詢（例如“你好”），不提供CoT回答。
 
-### 5.2.4 面向全场景的强化学习与对齐
+### 5.2.4 面向全場景的強化學習與對齊
 
-最后，再次进行面向全场景的强化学习和人类偏好对齐，以提高模型的有用性和无害性，并完善推理能力。此阶段还整合了来自不同管道的数据，将奖励信号与不同的提示分布相结合。
+最後，再次進行面向全場景的強化學習和人類偏好對齊，以提高模型的有用性和無害性，並完善推理能力。此階段還整合了來自不同管道的資料，將獎勵訊號與不同的提示分佈相結合。
 
-1）使用奖励信号和多种提示分布（Diverse Prompt Distributions）的组合来训练模型。
+1）使用獎勵訊號和多種提示分佈（Diverse Prompt Distributions）的組合來訓練模型。
 
-2）对于推理数据，利用基于规则的奖励来指导数学、代码和逻辑推理领域的训练过程。
+2）對於推理資料，利用基於規則的獎勵來指導數學、程式碼和邏輯推理領域的訓練過程。
 
-3）对于一般数据，采用奖励模型来捕捉复杂微妙场景中的人类偏好。即参考DeepSeek-V3 管训练流程，采用类似的偏好对和训练提示分布。
+3）對於一般資料，採用獎勵模型來捕捉複雜微妙場景中的人類偏好。即參考DeepSeek-V3 管訓練流程，採用類似的偏好對和訓練提示分佈。
 
-4）对于有用性，只关注最终摘要，以确保重点响应对用户的实用性和相关性，最大限度减少对底层推理过程的干扰。
+4）對於有用性，只關注最終摘要，以確保重點響應對使用者的實用性和相關性，最大限度減少對底層推理過程的干擾。
 
-5）对于无害性，评估模型的整个响应，包括推理过程和摘要，以识别和减轻生成过程中可能出现的潜在风险、偏见或有害内容。
+5）對於無害性，評估模型的整個響應，包括推理過程和摘要，以識別和減輕生成過程中可能出現的潛在風險、偏見或有害內容。
 
-至此已完成R1的完整训练过程，获得了具备全场景推理能力的通用MoE模型，上下文长度均为128K。
+至此已完成R1的完整訓練過程，獲得了具備全場景推理能力的通用MoE模型，上下文長度均為128K。
 
 | **Model**        | **#Total Params** | **#Activated Params** | **Context Length** |
 | ---------------- | ----------------- | --------------------- | ------------------ |
 | DeepSeek-R1-Zero | 671B              | 37B                   | 128K               |
 | DeepSeek-R1      | 671B              | 37B                   | 128K               |
 
-### 5.3 从MoE回归Dense（蒸馏SFT）
+### 5.3 從MoE迴歸Dense（蒸餾SFT）
 
-尽管MoE架构有各种优点，特别是在通用的to C领域具备低成本的优势。但是MoE的架构特点使得其可能不太适用于专业应用场景（例如单一专家场景）和资源限制场景（例如端侧推理）。
+儘管MoE架構有各種優點，特別是在通用的to C領域具備低成本的優勢。但是MoE的架構特點使得其可能不太適用於專業應用場景（例如單一專家場景）和資源限制場景（例如端側推理）。
 
-**蒸馏是将复杂的大型神经网络压缩为更小、更简单的神经网络，同时尽可能多的保留结果模型的性能的过程。此过程涉及训练较小的“学生“神经网络，通过其预测或内部表示的精调来学习模拟更大、更复杂的“教师”网络的行为。**
+**蒸餾是將複雜的大型神經網路壓縮為更小、更簡單的神經網路，同時儘可能多的保留結果模型的效能的過程。此過程涉及訓練較小的“學生“神經網路，透過其預測或內部表示的精調來學習模擬更大、更復雜的“教師”網路的行為。**
 
 ![img](https://pic.yupi.icu/yuyi/1739504725022-cf60eb36-a7ea-4b02-9e6a-6ac056e98462.png)
 
-模型蒸馏方法（来源：互联网）
+模型蒸餾方法（來源：網際網路）
 
-为了能够将推理能力迁移到MoE架构不适合的场景，DeepSeek选择Llama和Qwen系列开源大模型进行蒸馏，使相应的Dense模型也能获得推理能力。与使用强化学习相比，直接SFT更适合较小的大模型，蒸馏完成的Dense模型推理能力明显好于原开源模型。
+為了能夠將推理能力遷移到MoE架構不適合的場景，DeepSeek選擇Llama和Qwen系列開源大模型進行蒸餾，使相應的Dense模型也能獲得推理能力。與使用強化學習相比，直接SFT更適合較小的大模型，蒸餾完成的Dense模型推理能力明顯好於原開源模型。
 
-DeepSeek-R1-Distill模型（来源：DeepSeek）
+DeepSeek-R1-Distill模型（來源：DeepSeek）
 
 | **Model**                     | **Base Model**         |
 | ----------------------------- | ---------------------- |
@@ -676,93 +676,93 @@ DeepSeek-R1-Distill模型（来源：DeepSeek）
 | DeepSeek-R1-Distill-Qwen-32B  | Qwen2.5-32B            |
 | DeepSeek-R1-Distill-Llama-70B | Llama-3.3-70B-Instruct |
 
-### 5.4 更大显存容量显得尤为重要？
+### 5.4 更大視訊記憶體容量顯得尤為重要？
 
-随着MoE架构大模型的快速推广，产业界也有看法认为在单块GPU上集成更大的超过对等算力的显存或扩展存储显得尤为重要。
+隨著MoE架構大模型的快速推廣，產業界也有看法認為在單塊GPU上整合更大的超過對等算力的視訊記憶體或擴充套件儲存顯得尤為重要。
 
-我们对此持不同看法，首先要看产品应用场景占有率，其次要看实际的部署方案，最后要看成本比较：
+我們對此持不同看法，首先要看產品應用場景佔有率，其次要看實際的部署方案，最後要看成本比較：
 
-1）根据前面分析，目前主力的专业行业应用仍是使用Dense模型，能部署MoE模型的通用AI巨头早已下场完成部署，从目前的应用比例来看，使用Dense模型的依然占据应用主体。对于Dense模型（实际上是单专家的特例），超过对等算力的单卡大显存或扩展存储容易形成浪费。
+1）根據前面分析，目前主力的專業行業應用仍是使用Dense模型，能部署MoE模型的通用AI巨頭早已下場完成部署，從目前的應用比例來看，使用Dense模型的依然佔據應用主體。對於Dense模型（實際上是單專家的特例），超過對等算力的單卡大視訊記憶體或擴充套件儲存容易形成浪費。
 
 ![img](https://pic.yupi.icu/yuyi/1739504725095-e483a2b9-fe22-44f4-bf79-898dc11e72e9.png)
 
-同样模型性能下MoE模型需要更大的显存（来源：Meta）
+同樣模型效能下MoE模型需要更大的視訊記憶體（來源：Meta）
 
-2）根据从厂商和V3论文获得的实际部署方案，为保证MoE部分不同专家之间的负载均衡，会将共享专家和高负载的细粒度专家在集群的不同GPU做多个复制，让GPU把更多的热数据（发给共享专家的）跑起来，V3部署中每个GPU大概托管9个专家。如果考虑这9个专家中有一个是参数最多的共享专家，那么事实上每块GPU上的空闲细粒度专家占据的参数总和可能不超过单块GPU上总参数量的1/3。
+2）根據從廠商和V3論文獲得的實際部署方案，為保證MoE部分不同專家之間的負載均衡，會將共享專家和高負載的細粒度專家在叢集的不同GPU做多個複製，讓GPU把更多的熱資料（發給共享專家的）跑起來，V3部署中每個GPU大概託管9個專家。如果考慮這9個專家中有一個是引數最多的共享專家，那麼事實上每塊GPU上的空閒細粒度專家佔據的引數總和可能不超過單塊GPU上總引數量的1/3。
 
 ![img](https://pic.yupi.icu/yuyi/1739504725855-8b257ad1-bd64-407d-b3df-7a8c278cb00a.png)
 
-MoE的跨GPU部署模式（来源：微软）
+MoE的跨GPU部署模式（來源：微軟）
 
-3）从成本上看，可能把一部分专家放到CPU上更划算。我们认为MoE上的专家可以分为高频专家、中频专家，低频专家。高频专家和中频专家搭配部署在GPU上比较合适，低频专家调度很少，更适合放在服务器上已有的闲置CPU的内存上（CPU上的标准内存比GPU的HBM便宜很多，扩展性更好），以充分利用全服务器的算力降低综合成本。
+3）從成本上看，可能把一部分專家放到CPU上更划算。我們認為MoE上的專家可以分為高頻專家、中頻專家，低頻專家。高頻專家和中頻專家搭配部署在GPU上比較合適，低頻專家排程很少，更適合放在伺服器上已有的閒置CPU的記憶體上（CPU上的標準記憶體比GPU的HBM便宜很多，擴充套件性更好），以充分利用全伺服器的算力降低綜合成本。
 
 ![img](https://pic.yupi.icu/yuyi/1739504725883-c72d8b82-05a4-4f37-a0ad-d91d44a96541.png)
 
-MoE模型的GPU+CPU混合部署（来源：Meta）
+MoE模型的GPU+CPU混合部署（來源：Meta）
 
-另外，R1自己都做Dense模型的蒸馏版本了，我们为何还要纠结于高于对等算力带宽的超大显存？
+另外，R1自己都做Dense模型的蒸餾版本了，我們為何還要糾結於高於對等算力頻寬的超大視訊記憶體？
 
-## 6 结语
+## 6 結語
 
-### 6.1 DeepSeek的关键贡献
+### 6.1 DeepSeek的關鍵貢獻
 
-DeepSeek由[梁文锋](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=梁文锋&zhida_source=entity)于2023 年5月创立，公司独立运营，并由幻方支持研发资金。这种独特的模式使DeepSeek能够在没有外部投资者压力的情况下开展跨越式的人工智能研发，优先考虑长期研发和价值。
+DeepSeek由[梁文鋒](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=梁文鋒&zhida_source=entity)於2023 年5月創立，公司獨立運營，並由幻方支援研發資金。這種獨特的模式使DeepSeek能夠在沒有外部投資者壓力的情況下開展跨越式的人工智慧研發，優先考慮長期研發和價值。
 
-成立6个月后，DeepSeek于2023年11月发布的DeepSeek Coder，随后是 DeepSeek LLM 67B，DeepSeek逐渐踏上了基础大模型的竞争赛道。2024年5月推出的DeepSeek-V2就呈现出MLA和AI Infra技术的明显领先优势，极具性价比，引发了中国大模型市场的价格跳水和血拼。
+成立6個月後，DeepSeek於2023年11月釋出的DeepSeek Coder，隨後是 DeepSeek LLM 67B，DeepSeek逐漸踏上了基礎大模型的競爭賽道。2024年5月推出的DeepSeek-V2就呈現出MLA和AI Infra技術的明顯領先優勢，極具價效比，引發了中國大模型市場的價格跳水和血拼。
 
-在V2发布后，我们就已经关注到DeepSeek在算法-硬件协同优化方面的出色表现。主编作者在2024年6月，为前来咨询的投资人推荐DeepSeek的高性价比路线。
+在V2釋出後，我們就已經關注到DeepSeek在演算法-硬體協同最佳化方面的出色表現。主編作者在2024年6月，為前來諮詢的投資人推薦DeepSeek的高價效比路線。
 
-V3和R1发布并开源后，DeepSeek进一步巩固了其在MoE性价比和AI Infra的地位，并以开源模型中几乎最出色的推理性能，赢得社会的广泛关注。
+V3和R1釋出並開源後，DeepSeek進一步鞏固了其在MoE價效比和AI Infra的地位，並以開源模型中幾乎最出色的推理效能，贏得社會的廣泛關注。
 
-对于R1/V3的主要创新，可以参考下表：
+對於R1/V3的主要創新，可以參考下表：
 
-DeepSeek-R1/V3的主要创新（来源：中存算）
+DeepSeek-R1/V3的主要創新（來源：中存算）
 
-| **R1/V3的优化**                      | **R1/V3的创新与价值（实现了与 OpenAI-o1-1217 相当的性能）**                                                                                                                    | **其他开源大模型（相当于Llama3.3的性能）**                        |
+| **R1/V3的最佳化**                      | **R1/V3的創新與價值（實現了與 OpenAI-o1-1217 相當的效能）**                                                                                                                    | **其他開源大模型（相當於Llama3.3的效能）**                        |
 | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------- |
-| 软硬件结合，提高模型计算效率降低成本 | 提出MLA，通过将键值 (KV) 缓存显著压缩为潜在向量来保证高效推理                                                                                                                  | 采用GQA或MHA，占用KV缓存比MLA大一个数量级                         |
-| 减少冗余，提高模型计算效率降低成本   | 提出DeepSeekMoE，采用细粒度专家分割和共享专家隔离，减少冗余的专家参数                                                                                                          | 采用粗粒度专家，模型参数冗余大                                    |
-| 改进算法，提高训练效率               | 提出无辅助损失策略 ，改善MoE模型训练                                                                                                                                           | 采用常规辅助损失策略，容易训练失败                                |
-| 简化算法，提高训练效率               | 采用GRPO进一步使模型与人类偏好对齐，提高训练效率                                                                                                                               | 采用PPO，训练效率不高                                             |
-| 软硬件结合，提高训练效率             | 基于开[源代码](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=源代码&zhida_source=entity)开发自有的FP8混合精度训练框架，提升训练效率 | 传统开源训练框架，以BF16或FP32为主，显存占用超过FP8，训练速度较慢 |
-| 软硬件结合，提高训练效率             | DualPipe算法来实现高效的流水线并行                                                                                                                                             | 默认流水线并行算法，气泡较多                                      |
-| 软硬件结合，提高训练效率             | 跨节点All-to-All通信内核，使用PTX编程以充分利用InfiniBand（IB）和NVLink带宽                                                                                                    | 默认通信内核，                                                    |
-| 改进数据，提高模型性能               | 使用长思维链(CoT)数据进行模型训练，提升模型能力                                                                                                                                | 几乎无长思维链训练                                                |
+| 軟硬體結合，提高模型計算效率降低成本 | 提出MLA，透過將鍵值 (KV) 快取顯著壓縮為潛在向量來保證高效推理                                                                                                                  | 採用GQA或MHA，佔用KV快取比MLA大一個數量級                         |
+| 減少冗餘，提高模型計算效率降低成本   | 提出DeepSeekMoE，採用細粒度專家分割和共享專家隔離，減少冗餘的專家引數                                                                                                          | 採用粗粒度專家，模型引數冗餘大                                    |
+| 改進演算法，提高訓練效率               | 提出無輔助損失策略 ，改善MoE模型訓練                                                                                                                                           | 採用常規輔助損失策略，容易訓練失敗                                |
+| 簡化演算法，提高訓練效率               | 採用GRPO進一步使模型與人類偏好對齊，提高訓練效率                                                                                                                               | 採用PPO，訓練效率不高                                             |
+| 軟硬體結合，提高訓練效率             | 基於開[原始碼](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=原始碼&zhida_source=entity)開發自有的FP8混合精度訓練框架，提升訓練效率 | 傳統開源訓練框架，以BF16或FP32為主，視訊記憶體佔用超過FP8，訓練速度較慢 |
+| 軟硬體結合，提高訓練效率             | DualPipe演算法來實現高效的流水線並行                                                                                                                                             | 預設流水線並行演算法，氣泡較多                                      |
+| 軟硬體結合，提高訓練效率             | 跨節點All-to-All通訊核心，使用PTX程式設計以充分利用InfiniBand（IB）和NVLink頻寬                                                                                                    | 預設通訊核心，                                                    |
+| 改進資料，提高模型效能               | 使用長思維鏈(CoT)資料進行模型訓練，提升模型能力                                                                                                                                | 幾乎無長思維鏈訓練                                                |
 
-我们经过分析，认为DeepSeek的算法架构能力已经达到国际一线水平（例如MLA和GRPO算法），而其AI Infra团队的软硬件协同设计水平（例如FP8训练框架和基于PTX进行All-to-All通信内核优化）和自由探索，可能已暂时超越大部分国际大模型企业。基本上DeepSeek团队对GPU的性能使用率已接近技术上限，实现了在现有GPU体系内的软件Sacle-up。
+我們經過分析，認為DeepSeek的演算法架構能力已經達到國際一線水平（例如MLA和GRPO演算法），而其AI Infra團隊的軟硬體協同設計水平（例如FP8訓練框架和基於PTX進行All-to-All通訊核心最佳化）和自由探索，可能已暫時超越大部分國際大模型企業。基本上DeepSeek團隊對GPU的效能使用率已接近技術上限，實現了在現有GPU體系內的軟體Sacle-up。
 
-如果有这样超越其他大厂一个数量级的训练效率提升，估计很多大模型炼丹师梦里都要乐开花了。
+如果有這樣超越其他大廠一個數量級的訓練效率提升，估計很多大模型煉丹師夢裡都要樂開花了。
 
-### 6.2 R1的出现是国运级的贡献吗？
+### 6.2 R1的出現是國運級的貢獻嗎？
 
-有人提出DeepSeek所作的工作可能是一种国运级别的科技成果。
+有人提出DeepSeek所作的工作可能是一種國運級別的科技成果。
 
-作为本文的主编作者，我个人只在小时候看过一点点[梅花易数](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=梅花易数&zhida_source=entity)的介绍，对于推算国运的[太乙神数](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=太乙神数&zhida_source=entity)一直没有机会了解和获得传承，不好随意讲这是不是国运级的成果。
+作為本文的主編作者，我個人只在小時候看過一點點[梅花易數](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=梅花易數&zhida_source=entity)的介紹，對於推算國運的[太乙神數](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=太乙神數&zhida_source=entity)一直沒有機會了解和獲得傳承，不好隨意講這是不是國運級的成果。
 
-我对最近DeekSeek的影响力传播看法如下：
+我對最近DeekSeek的影響力傳播看法如下：
 
-1）对DeepSeek的成果，特别是V3/R1开源，应有产业的高度肯定。但过度褒扬对DeekSeek大概率是不利的甚至是极为有害的，会导致专心做事的人要疲于应付各种俗务，也大概率导致DeepSeek招致美国商务部的打压。
+1）對DeepSeek的成果，特別是V3/R1開源，應有產業的高度肯定。但過度褒揚對DeekSeek大機率是不利的甚至是極為有害的，會導致專心做事的人要疲於應付各種俗務，也大機率導致DeepSeek招致美國商務部的打壓。
 
-2）梁文锋本人一贯低调，在创立幻方后那么多年，几乎没有出来宣传或炒作。媒体和社会如能参考DeepSeek创始人的个人行事风格，给更多类似DeepSeek的本土人才和企业予以支持，会更有利于国运。
+2）梁文鋒本人一貫低調，在創立幻方後那麼多年，幾乎沒有出來宣傳或炒作。媒體和社會如能參考DeepSeek創始人的個人行事風格，給更多類似DeepSeek的本土人才和企業予以支援，會更有利於國運。
 
-3）脱离实际技术分析的对DeepSeek的评判多数是雾里看花，少一些人与亦云的评判，多一些实干，对所有心怀理想的人都是好事。
+3）脫離實際技術分析的對DeepSeek的評判多數是霧裡看花，少一些人與亦云的評判，多一些實幹，對所有心懷理想的人都是好事。
 
-4）会有比R1更颠覆性的先进大模型出现。如同前几年的热炒OpenAI和Kimi，技术总会不断进步，对于DeepSeek来说，还有更加重要的目标和星辰大海，R1仅仅是海边新发现的璀璨贝壳。
+4）會有比R1更顛覆性的先進大模型出現。如同前幾年的熱炒OpenAI和Kimi，技術總會不斷進步，對於DeepSeek來說，還有更加重要的目標和星辰大海，R1僅僅是海邊新發現的璀璨貝殼。
 
-5）是否是对OpenAI模型的蒸馏根本不重要。学习和参考是人类社会进步的阶梯，开源更是对大模型技术进步的头号贡献。一两家闭源巨头大概率没有足够的资源储备来推动人类AGI的颠覆式发展，只有更多的DeepSeek这样的力量贡献到[开源社区](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=开源社区&zhida_source=entity)，才能形成合力实现超级人工智能。
+5）是否是對OpenAI模型的蒸餾根本不重要。學習和參考是人類社會進步的階梯，開源更是對大模型技術進步的頭號貢獻。一兩家閉源巨頭大機率沒有足夠的資源儲備來推動人類AGI的顛覆式發展，只有更多的DeepSeek這樣的力量貢獻到[開源社群](https://zhida.zhihu.com/search?content_id=253521716&content_type=Article&match_order=1&q=開源社群&zhida_source=entity)，才能形成合力實現超級人工智慧。
 
-### 6.3 对于国产AI芯片的启示
+### 6.3 對於國產AI晶片的啟示
 
-DeepSeek的进步和成果，也给国产AI芯片的发展提供了一些启示。
+DeepSeek的進步和成果，也給國產AI晶片的發展提供了一些啟示。
 
-一方面，一级市场需要升级投资逻辑，不用再崇洋媚外。事实证明纯本土的研发团队，甚至是纯本土新人团队，完全由能力做出有国际影响力的成果和产品。国内算法不再死跟着老美屁股后面，国内的AI芯片也大可不必死跟着英伟达做传统GPU。新的架构AI芯片，新的GPU架构，跨领域的技术融合，正形成新的产业窗口。
+一方面，一級市場需要升級投資邏輯，不用再崇洋媚外。事實證明純本土的研發團隊，甚至是純本土新人團隊，完全由能力做出有國際影響力的成果和產品。國內演算法不再死跟著老美屁股後面，國內的AI晶片也大可不必死跟著英偉達做傳統GPU。新的架構AI晶片，新的GPU架構，跨領域的技術融合，正形成新的產業視窗。
 
-另一方面，DeepSeek的技术成果，事实也凸显出算力对模型进步的重要性。DeepSeek的算法进步速度之快，与其算力使用效率比其他团队高约一个数量级有非常密切的关系。（当然DeepSeek可使用的算力总量也不低）在这样的一个算法大发展契机，尽快发展新架构AI芯片，发展3D封装集成，发展高速互连，发展开源编译生态，抢占MoE模型发展期的技术红利，对中国的芯片产业就显得尤为重要。
+另一方面，DeepSeek的技術成果，事實也凸顯出算力對模型進步的重要性。DeepSeek的演算法進步速度之快，與其算力使用效率比其他團隊高約一個數量級有非常密切的關係。（當然DeepSeek可使用的算力總量也不低）在這樣的一個演算法大發展契機，儘快發展新架構AI晶片，發展3D封裝整合，發展高速互連，發展開源編譯生態，搶佔MoE模型發展期的技術紅利，對中國的晶片產業就顯得尤為重要。
 
-上篇请看：[陈巍：DeepSeek是否有国运级的创新？从V3到R1的架构创新与误传的万字长文分析（上）438 赞同 · 26 评论文章](https://zhuanlan.zhihu.com/p/21208287743)
+上篇請看：[陳巍：DeepSeek是否有國運級的創新？從V3到R1的架構創新與誤傳的萬字長文分析（上）438 贊同 · 26 評論文章](https://zhuanlan.zhihu.com/p/21208287743)
 
 ![img](https://pic.yupi.icu/yuyi/1739504725833-d2ad18c6-cf77-48e8-b561-7ab66e11e278.png)
 
 
 
-> 来源：https://zhuanlan.zhihu.com/p/22496725607?utm_source=chatgpt.com
+> 來源：https://zhuanlan.zhihu.com/p/22496725607?utm_source=chatgpt.com
